@@ -1,11 +1,10 @@
 import React from 'react'
-import style from './TableRow.module.css'
+
+
 
 export function TableRow(props) {
-    let firstCell = null
-    if (props.rowTitle) {
-        firstCell = <div className={style.row}>{props.rowTitle}</div>
-    }
+    const firstCell = props.rowTitle ? <div>{props.rowTitle}</div> : null
+   
     return (
         <>
             {firstCell}

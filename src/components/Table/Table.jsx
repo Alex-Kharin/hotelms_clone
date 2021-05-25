@@ -1,6 +1,5 @@
 import React from "react";
 import {TableHeader} from "./Table-components/Table-header/TableHeader";
-import style from "./Table.module.css";
 import styled from "styled-components";
 
 const TableWrapper = styled.div`
@@ -12,9 +11,6 @@ const TableWrapper = styled.div`
 
 export function Table(props) {
     return (
-        // <div className={style.tableWrapper}>
-        //     <TableHeader table={props.table}/>
-        // </div>
         <TableWrapper>
             <TableHeader table={props.table}/>
         </TableWrapper>

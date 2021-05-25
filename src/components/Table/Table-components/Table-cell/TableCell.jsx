@@ -1,12 +1,29 @@
-import style from "./TableCell.module.css";
 import React from "react";
+import styled from "styled-components";
+
+const CellWrapper = styled.div`
+    border: 1px solid black;
+    text-align: center;
+`
+
+const TopString = styled.span`
+    color: midnightblue;
+    font-weight: ${props => props.topStringFontWeight || 'bold'}
+`
+
+const BottomString = styled.span`
+    color: gray;
+    font-weight: ${props => props.bottomStringFontWeight || 'bold'}
+`
 
 export function TableCell(props) {
+    const topString = props.topString ? <TopString>{props.topString}</TopString> : null
+    const bottomString = props.bottomString ? <BottomString>{props.bottomString}</BottomString> : null
     return (
-        <div className={style.cell} data-date={props.date} style={props.style}>
-            <span>{props.dayOfMonth}</span>
-            <br/>
-            <span>{props.dayOfWeek}</span>
-        </div>
+        <CellWrapper>
+            {topString}
+             <br/>
+            {bottomString}
+        </CellWrapper>
     )
 }
