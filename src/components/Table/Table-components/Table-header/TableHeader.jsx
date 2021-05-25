@@ -8,17 +8,20 @@ import {FirstHeaderCell} from '../Table-cell/FirstHeaderCell'
 
 export function TableHeader(props) {
     const days = props.table.days
+    const shiftLeft = props.shiftDateIntervalLeft
+    const shiftRight = props.shiftDateIntervalRight
+    const shiftNow = props.shiftDateIntervalNow
 
     const startInterval = days[0]
     const endInterval = days[days.length-1]
     const months = eachMonthOfInterval({start: startInterval, end: endInterval})
     
     const headerDaysCells = days.map(day => <TableCell topString={dayOfMonth(day)} bottomString={dayOfWeek(day)} key={day}/>)
-    const monthsCells = months.map(toMonths(days, months))
+    const monthsCells = months.map(toMonths(days, months, shiftLeft, shiftRight))
 
     return (
         <>
-            <FirstHeaderCell now={now} />
+            <FirstHeaderCell now={now} onClick={shiftNow}/>
             <TableRow rowCells={monthsCells} />
             <TableRow rowCells={headerDaysCells} />
         </>

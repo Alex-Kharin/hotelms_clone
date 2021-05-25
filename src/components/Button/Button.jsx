@@ -13,7 +13,7 @@ const Btn = styled.button`
 
 export function Button(props) {
     return (
-        <Btn>
+        <Btn onClick={props.onClick}>
             <span className="material-icons material-icons-outlined">{props.iconName}</span>
             <span>{props.children}</span>
         </Btn>

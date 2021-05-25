@@ -32,7 +32,7 @@ export function FirstHeaderCell(props) {
         <Wrapper>
             <DateChoiceWrapper>
                 <DateChoice>{props.now}</DateChoice>
-                <Button iconName={"schedule"}/>
+                <Button iconName={"schedule"} onClick={props.onClick}/>
             </DateChoiceWrapper>
             <ColumnTitle>Номера</ColumnTitle>
         </Wrapper>

@@ -12,7 +12,7 @@ const TableWrapper = styled.div`
 export function Table(props) {
     return (
         <TableWrapper>
-            <TableHeader table={props.table}/>
+            <TableHeader {...props}/>
         </TableWrapper>
     )
 }

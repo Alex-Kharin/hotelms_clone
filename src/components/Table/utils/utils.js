@@ -1,4 +1,4 @@
-import {differenceInCalendarDays, endOfMonth, format, isAfter, startOfMonth} from "date-fns";
+import {addDays, differenceInCalendarDays, endOfMonth, format, isAfter, startOfMonth, subDays} from 'date-fns'
 import {ru} from "date-fns/locale";
 import {Button} from "../../Button/Button";
 import React from "react";
@@ -11,7 +11,7 @@ const monthName = (month) => format(month, 'LLLL', {locale: ru})
 const yearOfDate = (date) => format(date, 'y', {locale: ru})
 const now = format(new Date(), 'dd-MM-y', {locale: ru})
 
-function toMonths(days, months) {
+function toMonths(days, months, shiftLeft, shiftRight) {
     return function (month) {
         const startInterval = days[0]
         const endInterval = days[days.length - 1]
@@ -24,14 +24,19 @@ function toMonths(days, months) {
         const firstMonth = months[0]
         const lastMonth = months[months.length - 1]
     
-        const leftBtn = month === firstMonth ? <Button iconName={'keyboard_arrow_left'}/> : null
-        const rightBtn = month === lastMonth ? <Button iconName={'keyboard_arrow_right'}/> : null
+        const leftBtn = month === firstMonth ? <Button iconName={'keyboard_arrow_left'} onClick={()=> {
+            shiftLeft(subDays(startInterval, 1))
+        }}/> : null
+        const rightBtn = month === lastMonth ? <Button iconName={'keyboard_arrow_right'} onClick={()=> {
+            shiftRight(addDays(endInterval, 1))
+        }}/> : null
     
         return <MonthCell daysInCurrentMonth={daysInCurrentMonth}
                           leftBtn={leftBtn}
                           rightBtn={rightBtn}
                           monthName={monthName(month)}
                           yearOfDate={yearOfDate(month)}
+                          key={month}
         />
     }
 }
