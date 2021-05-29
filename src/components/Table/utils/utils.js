@@ -1,7 +1,7 @@
 import {addDays, differenceInCalendarDays, endOfMonth, format, isAfter, startOfMonth, subDays} from 'date-fns'
-import {ru} from "date-fns/locale";
-import {Button} from "../../Button/Button";
-import React from "react";
+import {ru} from 'date-fns/locale'
+import {Button} from '../../Button/Button'
+import React from 'react'
 import {MonthCell} from '../Table-components/Table-cell/MonthCell'
 
 
@@ -15,27 +15,29 @@ function toMonths(days, months, shiftLeft, shiftRight) {
     return function (month) {
         const startInterval = days[0]
         const endInterval = days[days.length - 1]
-        
+
         const start = isAfter(startInterval, startOfMonth(month)) ? startInterval : startOfMonth(month)
         const end = isAfter(endOfMonth(month), endInterval) ? endInterval : endOfMonth(month)
-    
+
         const daysInCurrentMonth = differenceInCalendarDays(end, start) + 1
-        
+
         const firstMonth = months[0]
         const lastMonth = months[months.length - 1]
-    
-        const leftBtn = month === firstMonth ? <Button iconName={'keyboard_arrow_left'} onClick={()=> {
+        let position = ''
+
+        const leftBtn = month === firstMonth ? (position='flex-start', <Button iconName={'keyboard_arrow_left'} onClick={() => {
             shiftLeft(subDays(startInterval, 1))
-        }}/> : null
-        const rightBtn = month === lastMonth ? <Button iconName={'keyboard_arrow_right'} onClick={()=> {
+        }}/>) : null
+        const rightBtn = month === lastMonth ? (position='flex-end', <Button iconName={'keyboard_arrow_right'} onClick={()=> {
             shiftRight(addDays(endInterval, 1))
-        }}/> : null
-    
+        }}/>) : null
+
         return <MonthCell daysInCurrentMonth={daysInCurrentMonth}
                           leftBtn={leftBtn}
                           rightBtn={rightBtn}
                           monthName={monthName(month)}
                           yearOfDate={yearOfDate(month)}
+                          position={position}
                           key={month}
         />
     }
