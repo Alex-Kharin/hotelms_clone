@@ -1,6 +1,6 @@
 import React from 'react'
 import {TableCell} from '../Table-cell/TableCell'
-import {eachMonthOfInterval, isWeekend} from 'date-fns'
+import {eachMonthOfInterval, isToday, isWeekend} from 'date-fns'
 import {TableRow} from '../Table-row/TableRow'
 import {dayOfMonth, dayOfWeek, now, toMonths} from '../../utils/utils'
 import {FirstHeaderCell} from '../Table-cell/FirstHeaderCell'
@@ -21,6 +21,7 @@ export function TableHeader(props) {
             topString={dayOfMonth(day)}
             bottomString={dayOfWeek(day)}
             isWeekend={isWeekend(day)}
+            isToday={isToday(day)}
             key={day}
         />)
 

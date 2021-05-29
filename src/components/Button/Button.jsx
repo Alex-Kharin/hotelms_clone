@@ -8,7 +8,8 @@ const Btn = styled.button`
   min-height: 30px;
   min-width: 40px;
   display: flex;
-  align-items: center
+  align-items: center;
+  z-index: 505;
 `
 
 export function Button(props) {

@@ -1,6 +1,7 @@
 import {Button} from '../../../Button/Button'
 import React from 'react'
 import styled from 'styled-components'
+import DatePicker from './DatePicker'
 
 
 const Wrapper = styled.div`
@@ -31,7 +32,7 @@ export function FirstHeaderCell(props) {
     return (
         <Wrapper>
             <DateChoiceWrapper>
-                <DateChoice>{props.now}</DateChoice>
+                <DateChoice><DatePicker /></DateChoice>
                 <Button iconName={"schedule"} onClick={props.onClick}/>
             </DateChoiceWrapper>
             <ColumnTitle>Номера</ColumnTitle>
