@@ -1,6 +1,11 @@
 import {connect} from "react-redux";
 import {Table} from "./Table";
-import {shiftDateIntervalLeft, shiftDateIntervalNow, shiftDateIntervalRight} from '../../store/tableReducer'
+import {
+    shiftDateIntervalFrom,
+    shiftDateIntervalLeft,
+    shiftDateIntervalNow,
+    shiftDateIntervalRight
+} from '../../store/tableReducer'
 
 
 function mapStateToProps(state) {
@@ -9,7 +14,7 @@ function mapStateToProps(state) {
     }
 }
 
-const mapDispatchToProps = {shiftDateIntervalLeft, shiftDateIntervalRight, shiftDateIntervalNow}
+const mapDispatchToProps = {shiftDateIntervalLeft, shiftDateIntervalRight, shiftDateIntervalFrom, shiftDateIntervalNow}
 
 
 export const TableContainer = connect(mapStateToProps, mapDispatchToProps)(Table)

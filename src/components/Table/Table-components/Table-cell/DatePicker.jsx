@@ -62,7 +62,7 @@ function formatDate(date, format, locale) {
     return dateFnsFormat(date, format, { locale: locale });
 }
 
-export default function DatePicker() {
+export default function DatePicker(props) {
     const FORMAT = 'dd-MM-yyyy';
     const locale = 'ru'
     return (
@@ -79,8 +79,10 @@ export default function DatePicker() {
             formatDate={formatDate}
             format={FORMAT}
             parseDate={parseDate}
-            placeholder={`${dateFnsFormat(new Date(), FORMAT)}`}
-            onDayChange={day => console.log(day)}
+            placeholder={`${dateFnsFormat(props.fromDay, FORMAT)}`}
+            selectedDay={props.fromDay}
+            value={props.fromDay}
+            onDayChange={day => props.shiftFrom(day)}
         />
     );
 }

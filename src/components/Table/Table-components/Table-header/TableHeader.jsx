@@ -8,9 +8,11 @@ import {FirstHeaderCell} from '../Table-cell/FirstHeaderCell'
 
 export function TableHeader(props) {
     const days = props.table.days
+    const fromDay = props.table.from
     const shiftLeft = props.shiftDateIntervalLeft
     const shiftRight = props.shiftDateIntervalRight
     const shiftNow = props.shiftDateIntervalNow
+    const shiftFrom = props.shiftDateIntervalFrom
 
     const startInterval = days[0]
     const endInterval = days[days.length - 1]
@@ -29,7 +31,7 @@ export function TableHeader(props) {
 
     return (
         <>
-            <FirstHeaderCell now={now} onClick={shiftNow}/>
+            <FirstHeaderCell now={now} onClick={shiftNow} shiftFrom={shiftFrom} fromDay={fromDay}/>
             <TableRow rowCells={monthsCells}/>
             <TableRow rowCells={headerDaysCells}/>
         </>
