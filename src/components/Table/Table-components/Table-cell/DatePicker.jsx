@@ -51,7 +51,7 @@ const LABELS = {
 
 
 function parseDate(str, format, locale) {
-    const parsed = dateFnsParse(str, format, new Date(), { locale: locale });
+    const parsed = dateFnsParse(str, format, new Date(), { locale });
     if (DateUtils.isDate(parsed)) {
         return parsed;
     }
@@ -59,7 +59,7 @@ function parseDate(str, format, locale) {
 }
 
 function formatDate(date, format, locale) {
-    return dateFnsFormat(date, format, { locale: locale });
+    return dateFnsFormat(date, format, { locale });
 }
 
 export default function DatePicker(props) {
@@ -82,6 +82,7 @@ export default function DatePicker(props) {
             placeholder={`${dateFnsFormat(props.fromDay, FORMAT)}`}
             selectedDay={props.fromDay}
             value={props.fromDay}
+            keepFocus={false}
             onDayChange={day => props.shiftFrom(day)}
         />
     );

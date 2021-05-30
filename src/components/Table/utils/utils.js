@@ -1,4 +1,4 @@
-import {addDays, differenceInCalendarDays, endOfMonth, format, isAfter, startOfMonth, subDays} from 'date-fns'
+import {differenceInCalendarDays, endOfMonth, format, isAfter, startOfMonth} from 'date-fns'
 import {ru} from 'date-fns/locale'
 import {Button} from '../../Button/Button'
 import React from 'react'
@@ -11,13 +11,10 @@ const monthName = (month) => format(month, 'LLLL', {locale: ru})
 const yearOfDate = (date) => format(date, 'y', {locale: ru})
 const now = format(new Date(), 'dd-MM-y', {locale: ru})
 
-function toMonths(days, months, shiftLeft, shiftRight) {
+function toMonths(interval, months, shiftLeft, shiftRight) {
     return function (month) {
-        const startInterval = days[0]
-        const endInterval = days[days.length - 1]
-
-        const start = isAfter(startInterval, startOfMonth(month)) ? startInterval : startOfMonth(month)
-        const end = isAfter(endOfMonth(month), endInterval) ? endInterval : endOfMonth(month)
+        const start = isAfter(interval.start, startOfMonth(month)) ? interval.start : startOfMonth(month)
+        const end = isAfter(endOfMonth(month), interval.end) ? interval.end : endOfMonth(month)
 
         const daysInCurrentMonth = differenceInCalendarDays(end, start) + 1
 
@@ -25,12 +22,8 @@ function toMonths(days, months, shiftLeft, shiftRight) {
         const lastMonth = months[months.length - 1]
         let position = ''
 
-        const leftBtn = month === firstMonth ? (position='flex-start', <Button iconName={'keyboard_arrow_left'} onClick={() => {
-            shiftLeft(subDays(startInterval, 1))
-        }}/>) : null
-        const rightBtn = month === lastMonth ? (position='flex-end', <Button iconName={'keyboard_arrow_right'} onClick={()=> {
-            shiftRight(addDays(endInterval, 1))
-        }}/>) : null
+        const leftBtn = month === firstMonth ? (position='flex-start', <Button iconName={'keyboard_arrow_left'} onClick={shiftLeft}/>) : null
+        const rightBtn = month === lastMonth ? (position='flex-end', <Button iconName={'keyboard_arrow_right'} onClick={shiftRight}/>) : null
 
         return <MonthCell daysInCurrentMonth={daysInCurrentMonth}
                           leftBtn={leftBtn}

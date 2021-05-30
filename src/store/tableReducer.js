@@ -1,49 +1,48 @@
-import {addDays, eachDayOfInterval} from 'date-fns'
+import {addDays, subDays} from 'date-fns'
 
 const SHIFT_LEFT = 'SHIFT_LEFT'
 const SHIFT_RIGHT = 'SHIFT_RIGHT'
 const SHIFT_NOW = 'SHIFT_NOW'
 const SHIFT_FROM = 'SHIFT_FROM'
-// const DISPLAY_FROM = 'DISPLAY_FROM'
 
-let from = new Date()
-let to = addDays(from, 29)
-let days = eachDayOfInterval({start: from, end: to})
+const from = new Date()
+const to = addDays(from, 29)
 
-let initialState ={
+const initialState ={
     daysInTable: 29,
-    from,
-    days,
+    interval: {start: from, end: to}
 }
 
 function tableReducer(state=initialState, action){
     switch (action.type) {
         case SHIFT_LEFT: {
+            const start = addDays(state.interval.start, 1)
+            const end = addDays(state.interval.end, 1)
             return {
                 ...state,
-                from: action.firstDay,
-                days: [action.firstDay,...state.days.slice(0, -1)]
+                interval: {start, end},
             }
         }
         case SHIFT_RIGHT: {
+            const start = subDays(state.interval.start, 1)
+            const end = subDays(state.interval.end, 1)
             return {
                 ...state,
-                from: addDays(state.from, 1),
-                days: [...state.days.slice(1), action.lastDay],
+                interval: {start, end},
             }
         }
         case SHIFT_NOW: {
             return {
                 ...state,
-                from: new Date(),
-                days: [...initialState.days],
+                interval: {start: from, end: to}
             }
         }
         case SHIFT_FROM: {
+            const start = action.from
+            const end = addDays(start, state.daysInTable)
             return {
                 ...state,
-                from: action.from,
-                days: eachDayOfInterval({start: action.from, end: addDays(action.from, state.daysInTable)}),
+                interval: {start, end}
             }
         }
     
@@ -51,10 +50,9 @@ function tableReducer(state=initialState, action){
     }
 }
 
-const shiftDateIntervalLeft = (firstDay) => ({type: SHIFT_LEFT, firstDay: firstDay})
-const shiftDateIntervalRight = (lastDay) => ({type: SHIFT_RIGHT, lastDay: lastDay})
+const shiftDateIntervalLeft = () => ({type: SHIFT_LEFT})
+const shiftDateIntervalRight = () => ({type: SHIFT_RIGHT})
 const shiftDateIntervalFrom = (FromDay) => ({type: SHIFT_FROM, from: FromDay})
-// const DateIntervalDisplayFrom = () => ({type: DISPLAY_FROM})
 const shiftDateIntervalNow = () => ({type: SHIFT_NOW})
 
 export {tableReducer, shiftDateIntervalLeft, shiftDateIntervalRight, shiftDateIntervalFrom, shiftDateIntervalNow}
