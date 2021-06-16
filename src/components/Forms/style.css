@@ -1,0 +1,9 @@
+input[type="number"] {
+    border-radius: 3px;
+    border: 1px solid lightgrey;
+    border-left: cornflowerblue 4px solid;
+    height: 1.5rem;
+    font-size: 1.1em;
+    margin: 1em;
+    text-align: center;
+}

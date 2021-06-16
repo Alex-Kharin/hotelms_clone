@@ -1,7 +1,10 @@
 import React from 'react'
 import style from './Header.module.css'
 import {MenuItem} from './MenuItem'
+import {TableSettingsForm} from '../Forms/TableSettingsForm'
+import {withModal} from '../Modal/withModal'
 
+const TableSettingsMenuItem = withModal(MenuItem)
 
 export function Header(props) {
     return (
@@ -10,13 +13,16 @@ export function Header(props) {
             <div className={style.leftSideMenu}>
                 <span className={['material-icons', style.md36].join(' ')}>hotel</span>
 
-                <MenuItem iconName={'settings'} onClick={()=>alert('pizda')}>Настройки</MenuItem>
-                <MenuItem iconName={'grid_on'}>Сетка</MenuItem>
+                <TableSettingsMenuItem iconName={'grid_on'} menuItemTitle={'Сетка'}>
+                    <TableSettingsForm daysInTable={props.daysInTable} changeDaysInTable={props.changeDaysInTable}/>
+                </TableSettingsMenuItem>
+
+                <MenuItem iconName={'settings'} menuItemTitle={'Настройки'} />
                 <MenuItem iconName={'format_list_bulleted'}>Отчеты</MenuItem>
             </div>
 
             <div className={style.rightSideMenu}>
-                <MenuItem iconName={'account_box'}></MenuItem>
+                <MenuItem iconName={'account_box'} />
             </div>
 
         </header>

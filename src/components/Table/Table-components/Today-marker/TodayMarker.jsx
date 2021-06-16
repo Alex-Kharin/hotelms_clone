@@ -14,10 +14,10 @@ const Circle = styled.div`
 
 const VerticalLine = styled.div`
   position: absolute;
-  height: 74vh;
+  height: 72vh;
   border-left: 2px solid crimson;
   top: 0;
-  right: 45%;
+  right: 47%;
   z-index: 500;
 `
 

@@ -22,8 +22,8 @@ function toMonths(interval, months, shiftLeft, shiftRight) {
         const lastMonth = months[months.length - 1]
         let position = ''
 
-        const leftBtn = month === firstMonth ? (position='flex-start', <Button iconName={'keyboard_arrow_left'} onClick={shiftLeft}/>) : null
-        const rightBtn = month === lastMonth ? (position='flex-end', <Button iconName={'keyboard_arrow_right'} onClick={shiftRight}/>) : null
+        const leftBtn = month === firstMonth ? (position='flex-start', <Button iconName={'keyboard_arrow_left'} onClick={shiftLeft} isFlex/>) : null
+        const rightBtn = month === lastMonth ? (position='flex-end', <Button iconName={'keyboard_arrow_right'} onClick={shiftRight} isFlex/>) : null
 
         return <MonthCell daysInCurrentMonth={daysInCurrentMonth}
                           leftBtn={leftBtn}
