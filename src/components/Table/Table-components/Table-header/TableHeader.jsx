@@ -1,19 +1,17 @@
 import React from 'react'
 import {TableCell} from '../Table-cell/TableCell'
-import {eachDayOfInterval, eachMonthOfInterval, isToday, isWeekend} from 'date-fns'
+import {eachMonthOfInterval, isToday, isWeekend} from 'date-fns'
 import {TableRow} from '../Table-row/TableRow'
 import {dayOfMonth, dayOfWeek, toMonths} from '../../utils/utils'
 import {FirstHeaderCell} from '../Table-cell/FirstHeaderCell'
 
 
-export function TableHeader(props) {
-    const interval = props.table.interval
+export function TableHeader({interval, days, ...props}) {
     const shiftLeft = props.shiftDateIntervalLeft
     const shiftRight = props.shiftDateIntervalRight
     const shiftNow = props.shiftDateIntervalNow
     const shiftFrom = props.shiftDateIntervalFrom
 
-    const days = eachDayOfInterval(interval)
     const months = eachMonthOfInterval(interval)
 
     const headerDaysCells = days.map(day =>

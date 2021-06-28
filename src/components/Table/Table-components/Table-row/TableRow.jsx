@@ -2,13 +2,21 @@ import React from 'react'
 
 
 
-export function TableRow(props) {
-    const firstCell = props.rowTitle ? <div>{props.rowTitle}</div> : null
-   
+export function TableRow({rowTitle, rowCells}) {
+    let firstCell
+
+    if (rowTitle) {
+        if (typeof rowTitle === 'object') {
+            firstCell = rowTitle
+        } else {
+            firstCell = <div>{rowTitle}</div>
+        }
+    }
+
     return (
         <>
             {firstCell}
-            {props.rowCells}
+            {rowCells}
         </>
     
     )

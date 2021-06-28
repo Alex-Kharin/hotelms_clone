@@ -6,11 +6,14 @@ import {
     shiftDateIntervalNow,
     shiftDateIntervalRight
 } from '../../store/tableReducer'
+import {eachDayOfInterval} from 'date-fns'
 
 
 function mapStateToProps(state) {
     return {
         table: state.table,
+        tableBody: state.tableApartments,
+        days: eachDayOfInterval(state.table.interval)
     }
 }
 
