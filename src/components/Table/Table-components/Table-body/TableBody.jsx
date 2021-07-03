@@ -1,5 +1,5 @@
 import React from 'react'
-import {isWeekend} from 'date-fns'
+import {format, isEqual, isToday, isWeekend} from 'date-fns'
 import {TableCell} from '../Table-cell/TableCell'
 import {dayOfMonth} from '../../utils/utils'
 import {TableRow} from '../Table-row/TableRow'
@@ -15,28 +15,39 @@ const Cell = styled.div`
   padding-left: ${props => props.position ? '1em' : null};
 `
 
-function ApartmentsRowsByNumbers({days, apartmentsByType}) {
+function ApartmentsRowsByNumbers({days, apartmentsByType, rentDay, selectedDay, idx}) {
 
-    const bodyDaysCells = days.map(day =>
+    const bodyDaysCells = (id, days) => days.map(day =>
         <TableCell
             bottomString={dayOfMonth(day)}
             isWeekend={isWeekend(day)}
             date={day}
             key={day}
+            isRent={isEqual(day, rentDay)}
+            apartmentId={id}
+            isSelect={selectedDay.includes(format(day, 'dd-MM-yyyy')) && id === idx}
         />)
 
-    const apartmentNumbersCells = apartmentsByType.map(apartment =>
-        <Cell position={'flex-start'} weight={500} key={apartment.apartmentsNumber}>{apartment.apartmentsNumber}</Cell>)
+    const rows = Object.keys(apartmentsByType).map(apartmentId => {
+        return (
+            <>
+                <Cell position={'flex-start'} weight={500} key={apartmentsByType[apartmentId].apartmentsNumber}>{apartmentsByType[apartmentId].apartmentsNumber}</Cell>
+                {bodyDaysCells(apartmentId, days)}
+            </>)
+    })
 
-    return (
-        <>
-            {apartmentNumbersCells.map(apartmentNumber =>
-                <TableRow rowTitle={apartmentNumber} rowCells={bodyDaysCells} key={apartmentNumber.key + 'uid'}/>)}
-        </>
+    // const apartmentNumbersCells = Object.values(apartmentsByType).map(apartment =>
+    //     <Cell position={'flex-start'} weight={500} key={apartment.apartmentsNumber}>{apartment.apartmentsNumber}</Cell>)
+
+    return ( <>{rows}</>
+        // <>
+        //     {apartmentNumbersCells.map(apartmentNumber =>
+        //         <TableRow rowTitle={apartmentNumber} rowCells={bodyDaysCells} key={apartmentNumber.key + 'uid'}/>)}
+        // </>
     )
 }
 
-export function TableBody({days, apartments}) {
+export function TableBody({days, apartments, rentDay, isSelect, selectedDay, idx}) {
 
     const freeApartmentsCells = days.map(day => {
         return <Cell isWeekend={isWeekend(day)} weight={800} key={day}> 0 </Cell>
@@ -47,7 +58,14 @@ export function TableBody({days, apartments}) {
             {Object.keys(apartments).map(key =>
                 <React.Fragment key={key}>
                     <TableRow rowCells={freeApartmentsCells} rowTitle={<Cell>{key}</Cell>} />
-                    <ApartmentsRowsByNumbers days={days} apartmentsByType={apartments[key]} />
+                    <ApartmentsRowsByNumbers
+                        days={days}
+                        apartmentsByType={apartments[key]}
+                        rentDay={rentDay}
+                        isSelect={isSelect}
+                        selectedDay={selectedDay}
+                        idx={idx}
+                    />
                 </React.Fragment>)}
         </>
     )
