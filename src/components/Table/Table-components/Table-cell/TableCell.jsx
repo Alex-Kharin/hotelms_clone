@@ -2,20 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import {TodayMarker} from '../Today-marker/TodayMarker'
 import {Rent} from '../../Rent/Rent'
-import {format} from 'date-fns'
-import {ru} from 'date-fns/locale'
 
-const CellWrapper = styled.div.attrs(props => ({'data-date':props.date ? format(props.date, 'dd-MM-yyyy', {locale:ru}) : '', 'data-apartmentId': props.apartmentId}))`
+
+const CellWrapper = styled.div.attrs(props => ({'data-date':props.date , 'data-apartmentId': props.apartmentId}))`
   border: 1px solid black;
   text-align: center;
-  background-color: ${props => props.isSelect ? 'red' : props.isWeekend ? 'lightblue' : 'inherit'};
+  background-color: ${props => props.isSelect ? '#e2c50a' : props.isWeekend ? 'lightblue' : 'inherit'};
   position: relative;
   user-select: none;
-  
-  :active {
-    background-color: red;
+
+  :active{
     cursor: cell;
   }
+
 `
 
 const TopString = styled.span`
@@ -26,7 +25,6 @@ const TopString = styled.span`
 const BottomString = styled.span`
   color: gray;
   font-weight: ${props => props.bottomStringFontWeight || 'bold'};
-  user-select: none;
 `
 
 export function TableCell(props) {

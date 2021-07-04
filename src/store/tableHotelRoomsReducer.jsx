@@ -2,8 +2,11 @@ import {convertObjectWithArraysToObjectWithObjects} from '../commonUtils/commonU
 
 
 const IS_SELECT = 'IS_SELECT'
-const SELECTED_DAY = 'SELECTED_DAY'
+const START_SELECTION_INTERVAL = 'START_SELECTION_INTERVAL'
+const END_SELECTION_INTERVAL = 'END_SELECTION_INTERVAL'
 const CLEAR_SELECTED_DAYS = 'CLEAR_SELECTED_DAYS'
+const APARTMENT_ID = 'APARTMENT_ID'
+
 
 
 const initialState ={
@@ -146,7 +149,8 @@ const initialState ={
         ],
     },
     isSelect: false,
-    selectedDay: [],
+    selectInterval: {start: null, end: null},
+    apartmentId: null,
     cellWidth: null,
     cellHeight: null,
 }
@@ -161,16 +165,28 @@ function tableHotelRoomsReducer(state=initialState, action){
                 isSelect: action.isSelect
             }
         }
-        case SELECTED_DAY: {
+        case START_SELECTION_INTERVAL: {
             return {
                 ...state,
-                selectedDay: [...state.selectedDay, action.selectedDay]
+                selectInterval: {start: action.startSelection, end: action.startSelection}
+            }
+        }
+        case END_SELECTION_INTERVAL: {
+            return {
+                ...state,
+                selectInterval: {...state.selectInterval, end: action.endSelection}
+            }
+        }
+        case APARTMENT_ID: {
+            return {
+                ...state,
+                apartmentId: action.apartmentId,
             }
         }
         case CLEAR_SELECTED_DAYS: {
             return {
                 ...state,
-                selectedDay: [],
+                selectInterval: {},
             }
         }
 
@@ -178,11 +194,13 @@ function tableHotelRoomsReducer(state=initialState, action){
     }
 }
 
-const isSelectCells = (isSelect) => ({type: IS_SELECT, isSelect})
-const selectedDayAC = (selectedDay) => ({type: SELECTED_DAY, selectedDay})
+const setSelecting = (isSelect) => ({type: IS_SELECT, isSelect})
+const setStartSelection = (startSelection) => ({type: START_SELECTION_INTERVAL, startSelection})
+const setEndSelection = (endSelection) => ({type: END_SELECTION_INTERVAL, endSelection})
+const setApartmentId = (apartmentId) => ({type: APARTMENT_ID, apartmentId})
 const clearSelectedDays = () => ({type: CLEAR_SELECTED_DAYS})
 
-export {tableHotelRoomsReducer, isSelectCells, selectedDayAC, clearSelectedDays, }
+export {tableHotelRoomsReducer, setSelecting, setStartSelection, setEndSelection, setApartmentId, clearSelectedDays, }
 
 
 

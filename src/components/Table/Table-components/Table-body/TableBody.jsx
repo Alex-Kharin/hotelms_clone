@@ -1,5 +1,5 @@
 import React from 'react'
-import {format, isEqual, isToday, isWeekend} from 'date-fns'
+import {isBefore, isEqual, isWeekend, isWithinInterval} from 'date-fns'
 import {TableCell} from '../Table-cell/TableCell'
 import {dayOfMonth} from '../../utils/utils'
 import {TableRow} from '../Table-row/TableRow'
@@ -15,7 +15,11 @@ const Cell = styled.div`
   padding-left: ${props => props.position ? '1em' : null};
 `
 
-function ApartmentsRowsByNumbers({days, apartmentsByType, rentDay, selectedDay, idx}) {
+function ApartmentsRowsByNumbers({days, apartmentsByType, rentDay, apartmentIdForSelect, selectInterval}) {
+
+    const correctSelectInterval = isBefore(selectInterval.end, selectInterval.start)
+        ? {start: selectInterval.end, end: selectInterval.start}
+        : selectInterval
 
     const bodyDaysCells = (id, days) => days.map(day =>
         <TableCell
@@ -25,7 +29,11 @@ function ApartmentsRowsByNumbers({days, apartmentsByType, rentDay, selectedDay, 
             key={day}
             isRent={isEqual(day, rentDay)}
             apartmentId={id}
-            isSelect={selectedDay.includes(format(day, 'dd-MM-yyyy')) && id === idx}
+            isSelect={
+                correctSelectInterval.start
+                ? isWithinInterval(day, correctSelectInterval) && apartmentIdForSelect === id
+                : false
+            }
         />)
 
     const rows = Object.keys(apartmentsByType).map(apartmentId => {
@@ -36,18 +44,10 @@ function ApartmentsRowsByNumbers({days, apartmentsByType, rentDay, selectedDay, 
             </>)
     })
 
-    // const apartmentNumbersCells = Object.values(apartmentsByType).map(apartment =>
-    //     <Cell position={'flex-start'} weight={500} key={apartment.apartmentsNumber}>{apartment.apartmentsNumber}</Cell>)
-
-    return ( <>{rows}</>
-        // <>
-        //     {apartmentNumbersCells.map(apartmentNumber =>
-        //         <TableRow rowTitle={apartmentNumber} rowCells={bodyDaysCells} key={apartmentNumber.key + 'uid'}/>)}
-        // </>
-    )
+    return <>{rows}</>
 }
 
-export function TableBody({days, apartments, rentDay, isSelect, selectedDay, idx}) {
+export function TableBody({days, apartments, rentDay, isSelect, selectedDay, selectInterval, apartmentId}) {
 
     const freeApartmentsCells = days.map(day => {
         return <Cell isWeekend={isWeekend(day)} weight={800} key={day}> 0 </Cell>
@@ -64,7 +64,8 @@ export function TableBody({days, apartments, rentDay, isSelect, selectedDay, idx
                         rentDay={rentDay}
                         isSelect={isSelect}
                         selectedDay={selectedDay}
-                        idx={idx}
+                        apartmentIdForSelect={apartmentId}
+                        selectInterval={selectInterval}
                     />
                 </React.Fragment>)}
         </>

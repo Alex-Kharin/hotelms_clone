@@ -4,20 +4,25 @@ import {
     shiftDateIntervalFrom,
     shiftDateIntervalLeft,
     shiftDateIntervalNow,
-    shiftDateIntervalRight
+    shiftDateIntervalRight,
 } from '../../store/tableReducer'
 import {eachDayOfInterval} from 'date-fns'
-import {clearSelectedDays, isSelectCells, selectedDayAC} from '../../store/tableHotelRoomsReducer'
+import {
+    clearSelectedDays, setApartmentId,
+    setEndSelection,
+    setSelecting,
+    setStartSelection,
+} from '../../store/tableHotelRoomsReducer'
 
 
 function mapStateToProps(state) {
     return {
         table: state.table,
-        // tableBody: state.tableApartments,
         days: eachDayOfInterval(state.table.interval),
         apartments: state.tableApartments.apartments,
         isSelect: state.tableApartments.isSelect,
-        selectedDay: state.tableApartments.selectedDay,
+        selectInterval: state.tableApartments.selectInterval,
+        apartmentId: state.tableApartments.apartmentId,
     }
 }
 
@@ -26,8 +31,10 @@ const mapDispatchToProps = {
     shiftDateIntervalRight,
     shiftDateIntervalFrom,
     shiftDateIntervalNow,
-    isSelectCells,
-    selectedDayAC,
+    setSelecting,
+    setStartSelection,
+    setEndSelection,
+    setApartmentId,
     clearSelectedDays,
 }
 
