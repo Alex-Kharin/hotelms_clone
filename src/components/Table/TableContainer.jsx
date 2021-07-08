@@ -8,10 +8,17 @@ import {
 } from '../../store/tableReducer'
 import {eachDayOfInterval} from 'date-fns'
 import {
-    clearSelectedDays, setApartmentId,
+    clearSelectedDays,
+    setApartmentId,
+    setCellDimensions,
     setEndSelection,
+    setRentInterval,
     setSelecting,
     setStartSelection,
+    leftSideShiftLeftViewRentInterval,
+    leftSideShiftRightViewRentInterval,
+    rightSideShiftLeftViewRentInterval,
+    rightSideShiftRightViewRentInterval,
 } from '../../store/tableHotelRoomsReducer'
 
 
@@ -23,6 +30,8 @@ function mapStateToProps(state) {
         isSelect: state.tableApartments.isSelect,
         selectInterval: state.tableApartments.selectInterval,
         apartmentId: state.tableApartments.apartmentId,
+        cellDimensions: state.tableApartments.cellDimensions,
+        viewRentIntervals:state.tableApartments.viewRentIntervals
     }
 }
 
@@ -36,6 +45,13 @@ const mapDispatchToProps = {
     setEndSelection,
     setApartmentId,
     clearSelectedDays,
+    setCellDimensions,
+    setRentInterval,
+    leftSideShiftLeftViewRentInterval,
+    leftSideShiftRightViewRentInterval,
+    rightSideShiftLeftViewRentInterval,
+    rightSideShiftRightViewRentInterval,
+
 }
 
 

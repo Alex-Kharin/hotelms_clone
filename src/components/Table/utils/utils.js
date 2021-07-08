@@ -1,4 +1,4 @@
-import {differenceInCalendarDays, endOfMonth, format, isAfter, startOfMonth} from 'date-fns'
+import {differenceInCalendarDays, endOfMonth, format, isAfter, isBefore, isWithinInterval, startOfMonth} from 'date-fns'
 import {ru} from 'date-fns/locale'
 import {Button} from '../../Button/Button'
 import React from 'react'
@@ -36,4 +36,16 @@ function toMonths(interval, months, shiftLeft, shiftRight) {
     }
 }
 
-export {dayOfMonth, dayOfWeek, monthName, yearOfDate, now, toMonths}
+function adjustsInterval(interval) {
+    return isBefore(interval.end, interval.start)
+        ? {start: interval.end, end: interval.start}
+        : interval
+}
+
+function isSelectInterval(interval, day, apartmentIdForSelect, currentId) {
+    return interval.start
+        ? isWithinInterval(day, interval) && apartmentIdForSelect === currentId
+        : false
+}
+
+export {dayOfMonth, dayOfWeek, monthName, yearOfDate, now, toMonths, adjustsInterval, isSelectInterval}
