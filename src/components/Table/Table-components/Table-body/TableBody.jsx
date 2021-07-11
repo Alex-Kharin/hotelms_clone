@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {isBefore, isEqual, isSameDay, isWeekend} from 'date-fns'
+import {areIntervalsOverlapping, isBefore, isSameDay, isWeekend, isWithinInterval} from 'date-fns'
 import {TableCell} from '../Table-cell/TableCell'
 import {adjustsInterval, dayOfMonth, isSelectInterval} from '../../utils/utils'
 import {TableRow} from '../Table-row/TableRow'
@@ -30,22 +30,39 @@ function ApartmentsRowsByNumbers({
                                      rightSideShiftRightViewRentInterval,
                                  }) {
     useEffect(() => {
-        if (isBefore(viewRentIntervals[1]?.start, days[0])) {
-            leftSideShiftLeftViewRentInterval(1)
-        }
-        if (!isSameDay(viewRentIntervals[1]?.start, apartmentsByType[1].rentInterval?.start) && isBefore(days[0], viewRentIntervals[1]?.start)) {
-            leftSideShiftRightViewRentInterval(1)
-        }
-        if (isBefore(days[days.length-1], viewRentIntervals[1]?.end)) {
-            rightSideShiftLeftViewRentInterval(1)
-        }
-        if (!isSameDay(viewRentIntervals[1]?.end, apartmentsByType[1].rentInterval?.end) && isBefore(viewRentIntervals[1]?.end, days[days.length-1])) {
-            rightSideShiftRightViewRentInterval(1)
-        }
-        if (isSameDay(viewRentIntervals[1]?.start, viewRentIntervals[1]?.end)) return
+        Object.keys(viewRentIntervals).forEach(id => {
+            if (id in apartmentsByType) {
+                for (let i = 0; i < viewRentIntervals[id]?.length; i++) {
+                    if (!isSameDay(viewRentIntervals[id][i]?.start, viewRentIntervals[id][i]?.end) && isBefore(viewRentIntervals[id][i]?.start, days[0])) {
+                        leftSideShiftLeftViewRentInterval(id, i)
+                    }
+                    if (!isSameDay(viewRentIntervals[id][i]?.start, apartmentsByType[id].rentInterval[i]?.start) && isBefore(days[0], viewRentIntervals[id][i]?.start)) {
+                        leftSideShiftRightViewRentInterval(id, i)
+                    }
+                    if (isBefore(days[days.length - 1], viewRentIntervals[id][i]?.end)) {
+                        rightSideShiftLeftViewRentInterval(id, i)
+                    }
+                    if (!isSameDay(viewRentIntervals[id][i]?.end, apartmentsByType[id].rentInterval[i]?.end) && isBefore(viewRentIntervals[id][i]?.end, days[days.length - 1])) {
+                        rightSideShiftRightViewRentInterval(id, i)
+                    }
+                }
+            }
+        })
     }, [days])
 
     const correctSelectInterval = adjustsInterval(selectInterval)
+    let index = null
+
+
+    function isRentBlya(array, day) {
+        for (let i=0; i<array?.length; i++) {
+            if (isSameDay(day, array[i].start) && !isSameDay(array[i].start, array[i].end)) {
+                index = i
+                return array[i]
+            } else continue
+        }
+    }
+
 
     function bodyDaysCells(id, apartmentsType, days) {
         return days.map(day => {
@@ -54,14 +71,16 @@ function ApartmentsRowsByNumbers({
                 isWeekend={isWeekend(day)}
                 date={day}
                 key={day}
-                isRent={isEqual(day, viewRentIntervals[id]?.start)}
+                // isRent={isEqual(day, viewRentIntervals[id]?.start)}
+                isRent={isRentBlya(viewRentIntervals[id], day)}
+                // isRent={viewRentIntervals[id]?.some(interval => isEqual(day, interval.start))}
                 apartmentId={id}
                 apartmentsType={apartmentsType}
                 cellDimensions={cellDimensions}
-                viewRentIntervals={viewRentIntervals}
+                // viewRentIntervals={viewRentIntervals}
                 isSelect={isSelectInterval(correctSelectInterval, day, apartmentIdForSelect, id)}
-                isLeftArrow={isBefore(apartmentsByType[1].rentInterval.start, viewRentIntervals[1]?.start)}
-                isRightArrow={isBefore(viewRentIntervals[1]?.end, apartmentsByType[1].rentInterval.end)}
+                isLeftArrow={index !== null && viewRentIntervals[id] && isBefore(apartmentsByType[id]?.rentInterval[index]?.start, viewRentIntervals[id][index]?.start)}
+                isRightArrow={index !== null && viewRentIntervals[id] && isBefore(viewRentIntervals[id][index]?.end, apartmentsByType[id]?.rentInterval[index]?.end)}
             />
         })
     }
@@ -83,7 +102,6 @@ function ApartmentsRowsByNumbers({
 export function TableBody({
                               days,
                               apartments,
-                              rentDay,
                               isSelect,
                               selectedDay,
                               selectInterval,
@@ -96,20 +114,28 @@ export function TableBody({
                               rightSideShiftRightViewRentInterval,
                           }) {
 
-    const freeApartmentsCells = days.map(day => {
-        return <Cell isWeekend={isWeekend(day)} weight={800} key={day}> 0 </Cell>
+    const freeApartmentsCells = (apartmentsByType) => days.map(day => {
+        let freeApartments = Object.keys(apartmentsByType).length
+        Object.values(apartmentsByType).forEach(apartment => {
+            if (apartment.rentInterval.some((interval, i, a) => areIntervalsOverlapping({start: day, end: day}, interval, {inclusive: false}) ||
+                (isSameDay(day, interval.end) && apartment.rentInterval.some(int => isSameDay(day, int.start)))
+            )) {
+                freeApartments--
+            }
+
+        })
+        return <Cell isWeekend={isWeekend(day)} weight={800} key={day}> {freeApartments} </Cell>
     })
 
     return (
         <>
             {Object.keys(apartments).map(key =>
                 <React.Fragment key={key}>
-                    <TableRow rowCells={freeApartmentsCells} rowTitle={<Cell>{key}</Cell>}/>
+                    <TableRow rowCells={freeApartmentsCells(apartments[key])} rowTitle={<Cell>{key}</Cell>}/>
                     <ApartmentsRowsByNumbers
                         days={days}
                         apartmentsByType={apartments[key]}
                         apartmentsType={key}
-                        rentDay={rentDay}
                         isSelect={isSelect}
                         selectedDay={selectedDay}
                         apartmentIdForSelect={apartmentId}

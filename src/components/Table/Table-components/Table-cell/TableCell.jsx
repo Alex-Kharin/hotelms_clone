@@ -41,7 +41,7 @@ export function TableCell(props) {
             apartmentsType={props.apartmentsType}
         >
             {props.isToday && <TodayMarker/>}
-            {props.isRent && <Rent cellDimensions={props.cellDimensions} viewRentIntervals={props.viewRentIntervals}
+            {props.isRent && <Rent cellDimensions={props.cellDimensions} viewRentInterval={props.isRent}
                                    isLeftArrow={props.isLeftArrow} isRightArrow={props.isRightArrow}>Ivanov Ivan</Rent>}
             {topString}
             <br/>
