@@ -22,8 +22,10 @@ function toMonths(interval, months, shiftLeft, shiftRight) {
         const lastMonth = months[months.length - 1]
         let position = ''
 
-        const leftBtn = month === firstMonth ? (position='flex-start', <Button iconName={'keyboard_arrow_left'} onClick={shiftLeft} isFlex/>) : null
-        const rightBtn = month === lastMonth ? (position='flex-end', <Button iconName={'keyboard_arrow_right'} onClick={shiftRight} isFlex/>) : null
+        const leftBtn = month === firstMonth ? (position = 'flex-start', <Button iconName={'keyboard_arrow_left'}
+                                                                                 onClick={shiftLeft} isFlex/>) : null
+        const rightBtn = month === lastMonth ? (position = 'flex-end', <Button iconName={'keyboard_arrow_right'}
+                                                                               onClick={shiftRight} isFlex/>) : null
 
         return <MonthCell daysInCurrentMonth={daysInCurrentMonth}
                           leftBtn={leftBtn}
@@ -48,4 +50,28 @@ function isSelectInterval(interval, day, apartmentIdForSelect, currentId) {
         : false
 }
 
-export {dayOfMonth, dayOfWeek, monthName, yearOfDate, now, toMonths, adjustsInterval, isSelectInterval}
+function shifterViewedRentIntervals(state, action, rangeBorder, shiftFunction) {
+    let day = state.viewRentIntervals[action.apartmentId][action.index][rangeBorder]
+    day = shiftFunction(day, 1)
+
+    state = {...state}
+    state.viewRentIntervals = {...state.viewRentIntervals}
+    state.viewRentIntervals[action.apartmentId] = [...state.viewRentIntervals[action.apartmentId]]
+    state.viewRentIntervals[action.apartmentId][action.index] = {
+        ...state.viewRentIntervals[action.apartmentId][action.index],
+        [rangeBorder]: day
+    }
+    return state
+}
+
+export {
+    dayOfMonth,
+    dayOfWeek,
+    monthName,
+    yearOfDate,
+    now,
+    toMonths,
+    adjustsInterval,
+    isSelectInterval,
+    shifterViewedRentIntervals
+}

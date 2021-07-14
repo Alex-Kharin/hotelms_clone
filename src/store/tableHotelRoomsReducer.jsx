@@ -1,5 +1,6 @@
 import {convertObjectWithArraysToObjectWithObjects} from '../commonUtils/commonUtils'
 import {addDays, areIntervalsOverlapping, subDays} from 'date-fns'
+import {shifterViewedRentIntervals} from '../components/Table/utils/utils'
 
 
 const IS_SELECT = 'IS_SELECT'
@@ -149,20 +150,6 @@ const initialState = {
 
 initialState.apartments = convertObjectWithArraysToObjectWithObjects('id', initialState.apartments)
 
-function shifterViewedRentIntervals(state, action, rangeBorder, shiftFunction) {
-    let day = state.viewRentIntervals[action.apartmentId][action.index][rangeBorder]
-    day = shiftFunction(day, 1)
-
-    state = {...state}
-    state.viewRentIntervals = {...state.viewRentIntervals}
-    state.viewRentIntervals[action.apartmentId] = [...state.viewRentIntervals[action.apartmentId]]
-    state.viewRentIntervals[action.apartmentId][action.index] = {
-        ...state.viewRentIntervals[action.apartmentId][action.index],
-        [rangeBorder]: day
-    }
-    return state
-}
-
 function tableHotelRoomsReducer(state = initialState, action) {
     switch (action.type) {
         case IS_SELECT: {
@@ -224,59 +211,15 @@ function tableHotelRoomsReducer(state = initialState, action) {
             }
         }
         case LEFT_SIDE_SHIFT_LEFT_VIEW_RENT_INTERVAL: {
-            // let start = state.viewRentIntervals[action.apartmentId][action.index].start
-            // start = addDays(start, 1)
-            //
-            // state = {...state}
-            // state.viewRentIntervals = {...state.viewRentIntervals}
-            // state.viewRentIntervals[action.apartmentId] = [...state.viewRentIntervals[action.apartmentId]]
-            // state.viewRentIntervals[action.apartmentId][action.index] = {
-            //     ...state.viewRentIntervals[action.apartmentId][action.index],
-            //     start
-            // }
-            // return state
             return shifterViewedRentIntervals(state, action, 'start', addDays)
         }
         case LEFT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL: {
-            // let start = state.viewRentIntervals[action.apartmentId][action.index].start
-            // start = subDays(start, 1)
-            //
-            // state = {...state}
-            // state.viewRentIntervals = {...state.viewRentIntervals}
-            // state.viewRentIntervals[action.apartmentId] = [...state.viewRentIntervals[action.apartmentId]]
-            // state.viewRentIntervals[action.apartmentId][action.index] = {
-            //     ...state.viewRentIntervals[action.apartmentId][action.index],
-            //     start
-            // }
-            // return state
             return shifterViewedRentIntervals(state, action, 'start', subDays)
         }
         case RIGHT_SIDE_SHIFT_LEFT_VIEW_RENT_INTERVAL: {
-            // let end = state.viewRentIntervals[action.apartmentId][action.index].end
-            // end = subDays(end, 1)
-            //
-            // state = {...state}
-            // state.viewRentIntervals = {...state.viewRentIntervals}
-            // state.viewRentIntervals[action.apartmentId] = [...state.viewRentIntervals[action.apartmentId]]
-            // state.viewRentIntervals[action.apartmentId][action.index] = {
-            //     ...state.viewRentIntervals[action.apartmentId][action.index],
-            //     end
-            // }
-            // return state
             return shifterViewedRentIntervals(state, action, 'end', subDays)
         }
         case RIGHT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL: {
-            // let end = state.viewRentIntervals[action.apartmentId][action.index].end
-            // end = addDays(end, 1)
-            //
-            // state = {...state}
-            // state.viewRentIntervals = {...state.viewRentIntervals}
-            // state.viewRentIntervals[action.apartmentId] = [...state.viewRentIntervals[action.apartmentId]]
-            // state.viewRentIntervals[action.apartmentId][action.index] = {
-            //     ...state.viewRentIntervals[action.apartmentId][action.index],
-            //     end
-            // }
-            // return state
             return shifterViewedRentIntervals(state, action, 'end', addDays)
         }
 
