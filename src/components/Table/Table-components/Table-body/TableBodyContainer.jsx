@@ -5,6 +5,7 @@ import {
     leftSideShiftLeftViewRentInterval,
     leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval, rightSideShiftRightViewRentInterval
 } from '../../../../store/tableHotelRoomsReducer'
+import {getApartments, getCellDimensions, getViewRentIntervals} from '../../../../store/tableBodyContainerSelectors'
 
 
 function mapStateToProps(state, ownProps) {
@@ -12,9 +13,9 @@ function mapStateToProps(state, ownProps) {
         days: ownProps.days,
         selectInterval: ownProps.selectInterval,
         apartmentId: ownProps.apartmentId,
-        apartments: state.tableApartments.apartments,
-        cellDimensions: state.tableApartments.cellDimensions,
-        viewRentIntervals:state.tableApartments.viewRentIntervals
+        apartments: getApartments(state),
+        cellDimensions: getCellDimensions(state),
+        viewRentIntervals: getViewRentIntervals(state),
     }
 }
 

@@ -6,7 +6,6 @@ import {
     shiftDateIntervalNow,
     shiftDateIntervalRight,
 } from '../../store/tableReducer'
-import {eachDayOfInterval} from 'date-fns'
 import {
     clearSelectedDays,
     setApartmentId,
@@ -16,17 +15,25 @@ import {
     setSelecting,
     setStartSelection,
 } from '../../store/tableHotelRoomsReducer'
-import {adjustsInterval} from './utils/utils'
+import {
+    getApartmentId,
+    getDaysInTable,
+    getInterval,
+    getIsSelect,
+    getSelectInterval
+} from '../../store/tableContainerSelectors'
+import {eachDayOfInterval} from 'date-fns'
 
 
 function mapStateToProps(state) {
     return {
-        interval: state.table.interval,
-        daysInTable: state.table.daysInTable,
+        interval: getInterval(state),
+        daysInTable: getDaysInTable(state),
+        // days: getDays(state), // WTF Bro?
         days: eachDayOfInterval(state.table.interval),
-        isSelect: state.tableApartments.isSelect,
-        selectInterval: adjustsInterval(state.tableApartments.selectInterval),
-        apartmentId: state.tableApartments.apartmentId,
+        isSelect: getIsSelect(state),
+        selectInterval: getSelectInterval(state),
+        apartmentId: getApartmentId(state),
     }
 }
 
