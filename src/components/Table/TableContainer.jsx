@@ -15,23 +15,18 @@ import {
     setRentInterval,
     setSelecting,
     setStartSelection,
-    leftSideShiftLeftViewRentInterval,
-    leftSideShiftRightViewRentInterval,
-    rightSideShiftLeftViewRentInterval,
-    rightSideShiftRightViewRentInterval,
 } from '../../store/tableHotelRoomsReducer'
+import {adjustsInterval} from './utils/utils'
 
 
 function mapStateToProps(state) {
     return {
-        table: state.table,
+        interval: state.table.interval,
+        daysInTable: state.table.daysInTable,
         days: eachDayOfInterval(state.table.interval),
-        apartments: state.tableApartments.apartments,
         isSelect: state.tableApartments.isSelect,
-        selectInterval: state.tableApartments.selectInterval,
+        selectInterval: adjustsInterval(state.tableApartments.selectInterval),
         apartmentId: state.tableApartments.apartmentId,
-        cellDimensions: state.tableApartments.cellDimensions,
-        viewRentIntervals:state.tableApartments.viewRentIntervals
     }
 }
 
@@ -47,10 +42,6 @@ const mapDispatchToProps = {
     clearSelectedDays,
     setCellDimensions,
     setRentInterval,
-    leftSideShiftLeftViewRentInterval,
-    leftSideShiftRightViewRentInterval,
-    rightSideShiftLeftViewRentInterval,
-    rightSideShiftRightViewRentInterval,
 
 }
 

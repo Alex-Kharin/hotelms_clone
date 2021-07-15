@@ -37,7 +37,6 @@ export function TableCell(props) {
             date={props.date}
             apartmentId={props.apartmentId}
             isSelect={props.isSelect}
-            selectedDay={props.selectedDay}
             apartmentsType={props.apartmentsType}
         >
             {props.isToday && <TodayMarker/>}

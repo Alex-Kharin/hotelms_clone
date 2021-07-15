@@ -1,4 +1,13 @@
-import {differenceInCalendarDays, endOfMonth, format, isAfter, isBefore, isWithinInterval, startOfMonth} from 'date-fns'
+import {
+    differenceInCalendarDays,
+    endOfMonth,
+    format,
+    isAfter,
+    isBefore,
+    isSameDay,
+    isWithinInterval,
+    startOfMonth
+} from 'date-fns'
 import {ru} from 'date-fns/locale'
 import {Button} from '../../Button/Button'
 import React from 'react'
@@ -64,14 +73,22 @@ function shifterViewedRentIntervals(state, action, rangeBorder, shiftFunction) {
     return state
 }
 
+function isDayStartRentalInterval(array, day) {
+    for (let i=0; i<array?.length; i++) {
+        if (isSameDay(day, array[i].start) && !isSameDay(array[i].start, array[i].end)) {
+            return [array[i], i]
+        }
+    }
+    return false
+}
+
+function isArrow(viewRentIntervals, apartmentsByType, id, index, rangeInterval) {
+    return rangeInterval === 'start'
+    ? viewRentIntervals[id] && isBefore(apartmentsByType[id]?.rentInterval[index]?.start, viewRentIntervals[id][index]?.start)
+    : viewRentIntervals[id] && isBefore(viewRentIntervals[id][index]?.end, apartmentsByType[id]?.rentInterval[index]?.end)
+}
+
 export {
-    dayOfMonth,
-    dayOfWeek,
-    monthName,
-    yearOfDate,
-    now,
-    toMonths,
-    adjustsInterval,
-    isSelectInterval,
-    shifterViewedRentIntervals
+    dayOfMonth, dayOfWeek, monthName, yearOfDate, now, toMonths, adjustsInterval, isSelectInterval,
+    shifterViewedRentIntervals, isDayStartRentalInterval, isArrow,
 }

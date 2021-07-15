@@ -1,9 +1,9 @@
 import React from "react";
 import {TableHeader} from "./Table-components/Table-header/TableHeader";
 import styled from "styled-components";
-import {TableBody} from './Table-components/Table-body/TableBody'
 import {adjustsInterval} from './utils/utils'
 import {isSameDay} from 'date-fns'
+import {TableBodyContainer} from './Table-components/Table-body/TableBodyContainer'
 
 
 const TableWrapper = styled.div`
@@ -14,8 +14,11 @@ const TableWrapper = styled.div`
   margin: 10px;
 `
 
-export function Table({days, ...props}) {
-    const interval = props.table.interval
+export function Table(props) {
+
+    const {days, interval, setCellDimensions, setApartmentId, setSelecting, setStartSelection,
+        selectInterval, setRentInterval, clearSelectedDays, isSelect, apartmentId, setEndSelection,
+        daysInTable} = props
 
     function handleSelect(event) {
         const target = event.target.closest('div')
@@ -25,54 +28,47 @@ export function Table({days, ...props}) {
             const day = new Date(dayStr)
 
             if (event.type === 'mousedown') {
-                props.setCellDimensions({width: target.clientWidth, height: target.clientHeight})
-                props.setApartmentId(target.dataset.apartment_id)
-                props.setSelecting(true)
-                props.setStartSelection(day)
+                setCellDimensions({width: target.clientWidth, height: target.clientHeight})
+                setApartmentId(target.dataset.apartment_id)
+                setSelecting(true)
+                setStartSelection(day)
             } else if (event.type === 'mouseup') {
-                if (props.selectInterval.start && props.selectInterval.end && !isSameDay(props.selectInterval.start, props.selectInterval.end)) {
-                    props.setRentInterval(target.dataset.apartments_type, target.dataset.apartment_id, adjustsInterval(props.selectInterval))
+                if (selectInterval.start && selectInterval.end && !isSameDay(selectInterval.start, selectInterval.end))
+                {
+                    setRentInterval(target.dataset.apartments_type, target.dataset.apartment_id, adjustsInterval(selectInterval))
                 }
-                props.clearSelectedDays()
-                props.setSelecting(false)
+                clearSelectedDays()
+                setSelecting(false)
             }
         }
     }
 
     function updateSelection(event) {
-        if (props.isSelect && event.target.dataset.apartment_id === props.apartmentId) {
+        if (isSelect && event.target.dataset.apartment_id === apartmentId) {
             let target = event.target
             let dayStr = target.dataset.date
 
             if (dayStr) {
                 const day = new Date(dayStr)
-                props.setEndSelection(day)
+                setEndSelection(day)
             }
         }
     }
 
     return (
         <>
-            <TableWrapper daysInTable={props.table.daysInTable + 1}>
+            <TableWrapper daysInTable={daysInTable + 1}>
                 <TableHeader {...props} interval={interval} days={days}/>
             </TableWrapper>
 
-            <TableWrapper daysInTable={props.table.daysInTable + 1}
+            <TableWrapper daysInTable={daysInTable + 1}
                           onMouseDown={handleSelect}
                           onMouseUp={handleSelect}
                           onMouseOver={updateSelection}
             >
-                <TableBody apartments={props.apartments}
-                           days={days}
-                           selectedDay={props.selectedDay}
-                           apartmentId={props.apartmentId}
-                           selectInterval={props.selectInterval}
-                           cellDimensions={props.cellDimensions}
-                           viewRentIntervals={props.viewRentIntervals}
-                           leftSideShiftLeftViewRentInterval={props.leftSideShiftLeftViewRentInterval}
-                           leftSideShiftRightViewRentInterval={props.leftSideShiftRightViewRentInterval}
-                           rightSideShiftLeftViewRentInterval={props.rightSideShiftLeftViewRentInterval}
-                           rightSideShiftRightViewRentInterval={props.rightSideShiftRightViewRentInterval}
+                <TableBodyContainer days={days}
+                                    selectInterval={selectInterval}
+                                    apartmentId={apartmentId}
                 />
             </TableWrapper>
         </>
