@@ -11,6 +11,23 @@ div {
   box-sizing: border-box;
 }
 
+input{
+  border-radius: 3px;
+  border: 1px solid lightgrey;
+  border-left: cornflowerblue 5px solid;
+  height: 1.9em;
+  font-size: 0.9em;
+  margin: 0;
+  text-align: center;
+}
+
+input[type="number"],
+input[type="text"]{
+  height: 1.5rem;
+  font-size: 1.1em;
+  margin: 1em;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

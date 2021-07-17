@@ -1,30 +1,44 @@
 import React from 'react'
-import style from './Header.module.css'
 import {MenuItem} from './MenuItem'
 import {TableSettingsForm} from '../Forms/TableSettingsForm'
 import {withModal} from '../Modal/withModal'
+import styled from 'styled-components'
+import {border, displayFlexAlignCenter, secondaryColor} from '../../settings/settings'
+import {Icon} from '../simpleElements/Icon'
+
+
+const HeaderWrapper = styled.header`
+  grid-area: header;
+  border: ${border};
+  background: ${secondaryColor};
+  ${displayFlexAlignCenter};
+  justify-content: space-between;
+`
+
+const LeftSideMenu = styled.div`
+  ${displayFlexAlignCenter};
+  justify-content: flex-start;
+`
 
 const TableSettingsMenuItem = withModal(MenuItem)
 
 export function Header(props) {
+    const {daysInTable, changeDaysInTable, } = props
+
     return (
-        <header className={style.header}>
-
-            <div className={style.leftSideMenu}>
-                <span className={['material-icons', style.md36].join(' ')}>hotel</span>
-
+        <HeaderWrapper>
+            <LeftSideMenu>
+                <Icon size={36}>hotel</Icon>
                 <TableSettingsMenuItem iconName={'grid_on'} menuItemTitle={'Сетка'}>
-                    <TableSettingsForm daysInTable={props.daysInTable} changeDaysInTable={props.changeDaysInTable}/>
+                    <TableSettingsForm daysInTable={daysInTable} changeDaysInTable={changeDaysInTable}/>
                 </TableSettingsMenuItem>
-
                 <MenuItem iconName={'settings'} menuItemTitle={'Настройки'} />
-                <MenuItem iconName={'format_list_bulleted'}>Отчеты</MenuItem>
-            </div>
+                <MenuItem iconName={'format_list_bulleted'} menuItemTitle={'Отчеты'} />
+            </LeftSideMenu>
 
-            <div className={style.rightSideMenu}>
+            <div>
                 <MenuItem iconName={'account_box'} />
             </div>
-
-        </header>
+        </HeaderWrapper>
     )
 }

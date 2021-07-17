@@ -8,16 +8,16 @@ const Circle = styled.div`
   border-radius: 50%;
   background-color: crimson;
   top: -30%;
-  right: 30%;
+  right: 5%;
   z-index: 500;
 `
 
 const VerticalLine = styled.div`
   position: absolute;
-  height: 72vh;
+  height: 75vh;
   border-left: 2px solid crimson;
   top: 0;
-  right: 47%;
+  right: 19%;
   z-index: 500;
 `
 
@@ -25,6 +25,6 @@ export function TodayMarker() {
     return (
     <>
         <Circle/>
-        <VerticalLine />
+        <VerticalLine/>
     </>)
 }

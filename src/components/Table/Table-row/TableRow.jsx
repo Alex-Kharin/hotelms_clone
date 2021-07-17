@@ -1,7 +1,6 @@
 import React from 'react'
 
 
-
 export function TableRow({rowTitle, rowCells}) {
     let firstCell
 
@@ -15,8 +14,7 @@ export function TableRow({rowTitle, rowCells}) {
 
     return (
         <>
-            {firstCell}
-            {rowCells}
+            {firstCell} {rowCells}
         </>
     
     )

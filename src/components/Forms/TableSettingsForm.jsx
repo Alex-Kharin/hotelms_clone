@@ -1,27 +1,28 @@
 import {Field, Form, Formik} from 'formik'
 import React from 'react'
-import {Button} from '../Button/Button'
-import './style.css'
+import {Button} from '../simpleElements/Button'
+import {SaveCloseButtons} from './SaveCloseButtons'
 
 export const TableSettingsForm = (props) => {
+    const{daysInTable, changeDaysInTable, closeModal, } = props
+
     const min = 29
     const max = 366
 
     return (
         <Formik
-            initialValues={{daysInTable: props.daysInTable}}
+            initialValues={{daysInTable: daysInTable}}
             onSubmit={(values) => {
-                props.changeDaysInTable(values.daysInTable)
+                changeDaysInTable(values.daysInTable)
             }}
         >
             {({setFieldValue}) =>
             <Form>
                 <label htmlFor="daysInTable">Дней в сетке: </label>
                 <Field name="daysInTable" type="number" min={min} max={max} title={`мин: ${min}; макс: ${max}`} />
-                <Button type="button"  onClick={() => setFieldValue('daysInTable', min)} size={'0.8em'}>reset</Button>
+                <Button type="button"  onClick={() => setFieldValue('daysInTable', min)} size={'0.8em'}>Сбросить</Button>
                 <hr />
-                <Button type="submit" size={'0.8em'}>Сохранить</Button>
-                <Button type="button" onClick={props.closeModal} size={'0.8em'}> Закрыть </Button>
+                <SaveCloseButtons closeHandler={closeModal}/>
             </Form>}
         </ Formik>
     )

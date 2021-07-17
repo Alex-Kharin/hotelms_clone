@@ -9,9 +9,9 @@ import {
     startOfMonth
 } from 'date-fns'
 import {ru} from 'date-fns/locale'
-import {Button} from '../../Button/Button'
+import {Button} from '../../simpleElements/Button'
 import React from 'react'
-import {MonthCell} from '../Table-components/Table-cell/MonthCell'
+import {MonthCell} from '../Table-cell/MonthCell'
 
 
 const dayOfMonth = (day) => format(day, 'dd', {locale: ru})

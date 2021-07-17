@@ -1,6 +1,13 @@
 import React from "react";
-import style from './Footer.module.css'
+import styled from 'styled-components'
+import {border, secondaryColor} from '../../settings/settings'
+
+const FooterWrapper = styled.footer`
+  grid-area: footer;
+  border: ${border};
+  background: ${secondaryColor};
+`
 
 export function Footer(props) {
-    return <footer className={style.footer}>Footer</footer>
+    return <FooterWrapper>Footer</FooterWrapper>
 }

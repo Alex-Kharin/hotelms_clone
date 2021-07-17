@@ -2,7 +2,7 @@ import React from 'react'
 import {TableCell} from '../Table-cell/TableCell'
 import {eachMonthOfInterval, isToday, isWeekend} from 'date-fns'
 import {TableRow} from '../Table-row/TableRow'
-import {dayOfMonth, dayOfWeek, toMonths} from '../../utils/utils'
+import {dayOfMonth, dayOfWeek, toMonths} from '../utils/utils'
 import {FirstHeaderCell} from '../Table-cell/FirstHeaderCell'
 
 

@@ -1,6 +1,6 @@
 import Modal from 'react-modal'
 import React, {useState} from 'react'
-import style from '../Header/SettingsMenuItem.module.css'
+import style from './SettingsMenuItem.module.css'
 
 Modal.setAppElement('#root')
 

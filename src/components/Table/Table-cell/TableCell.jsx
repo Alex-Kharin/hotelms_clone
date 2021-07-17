@@ -1,21 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
 import {TodayMarker} from '../Today-marker/TodayMarker'
-import {Rent} from '../../Rent/Rent'
+import {Rent} from '../Rent/Rent'
+import {border, selectionColor, weekendColor} from '../../../settings/settings'
 
 
 const CellWrapper = styled.div.attrs(props =>
     ({'data-date': props.date, 'data-apartment_id': props.apartmentId, 'data-apartments_type': props.apartmentsType}))`
-  border: 1px solid black;
-  text-align: center;
-  background-color: ${props => props.isSelect ? '#e2c50a' : props.isWeekend ? 'lightblue' : 'inherit'};
   position: relative;
+  text-align: center;
   user-select: none;
-
-  :active {
-    cursor: cell;
-  }
-
+  border: ${props => props.isSelect ? 'none' : border};
+  background-color: ${props => props.isSelect ? selectionColor : props.isWeekend ? weekendColor : 'inherit'};
+  cursor: ${props => props.isSelect ? 'cell' : null};
 `
 
 const TopString = styled.span`
@@ -29,19 +26,22 @@ const BottomString = styled.span`
 `
 
 export function TableCell(props) {
+    const {isWeekend, date, apartmentId, isSelect, apartmentsType, isToday, isRent, isLeftArrow, isRightArrow} = props
+
     const topString = props.topString ? <TopString>{props.topString}</TopString> : null
     const bottomString = props.bottomString ? <BottomString>{props.bottomString}</BottomString> : null
+
     return (
         <CellWrapper
-            isWeekend={props.isWeekend}
-            date={props.date}
-            apartmentId={props.apartmentId}
-            isSelect={props.isSelect}
-            apartmentsType={props.apartmentsType}
+            isWeekend={isWeekend}
+            date={date}
+            apartmentId={apartmentId}
+            isSelect={isSelect}
+            apartmentsType={apartmentsType}
         >
-            {props.isToday && <TodayMarker/>}
-            {props.isRent && <Rent cellDimensions={props.cellDimensions} viewRentInterval={props.isRent}
-                                   isLeftArrow={props.isLeftArrow} isRightArrow={props.isRightArrow}>Ivanov Ivan</Rent>}
+            {isToday && <TodayMarker/>}
+            {isRent && <Rent cellDimensions={props.cellDimensions} viewRentInterval={isRent}
+                                   isLeftArrow={isLeftArrow} isRightArrow={isRightArrow}>Ivanov Ivan</Rent>}
             {topString}
             <br/>
             {bottomString}

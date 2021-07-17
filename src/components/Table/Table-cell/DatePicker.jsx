@@ -1,12 +1,11 @@
 import React from 'react';
-
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
-
 import dateFnsFormat from 'date-fns/format';
 import dateFnsParse from 'date-fns/parse';
 import {ru} from 'date-fns/locale'
+
 
 const WEEKDAYS_SHORT = {
     ru: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
@@ -48,7 +47,6 @@ const FIRST_DAY_OF_WEEK = {
 const LABELS = {
     ru: { nextMonth: 'следующий месяц', previousMonth: 'предыдущий месяц' },
 }
-
 
 function parseDate(str, format, locale) {
     const parsed = dateFnsParse(str, format, new Date(), { locale });

@@ -1,11 +1,10 @@
 import {connect} from "react-redux";
-
 import {TableBody} from './TableBody'
 import {
     leftSideShiftLeftViewRentInterval,
     leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval, rightSideShiftRightViewRentInterval
-} from '../../../../store/tableHotelRoomsReducer'
-import {getApartments, getCellDimensions, getViewRentIntervals} from '../../../../store/tableBodyContainerSelectors'
+} from '../../../store/tableHotelRoomsReducer'
+import {getApartments, getCellDimensions, getViewRentIntervals} from '../../../store/tableBodyContainerSelectors'
 
 
 function mapStateToProps(state, ownProps) {
@@ -20,13 +19,11 @@ function mapStateToProps(state, ownProps) {
 }
 
 const mapDispatchToProps = {
-
     leftSideShiftLeftViewRentInterval,
     leftSideShiftRightViewRentInterval,
     rightSideShiftLeftViewRentInterval,
     rightSideShiftRightViewRentInterval,
 
 }
-
 
 export const TableBodyContainer = connect(mapStateToProps, mapDispatchToProps)(TableBody)

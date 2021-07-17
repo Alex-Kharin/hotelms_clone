@@ -1,23 +1,22 @@
 import React, {useEffect} from 'react'
 import {areIntervalsOverlapping, isBefore, isSameDay, isWeekend, } from 'date-fns'
 import {TableCell} from '../Table-cell/TableCell'
-import {dayOfMonth, isArrow, isDayStartRentalInterval, isSelectInterval} from '../../utils/utils'
+import {dayOfMonth, isArrow, isDayStartRentalInterval, isSelectInterval} from '../utils/utils'
 import {TableRow} from '../Table-row/TableRow'
 import styled from 'styled-components'
+import {border, displayFlexAlignCenter, weekendColor} from '../../../settings/settings'
 
 
 const Cell = styled.div`
-  display: flex;
-  align-items: center;
+  ${displayFlexAlignCenter};
+  border: ${border};
   justify-content: ${({position}) => position ? position : 'center'};
-  background-color: ${({isWeekend}) => isWeekend ? 'lightblue' : 'inherit'};
+  background-color: ${({isWeekend}) => isWeekend ? weekendColor : 'inherit'};
   font-weight: ${({weight}) => weight ? weight : 600};
-  border: 1px solid black;
   padding-left: ${({position}) => position ? '1em' : null};
 `
 
 export function TableBody(props) {
-
     const {
         days, apartments, selectInterval, apartmentId, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
@@ -26,6 +25,7 @@ export function TableBody(props) {
 
     const freeApartmentsCells = (apartmentsByType) => days.map(day => {
         let freeApartments = Object.keys(apartmentsByType).length
+
         Object.values(apartmentsByType).forEach(apartment => {
             if (apartment.rentInterval.some(interval => areIntervalsOverlapping({
                     start: day,
@@ -64,7 +64,6 @@ export function TableBody(props) {
 }
 
 function ApartmentsRowsByNumbers(props) {
-
     const {
         days, apartmentsByType, apartmentsType, apartmentIdForSelect, selectInterval, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,

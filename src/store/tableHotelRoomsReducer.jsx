@@ -1,6 +1,7 @@
 import {convertObjectWithArraysToObjectWithObjects} from '../commonUtils/commonUtils'
 import {addDays, areIntervalsOverlapping, subDays} from 'date-fns'
 import {shifterViewedRentIntervals} from '../components/Table/utils/utils'
+import {borderWidth, gridAutoRowsHeight, gridColumnsWidth} from '../settings/settings'
 
 
 const IS_SELECT = 'IS_SELECT'
@@ -144,7 +145,10 @@ const initialState = {
     isSelect: false,
     selectInterval: {start: null, end: null},
     apartmentId: null,
-    cellDimensions: {},
+    cellDimensions:{
+        width: gridColumnsWidth - 2 * borderWidth,
+        height: gridAutoRowsHeight - 2 * borderWidth
+    },
     viewRentIntervals: {}
 }
 

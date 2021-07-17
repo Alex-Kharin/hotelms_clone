@@ -1,6 +1,0 @@
-.main {
-    grid-area: main;
-    border: 1px solid black;
-    background: rgba(213, 213, 213, 0.5);
-    overflow-x: auto;
-}

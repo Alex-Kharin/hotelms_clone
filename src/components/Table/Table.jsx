@@ -1,22 +1,22 @@
 import React from "react";
-import {TableHeader} from "./Table-components/Table-header/TableHeader";
+import {TableHeader} from "./Table-header/TableHeader";
 import styled from "styled-components";
 import {adjustsInterval} from './utils/utils'
 import {isSameDay} from 'date-fns'
-import {TableBodyContainer} from './Table-components/Table-body/TableBodyContainer'
+import {TableBodyContainer} from './Table-body/TableBodyContainer'
+import {gridAutoRowsHeight, gridColumnsWidth, gridTemplateFirstColumnWidth} from '../../settings/settings'
 
 
 const TableWrapper = styled.div`
   display: grid;
-  //grid-template-columns: minmax(250px, 6fr) repeat(${props => props.daysInTable}, minmax(40px, 1fr));
-  grid-template-columns: 250px repeat(${props => props.daysInTable}, 50px);
-  grid-auto-rows: minmax(40px, auto);
-  margin: 10px;
+  grid-template-columns: ${gridTemplateFirstColumnWidth} repeat(${props => props.daysInTable}, ${gridColumnsWidth}px);
+  grid-auto-rows: minmax(${gridAutoRowsHeight}px, auto);
+  margin: 10px 10px -9px 10px;
 `
 
 export function Table(props) {
 
-    const {days, interval, setCellDimensions, setApartmentId, setSelecting, setStartSelection,
+    const {days, interval, setApartmentId, setSelecting, setStartSelection,
         selectInterval, setRentInterval, clearSelectedDays, isSelect, apartmentId, setEndSelection,
         daysInTable} = props
 
@@ -28,7 +28,7 @@ export function Table(props) {
             const day = new Date(dayStr)
 
             if (event.type === 'mousedown') {
-                setCellDimensions({width: target.clientWidth, height: target.clientHeight})
+                // setCellDimensions({width: target.clientWidth, height: target.clientHeight})
                 setApartmentId(target.dataset.apartment_id)
                 setSelecting(true)
                 setStartSelection(day)
