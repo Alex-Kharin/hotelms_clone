@@ -1,6 +1,6 @@
-import React from "react";
-import {TableHeader} from "./Table-header/TableHeader";
-import styled from "styled-components";
+import React from 'react'
+import {TableHeader} from './Table-header/TableHeader'
+import styled from 'styled-components'
 import {adjustsInterval} from './utils/utils'
 import {isSameDay} from 'date-fns'
 import {TableBodyContainer} from './Table-body/TableBodyContainer'
@@ -33,9 +33,11 @@ export function Table(props) {
                 setSelecting(true)
                 setStartSelection(day)
             } else if (event.type === 'mouseup') {
-                if (selectInterval.start && selectInterval.end && !isSameDay(selectInterval.start, selectInterval.end))
-                {
-                    setRentInterval(target.dataset.apartments_type, target.dataset.apartment_id, adjustsInterval(selectInterval))
+                if (selectInterval.start
+                    && selectInterval.end
+                    && !isSameDay(selectInterval.start, selectInterval.end)
+                    && target.dataset.apartment_id === apartmentId) {
+                    setRentInterval(target.dataset.apartments_type, adjustsInterval(selectInterval))
                 }
                 clearSelectedDays()
                 setSelecting(false)

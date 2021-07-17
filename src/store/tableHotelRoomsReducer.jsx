@@ -193,24 +193,24 @@ function tableHotelRoomsReducer(state = initialState, action) {
             }
         }
         case RENT_INTERVAL: {
-            const rentIntervals = state.apartments[action.apartmentsType][action.apartmentId].rentInterval
+            const rentIntervals = state.apartments[action.apartmentsType][state.apartmentId].rentInterval
             if (rentIntervals.some(interval => areIntervalsOverlapping(interval, action.rentInterval))) return state
 
-            // state.apartments[action.apartmentsType][action.apartmentId].rentInterval.push(action.rentInterval) // this is what the code below does
+            // state.apartments[action.apartmentsType][state.apartmentId].rentInterval.push(action.rentInterval) // this is what the code below does
             return {
                 ...state,
                 apartments: {
                     ...state.apartments, [action.apartmentsType]: {
                         ...state.apartments[action.apartmentsType],
-                        [action.apartmentId]: {
-                            ...state.apartments[action.apartmentsType][action.apartmentId],
-                            rentInterval: [...state.apartments[action.apartmentsType][action.apartmentId].rentInterval, action.rentInterval]
+                        [state.apartmentId]: {
+                            ...state.apartments[action.apartmentsType][state.apartmentId],
+                            rentInterval: [...state.apartments[action.apartmentsType][state.apartmentId].rentInterval, action.rentInterval]
                         }
                     }
                 },
                 viewRentIntervals: {
                     ...state.viewRentIntervals,
-                    [action.apartmentId]: [...state.viewRentIntervals[action.apartmentId] || [], action.rentInterval]
+                    [state.apartmentId]: [...state.viewRentIntervals[state.apartmentId] || [], action.rentInterval]
                 }
             }
         }
@@ -254,10 +254,9 @@ const rightSideShiftRightViewRentInterval = (apartmentId, index) => ({
     type: RIGHT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL,
     apartmentId, index
 })
-const setRentInterval = (apartmentsType, apartmentId, rentInterval) => ({
+const setRentInterval = (apartmentsType, rentInterval) => ({
     type: RENT_INTERVAL,
     apartmentsType,
-    apartmentId,
     rentInterval
 })
 
