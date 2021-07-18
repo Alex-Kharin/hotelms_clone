@@ -1,6 +1,7 @@
 import React from "react";
 import styled from 'styled-components'
 import {intervalToDuration} from 'date-fns'
+import {rentElementsZIndex} from '../../../settings/settings'
 
 
 const RentWrapper = styled.div`
@@ -15,7 +16,7 @@ const RentWrapper = styled.div`
             }) => cellDimensions.width * intervalToDuration(viewRentInterval).days + intervalToDuration(viewRentInterval).days * 2}px;
   min-width: ${({cellDimensions}) => cellDimensions.width / 2 - 1}px;
   height: ${({cellDimensions}) => cellDimensions.height - 2}px;
-  z-index: 500;
+  z-index: ${rentElementsZIndex};
 `
 
 export function Rent({children, cellDimensions, viewRentInterval, isLeftArrow, isRightArrow}) {

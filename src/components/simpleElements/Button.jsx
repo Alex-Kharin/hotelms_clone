@@ -1,7 +1,8 @@
 import React from "react"
 import styled from "styled-components";
-import {btnColor, gridAutoRowsHeight} from '../../settings/settings'
+import {btnColor, btnHeaderZIndex, gridAutoRowsHeight} from '../../settings/settings'
 import {CommonIcon} from './Icon'
+
 
 const Btn = styled.button`
   font-size: ${({size}) => size || '1.2em'};
@@ -11,7 +12,7 @@ const Btn = styled.button`
   min-width: ${gridAutoRowsHeight};
   display: ${({isFlex}) => isFlex && 'flex'};
   align-items: ${({isFlex}) => isFlex && 'center'};
-  z-index: ${({isFlex}) => isFlex && 505};
+  z-index: ${({isFlex}) => isFlex && btnHeaderZIndex};
   type: ${({type}) => type};
   color: white;
 `

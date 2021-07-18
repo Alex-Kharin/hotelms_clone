@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import {todayMarkerZIndex} from '../../../settings/settings'
+
 
 const Circle = styled.div`
   position: absolute;
@@ -9,7 +11,7 @@ const Circle = styled.div`
   background-color: crimson;
   top: -30%;
   right: 5%;
-  z-index: 500;
+  z-index: ${todayMarkerZIndex};
 `
 
 const VerticalLine = styled.div`
@@ -18,7 +20,7 @@ const VerticalLine = styled.div`
   border-left: 2px solid crimson;
   top: 0;
   right: 19%;
-  z-index: 500;
+  z-index: ${todayMarkerZIndex};
 `
 
 export function TodayMarker() {

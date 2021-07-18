@@ -10,16 +10,12 @@ export function borderMix(borderWidth='1px',
 
 export const displayFlexAlignCenter = 'display: flex; align-items: center'
 
-/*
-0-100 - class elements on one layer (warnings elements)
-100-200
----------------------------
-500 - rent elements
-500 - today marker
-505 - btn in table header
-1000 - modal
- */
-export const zIndex = 100
+
+// Z-indexes:
+export const todayMarkerZIndex = 500
+export const rentElementsZIndex = 450
+export const btnHeaderZIndex = 505
+// 1000 - modal in src/components/Modal/SettingsMenuItem.module.css
 
 // Colors
 export const weekendColor = 'lightblue'
