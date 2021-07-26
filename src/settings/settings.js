@@ -24,6 +24,7 @@ export const menuItemColor = '#9feaab'
 export const secondaryColor = 'lightseagreen'
 export const MainBgColor = '#d5d5d57f'
 export const selectionColor = '#e2c50a'
+export const rentElementColor = '#00c0e7'
 
 
 // TableWrapper = styled.div on src/components/Table/Table.jsx
@@ -31,3 +32,6 @@ export const gridColumnsWidth = 50
 export const gridAutoRowsHeight = 40
 export const gridTemplateFirstColumnWidth = '250px'
 
+
+// **************************************************************** //
+export const time = {hours:12, minutes:0, seconds:0, milliseconds:0}

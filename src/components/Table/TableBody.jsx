@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react'
 import {areIntervalsOverlapping, isBefore, isSameDay, isWeekend, } from 'date-fns'
-import {TableCell} from '../Table-cell/TableCell'
-import {dayOfMonth, isArrow, isDayStartRentalInterval, isSelectInterval} from '../utils/utils'
-import {TableRow} from '../Table-row/TableRow'
+import {TableCell} from './Table-cell/TableCell'
+import {dayOfMonth, isArrow, isDayStartRentalInterval, isSelectInterval} from './utils/utils'
+import {TableRow} from './TableRow'
 import styled from 'styled-components'
-import {border, displayFlexAlignCenter, weekendColor} from '../../../settings/settings'
+import {border, displayFlexAlignCenter, weekendColor} from '../../settings/settings'
 
 
 const Cell = styled.div`

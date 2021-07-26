@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect'
-import {eachDayOfInterval} from 'date-fns'
+import {eachDayOfInterval, set} from 'date-fns'
 import {adjustsInterval} from '../components/Table/utils/utils'
 
 
@@ -11,7 +11,7 @@ export const getSelectIntervalSelector = (state) => state.tableApartments.select
 
 export const getDays = createSelector(
     getInterval,
-    interval => eachDayOfInterval(interval)
+    interval => eachDayOfInterval(interval).map(day=>set(day, {hours:12, minutes:0, seconds:0, milliseconds:0}))
 )
 
 export const getSelectInterval = createSelector(

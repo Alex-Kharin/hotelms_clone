@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import {TodayMarker} from '../Today-marker/TodayMarker'
-import {Rent} from '../Rent/Rent'
+import {TodayMarker} from '../TodayMarker'
+import {Rent} from '../Rent'
 import {border, selectionColor, weekendColor} from '../../../settings/settings'
 
 

@@ -1,4 +1,5 @@
-import {addDays, subDays} from 'date-fns'
+import {addDays, set, subDays} from 'date-fns'
+import {time} from '../settings/settings'
 
 const SHIFT_LEFT = 'SHIFT_LEFT'
 const SHIFT_RIGHT = 'SHIFT_RIGHT'
@@ -6,7 +7,7 @@ const SHIFT_NOW = 'SHIFT_NOW'
 const SHIFT_FROM = 'SHIFT_FROM'
 const DAYS_IN_TABLE = 'DAYS_IN_TABLE'
 
-const from = new Date()
+const from = set(new Date(),time)
 const to = addDays(from, 29)
 
 const initialState ={

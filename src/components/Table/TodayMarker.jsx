@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {todayMarkerZIndex} from '../../../settings/settings'
+import {todayMarkerZIndex} from '../../settings/settings'
 
 
 const Circle = styled.div`

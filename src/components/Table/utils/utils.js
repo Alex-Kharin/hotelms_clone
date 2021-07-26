@@ -2,6 +2,7 @@ import {
     differenceInCalendarDays,
     endOfMonth,
     format,
+    intervalToDuration,
     isAfter,
     isBefore,
     isSameDay,
@@ -12,6 +13,7 @@ import {ru} from 'date-fns/locale'
 import {Button} from '../../simpleElements/Button'
 import React from 'react'
 import {MonthCell} from '../Table-cell/MonthCell'
+import {borderWidth} from '../../../settings/settings'
 
 
 const dayOfMonth = (day) => format(day, 'dd', {locale: ru})
@@ -88,7 +90,13 @@ function isArrow(viewRentIntervals, apartmentsByType, id, index, rangeInterval) 
     : viewRentIntervals[id] && isBefore(viewRentIntervals[id][index]?.end, apartmentsByType[id]?.rentInterval[index]?.end)
 }
 
+// = width*duration + 2*duration*borderWidth
+function widthRentElement(cellDimensions, viewRentInterval) {
+    return cellDimensions.width * intervalToDuration(viewRentInterval).days +
+        intervalToDuration(viewRentInterval).days * 2 * borderWidth + 'px'
+}
+
 export {
     dayOfMonth, dayOfWeek, monthName, yearOfDate, now, toMonths, adjustsInterval, isSelectInterval,
-    shifterViewedRentIntervals, isDayStartRentalInterval, isArrow,
+    shifterViewedRentIntervals, isDayStartRentalInterval, isArrow, widthRentElement,
 }

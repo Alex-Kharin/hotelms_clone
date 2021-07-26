@@ -1,9 +1,9 @@
 import React from 'react'
-import {TableHeader} from './Table-header/TableHeader'
+import {TableHeader} from './TableHeader'
 import styled from 'styled-components'
 import {adjustsInterval} from './utils/utils'
 import {isSameDay} from 'date-fns'
-import {TableBodyContainer} from './Table-body/TableBodyContainer'
+import {TableBodyContainer} from './TableBodyContainer'
 import {gridAutoRowsHeight, gridColumnsWidth, gridTemplateFirstColumnWidth} from '../../settings/settings'
 
 
@@ -23,7 +23,6 @@ export function Table(props) {
     function handleSelect(event) {
         const target = event.target.closest('div')
         const dayStr = target.dataset.date
-
         if (dayStr) {
             const day = new Date(dayStr)
 
