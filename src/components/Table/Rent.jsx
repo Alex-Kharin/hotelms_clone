@@ -24,14 +24,13 @@ const Arrow = styled(Icon)`
   color:red;
 `
 
-export function Rent({children, cellDimensions, viewRentInterval, isLeftArrow, isRightArrow}) {
+export function Rent(props) {
+    const {openModal, cellDimensions, viewRentInterval, isLeftArrow, isRightArrow} = props
     return (
-        <RentWrapper cellDimensions={cellDimensions} viewRentInterval={viewRentInterval}>
+        <RentWrapper onClick={openModal} cellDimensions={cellDimensions} viewRentInterval={viewRentInterval}>
             {isLeftArrow && <Arrow position={'left'}>arrow_left</Arrow>}
             {isRightArrow && <Arrow position={'right'}>arrow_right</Arrow>}
 
-
-            {children}
         </RentWrapper>
     )
 }

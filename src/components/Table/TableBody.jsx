@@ -27,11 +27,11 @@ export function TableBody(props) {
         let freeApartments = Object.keys(apartmentsByType).length
 
         Object.values(apartmentsByType).forEach(apartment => {
-            if (apartment.rentInterval.some(interval => areIntervalsOverlapping({
+            if (apartment.rentInfo.some(item => areIntervalsOverlapping({
                     start: day,
                     end: day
-                }, interval, {inclusive: false}) ||
-                (isSameDay(day, interval.end) && apartment.rentInterval.some(int => isSameDay(day, int.start)))
+                }, item.rentInterval, {inclusive: false}) ||
+                (isSameDay(day, item.rentInterval.end) && apartment.rentInfo.some(element => isSameDay(day, element.rentInterval.start)))
             )) {
                 freeApartments--
             }
@@ -76,7 +76,7 @@ function ApartmentsRowsByNumbers(props) {
                 for (let i = 0; i < viewRentIntervals[id]?.length; i++) {
 
                     const {start, end} = viewRentIntervals[id][i]
-                    const apartmentRentInterval = apartmentsByType[id].rentInterval[i]
+                    const apartmentRentInterval = apartmentsByType[id].rentInfo[i].rentInterval
                     const firstTableDay = days[0]
                     const lastTableDay = days[days.length - 1]
 

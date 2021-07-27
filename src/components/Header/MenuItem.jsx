@@ -32,10 +32,10 @@ margin-right: 5px;
 `
 
 export function MenuItem(props) {
-    const {onClick, iconName, menuItemTitle, } = props
+    const {openModal, iconName, menuItemTitle, } = props
 
     return (
-        <MenuItemWrapper onClick={onClick}>
+        <MenuItemWrapper onClick={openModal}>
             <MenuItemIcon>{iconName}</MenuItemIcon>
             {menuItemTitle && <MenuItemTitle>{menuItemTitle}</MenuItemTitle>}
         </MenuItemWrapper>

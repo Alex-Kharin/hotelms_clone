@@ -1,11 +1,12 @@
 .Modal {
     position: absolute;
-    top: 35%;
-    left: 35%;
-    /*right: 10%;*/
+    top: 5%;
+    left: 20%;
+    right: 20%;
     /*bottom: 15%;*/
     min-width: 500px;
     min-height: 200px;
+    padding: 10px;
     background-color: lightgrey;
 }
 

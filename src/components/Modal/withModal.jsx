@@ -12,7 +12,7 @@ export function withModal(WrappedComponent) {
 
         return (
             <>
-                <WrappedComponent onClick={openModal} {...props} />
+                <WrappedComponent openModal={openModal} {...props} />
                 <Modal isOpen={showModal}
                        contentLabel={'settings'}
                        className={style.Modal}

@@ -86,8 +86,8 @@ function isDayStartRentalInterval(array, day) {
 
 function isArrow(viewRentIntervals, apartmentsByType, id, index, rangeInterval) {
     return rangeInterval === 'start'
-    ? viewRentIntervals[id] && isBefore(apartmentsByType[id]?.rentInterval[index]?.start, viewRentIntervals[id][index]?.start)
-    : viewRentIntervals[id] && isBefore(viewRentIntervals[id][index]?.end, apartmentsByType[id]?.rentInterval[index]?.end)
+    ? viewRentIntervals[id] && isBefore(apartmentsByType[id]?.rentInfo[index]?.rentInterval.start, viewRentIntervals[id][index]?.start)
+    : viewRentIntervals[id] && isBefore(viewRentIntervals[id][index]?.end, apartmentsByType[id]?.rentInfo[index]?.rentInterval.end)
 }
 
 // = width*duration + 2*duration*borderWidth

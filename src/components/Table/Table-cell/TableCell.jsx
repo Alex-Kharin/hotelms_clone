@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import {TodayMarker} from '../TodayMarker'
 import {Rent} from '../Rent'
 import {border, selectionColor, weekendColor} from '../../../settings/settings'
+import {withModal} from '../../Modal/withModal'
+import {OrderCreationForm} from '../../Forms/OrderCreationForm'
 
 
 const CellWrapper = styled.div.attrs(props =>
@@ -25,6 +27,8 @@ const BottomString = styled.span`
   font-weight: ${props => props.bottomStringFontWeight || 'bold'};
 `
 
+const ModalRent = withModal(Rent)
+
 export function TableCell(props) {
     const {isWeekend, date, apartmentId, isSelect, apartmentsType, isToday, isRent, isLeftArrow, isRightArrow} = props
 
@@ -40,8 +44,11 @@ export function TableCell(props) {
             apartmentsType={apartmentsType}
         >
             {isToday && <TodayMarker/>}
-            {isRent && <Rent cellDimensions={props.cellDimensions} viewRentInterval={isRent}
-                                   isLeftArrow={isLeftArrow} isRightArrow={isRightArrow}>Ivanov Ivan</Rent>}
+            {isRent &&
+            <ModalRent cellDimensions={props.cellDimensions} viewRentInterval={isRent}
+                                   isLeftArrow={isLeftArrow} isRightArrow={isRightArrow}>
+                <OrderCreationForm />
+            </ModalRent>}
             {topString}
             <br/>
             {bottomString}

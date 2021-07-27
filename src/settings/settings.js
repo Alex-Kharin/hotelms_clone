@@ -35,3 +35,8 @@ export const gridTemplateFirstColumnWidth = '250px'
 
 // **************************************************************** //
 export const time = {hours:12, minutes:0, seconds:0, milliseconds:0}
+export const tariffs = {
+    standard: 1000,
+    comfortable: 2000,
+    lux: 5000
+}

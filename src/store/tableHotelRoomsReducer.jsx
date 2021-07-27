@@ -1,7 +1,7 @@
 import {convertObjectWithArraysToObjectWithObjects} from '../commonUtils/commonUtils'
 import {addDays, areIntervalsOverlapping, subDays} from 'date-fns'
 import {shifterViewedRentIntervals} from '../components/Table/utils/utils'
-import {borderWidth, gridAutoRowsHeight, gridColumnsWidth} from '../settings/settings'
+import {borderWidth, gridAutoRowsHeight, gridColumnsWidth, tariffs} from '../settings/settings'
 
 
 const IS_SELECT = 'IS_SELECT'
@@ -23,46 +23,52 @@ const initialState = {
                 id: 1,
                 apartmentsNumber: 100,
                 numberOfPersons: 2,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [
+                    // {
+                    //     id: 1,
+                    //     rentInterval:{},
+                    //     personInfo:{firstName: '', lastName: '', email: '', phone: ''},
+                    //     additionalPersons: null,
+                    //     tariff: 'standard',
+                    //     percentageDiscount: 0,
+                    //     moneyDiscount: 0,
+                    //     price: 0,
+                    // },
+                    // {
+                    //     id: 2,
+                    //     rentInterval:{},
+                    //     personInfo:{firstName: '', lastName: '', email: '', phone: ''},
+                    //     additionalPersons: null,
+                    //     tariff: 'standard',
+                    //     percentageDiscount: 0,
+                    //     moneyDiscount: 0,
+                    //     price: 0,
+                    // },
+                ],
             },
             {
                 id: 2,
                 apartmentsNumber: 122,
                 numberOfPersons: 2,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             },
             {
                 id: 3,
                 apartmentsNumber: 145,
                 numberOfPersons: 2,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             },
             {
                 id: 4,
                 apartmentsNumber: 201,
                 numberOfPersons: 3,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             },
             {
                 id: 5,
                 apartmentsNumber: 210,
                 numberOfPersons: 3,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             }
         ],
         comfortable: [
@@ -70,46 +76,31 @@ const initialState = {
                 id: 6,
                 apartmentsNumber: 300,
                 numberOfPersons: 2,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             },
             {
                 id: 7,
                 apartmentsNumber: 322,
                 numberOfPersons: 2,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             },
             {
                 id: 8,
                 apartmentsNumber: 345,
                 numberOfPersons: 2,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             },
             {
                 id: 9,
                 apartmentsNumber: 401,
                 numberOfPersons: 3,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             },
             {
                 id: 10,
                 apartmentsNumber: 410,
                 numberOfPersons: 3,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             }
         ],
         lux: [
@@ -117,31 +108,23 @@ const initialState = {
                 id: 11,
                 apartmentsNumber: 500,
                 numberOfPersons: 5,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             },
             {
                 id: 12,
                 apartmentsNumber: 601,
                 numberOfPersons: 5,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             },
             {
                 id: 13,
                 apartmentsNumber: 610,
                 numberOfPersons: 5,
-                rentInterval: [],
-                chekInTime: null,
-                chekOutTime: null,
-                isFree: true,
+                rentInfo: [],
             }
         ],
     },
+    tariffs,
     isSelect: false,
     selectInterval: {start: null, end: null},
     apartmentId: null,
@@ -193,8 +176,8 @@ function tableHotelRoomsReducer(state = initialState, action) {
             }
         }
         case RENT_INTERVAL: {
-            const rentIntervals = state.apartments[action.apartmentsType][state.apartmentId].rentInterval
-            if (rentIntervals.some(interval => areIntervalsOverlapping(interval, action.rentInterval))) return state
+            const rentInfo = state.apartments[action.apartmentsType][state.apartmentId].rentInfo
+            if (rentInfo.some(item => areIntervalsOverlapping(item.rentInterval, action.rentInterval))) return state
 
             // state.apartments[action.apartmentsType][state.apartmentId].rentInterval.push(action.rentInterval) // this is what the code below does
             return {
@@ -204,7 +187,8 @@ function tableHotelRoomsReducer(state = initialState, action) {
                         ...state.apartments[action.apartmentsType],
                         [state.apartmentId]: {
                             ...state.apartments[action.apartmentsType][state.apartmentId],
-                            rentInterval: [...state.apartments[action.apartmentsType][state.apartmentId].rentInterval, action.rentInterval]
+                            // rentInterval: [...state.apartments[action.apartmentsType][state.apartmentId].rentInterval, action.rentInterval]
+                            rentInfo: [...state.apartments[action.apartmentsType][state.apartmentId].rentInfo, {rentInterval: action.rentInterval}]
                         }
                     }
                 },
