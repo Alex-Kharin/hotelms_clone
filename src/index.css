@@ -11,7 +11,7 @@ div {
   box-sizing: border-box;
 }
 
-input{
+select, input{
   border-radius: 3px;
   border: 1px solid lightgrey;
   border-left: cornflowerblue 5px solid;
@@ -20,8 +20,9 @@ input{
   margin: 0;
   text-align: center;
 }
-
+select,
 input[type="number"],
+input[type="email"],
 input[type="text"]{
   height: 1.5rem;
   font-size: 1.1em;

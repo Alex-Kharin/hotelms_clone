@@ -20,7 +20,8 @@ const dayOfMonth = (day) => format(day, 'dd', {locale: ru})
 const dayOfWeek = (day) => format(day, 'eeeeee', {locale: ru})
 const monthName = (month) => format(month, 'LLLL', {locale: ru})
 const yearOfDate = (date) => format(date, 'y', {locale: ru})
-const now = format(new Date(), 'dd-MM-y', {locale: ru})
+const dateToString = (date) => format(date, 'dd-MM-y', {locale: ru})
+const getTime = (date) => format(date, 'HH:mm', {locale: ru})
 
 function toMonths(interval, months, shiftLeft, shiftRight) {
     return function (month) {
@@ -97,6 +98,6 @@ function widthRentElement(cellDimensions, viewRentInterval) {
 }
 
 export {
-    dayOfMonth, dayOfWeek, monthName, yearOfDate, now, toMonths, adjustsInterval, isSelectInterval,
-    shifterViewedRentIntervals, isDayStartRentalInterval, isArrow, widthRentElement,
+    dayOfMonth, dayOfWeek, monthName, yearOfDate, dateToString, toMonths, adjustsInterval, isSelectInterval,
+    shifterViewedRentIntervals, isDayStartRentalInterval, isArrow, widthRentElement, getTime
 }

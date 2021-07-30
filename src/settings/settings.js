@@ -40,3 +40,5 @@ export const tariffs = {
     comfortable: 2000,
     lux: 5000
 }
+export const maxAdditionalPersons = 6
+export const priceAdditionalPerson = 500

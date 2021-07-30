@@ -20,7 +20,7 @@ export function TableBody(props) {
     const {
         days, apartments, selectInterval, apartmentId, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
-        rightSideShiftRightViewRentInterval,
+        rightSideShiftRightViewRentInterval, setRentInfo, tariffs,
     } = props
 
     const freeApartmentsCells = (apartmentsByType) => days.map(day => {
@@ -57,6 +57,8 @@ export function TableBody(props) {
                         leftSideShiftRightViewRentInterval={leftSideShiftRightViewRentInterval}
                         rightSideShiftLeftViewRentInterval={rightSideShiftLeftViewRentInterval}
                         rightSideShiftRightViewRentInterval={rightSideShiftRightViewRentInterval}
+                        setRentInfo={setRentInfo}
+                        tariffs={tariffs}
                     />
                 </React.Fragment>)}
         </>
@@ -67,7 +69,7 @@ function ApartmentsRowsByNumbers(props) {
     const {
         days, apartmentsByType, apartmentsType, apartmentIdForSelect, selectInterval, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
-        rightSideShiftRightViewRentInterval,
+        rightSideShiftRightViewRentInterval, setRentInfo, tariffs,
     } = props
 
     useEffect(() => {
@@ -109,9 +111,14 @@ function ApartmentsRowsByNumbers(props) {
                 apartmentId={id}
                 apartmentsType={apartmentsType}
                 cellDimensions={cellDimensions}
+                rentInfo={apartmentsByType[id]?.rentInfo[index]}
+                index={index}
                 isSelect={isSelectInterval(selectInterval, day, apartmentIdForSelect, id)}
                 isLeftArrow={isArrow(viewRentIntervals, apartmentsByType, id, index, 'start')}
                 isRightArrow={isArrow(viewRentIntervals, apartmentsByType, id, index, 'end')}
+                setRentInfo={setRentInfo}
+                tariffs={tariffs}
+                numberOfPersons={apartmentsByType[id].numberOfPersons}
             />
         })
     }

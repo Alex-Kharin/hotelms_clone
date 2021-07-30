@@ -15,6 +15,7 @@ const LEFT_SIDE_SHIFT_LEFT_VIEW_RENT_INTERVAL = 'LEFT_SIDE_SHIFT_LEFT_VIEW_RENT_
 const LEFT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL = 'LEFT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL'
 const RIGHT_SIDE_SHIFT_LEFT_VIEW_RENT_INTERVAL = 'RIGHT_SIDE_SHIFT_LEFT_VIEW_RENT_INTERVAL'
 const RIGHT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL = 'RIGHT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL'
+const RENT_INFO = 'RENT_INFO'
 
 const initialState = {
     apartments: {
@@ -24,26 +25,21 @@ const initialState = {
                 apartmentsNumber: 100,
                 numberOfPersons: 2,
                 rentInfo: [
-                    // {
-                    //     id: 1,
-                    //     rentInterval:{},
-                    //     personInfo:{firstName: '', lastName: '', email: '', phone: ''},
-                    //     additionalPersons: null,
-                    //     tariff: 'standard',
-                    //     percentageDiscount: 0,
-                    //     moneyDiscount: 0,
-                    //     price: 0,
-                    // },
-                    // {
-                    //     id: 2,
-                    //     rentInterval:{},
-                    //     personInfo:{firstName: '', lastName: '', email: '', phone: ''},
-                    //     additionalPersons: null,
-                    //     tariff: 'standard',
-                    //     percentageDiscount: 0,
-                    //     moneyDiscount: 0,
-                    //     price: 0,
-                    // },
+                    {
+                        id: 1,
+                        rentInterval:{
+                            start: new Date(2021,7,1,12,0,0,0),
+                            end: new Date(2021,7,10,12,0,0,0)
+                        },
+                        personInfo:{firstName: 'Иван', lastName: 'Грозный', email: 'grozni@pizdec.doc', phone: '111-222-333-4'},
+                        additionalPersons: 1,
+                        persons: 2,
+                        tariff: 'lux',
+                        percentageDiscount: 0,
+                        moneyDiscount: 500,
+                        // price: 11100,
+                    },
+
                 ],
             },
             {
@@ -132,7 +128,10 @@ const initialState = {
         width: gridColumnsWidth - 2 * borderWidth,
         height: gridAutoRowsHeight - 2 * borderWidth
     },
-    viewRentIntervals: {}
+    viewRentIntervals: {1:[{
+            start: new Date(2021,7,1,12,0,0,0),
+            end: new Date(2021,7,10,12,0,0,0)
+        }]}
 }
 
 initialState.apartments = convertObjectWithArraysToObjectWithObjects('id', initialState.apartments)
@@ -210,7 +209,15 @@ function tableHotelRoomsReducer(state = initialState, action) {
         case RIGHT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL: {
             return shifterViewedRentIntervals(state, action, 'end', addDays)
         }
-
+        case RENT_INFO: {
+            state = {...state }
+            state.apartments = {...state.apartments}
+            state.apartments[action.apartmentsType] = {...state.apartments[action.apartmentsType]}
+            state.apartments[action.apartmentsType][action.apartmentId]={...state.apartments[action.apartmentsType][action.apartmentId]}
+            state.apartments[action.apartmentsType][action.apartmentId].rentInfo = [...state.apartments[action.apartmentsType][action.apartmentId].rentInfo]
+            state.apartments[action.apartmentsType][action.apartmentId].rentInfo[action.index] = action.rentInfo
+            return state
+        }
         default:
             return state
     }
@@ -243,7 +250,13 @@ const setRentInterval = (apartmentsType, rentInterval) => ({
     apartmentsType,
     rentInterval
 })
-
+const setRentInfo = (apartmentsType, index, apartmentId, rentInfo) => ({
+    type: RENT_INFO,
+    apartmentsType,
+    index,
+    apartmentId,
+    rentInfo
+})
 
 export {
     tableHotelRoomsReducer,
@@ -258,6 +271,7 @@ export {
     leftSideShiftRightViewRentInterval,
     rightSideShiftLeftViewRentInterval,
     rightSideShiftRightViewRentInterval,
+    setRentInfo,
 
 }
 

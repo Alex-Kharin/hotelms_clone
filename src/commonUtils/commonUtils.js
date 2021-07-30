@@ -13,3 +13,10 @@ export function convertObjectWithArraysToObjectWithObjects (key, object) {
     }, {})
     return result
 }
+
+export function reversObjectProp(obj) {
+    return Object.keys(obj).reduce((acc, objKey) => {
+        acc[obj[objKey]] = objKey
+        return acc
+    }, {})
+}

@@ -2,9 +2,17 @@ import {connect} from "react-redux";
 import {TableBody} from './TableBody'
 import {
     leftSideShiftLeftViewRentInterval,
-    leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval, rightSideShiftRightViewRentInterval
+    leftSideShiftRightViewRentInterval,
+    rightSideShiftLeftViewRentInterval,
+    rightSideShiftRightViewRentInterval,
+    setRentInfo
 } from '../../store/tableHotelRoomsReducer'
-import {getApartments, getCellDimensions, getViewRentIntervals} from '../../store/tableBodyContainerSelectors'
+import {
+    getApartments,
+    getCellDimensions,
+    getTariffs,
+    getViewRentIntervals
+} from '../../store/tableBodyContainerSelectors'
 
 
 function mapStateToProps(state, ownProps) {
@@ -15,6 +23,7 @@ function mapStateToProps(state, ownProps) {
         apartments: getApartments(state),
         cellDimensions: getCellDimensions(state),
         viewRentIntervals: getViewRentIntervals(state),
+        tariffs: getTariffs(state),
     }
 }
 
@@ -23,6 +32,7 @@ const mapDispatchToProps = {
     leftSideShiftRightViewRentInterval,
     rightSideShiftLeftViewRentInterval,
     rightSideShiftRightViewRentInterval,
+    setRentInfo,
 
 }
 

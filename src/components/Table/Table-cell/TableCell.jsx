@@ -30,7 +30,10 @@ const BottomString = styled.span`
 const ModalRent = withModal(Rent)
 
 export function TableCell(props) {
-    const {isWeekend, date, apartmentId, isSelect, apartmentsType, isToday, isRent, isLeftArrow, isRightArrow} = props
+    const {
+        isWeekend, date, apartmentId, isSelect, apartmentsType, isToday, isRent, isLeftArrow, isRightArrow,
+        rentInfo, setRentInfo, index, tariffs, numberOfPersons,
+    } = props
 
     const topString = props.topString ? <TopString>{props.topString}</TopString> : null
     const bottomString = props.bottomString ? <BottomString>{props.bottomString}</BottomString> : null
@@ -45,9 +48,22 @@ export function TableCell(props) {
         >
             {isToday && <TodayMarker/>}
             {isRent &&
-            <ModalRent cellDimensions={props.cellDimensions} viewRentInterval={isRent}
-                                   isLeftArrow={isLeftArrow} isRightArrow={isRightArrow}>
-                <OrderCreationForm />
+            <ModalRent
+                cellDimensions={props.cellDimensions}
+                viewRentInterval={isRent}
+                isLeftArrow={isLeftArrow}
+                isRightArrow={isRightArrow}
+                rentInfo={rentInfo}
+            >
+                <OrderCreationForm
+                    rentInfo={rentInfo}
+                    setRentInfo={setRentInfo}
+                    index={index}
+                    apartmentsType={apartmentsType}
+                    tariffs={tariffs}
+                    apartmentId={apartmentId}
+                    numberOfPersons={numberOfPersons}
+                />
             </ModalRent>}
             {topString}
             <br/>

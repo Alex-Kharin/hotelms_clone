@@ -81,6 +81,7 @@ export default function DatePicker(props) {
             selectedDay={props.fromDay}
             value={props.fromDay}
             keepFocus={false}
+            inputProps={{name: props.name, type: props.type}}
             onDayChange={day => props.shiftFrom(day)}
         />
     );
