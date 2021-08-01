@@ -1,60 +1,66 @@
 import {ErrorMessage, Field, Form, Formik, useField, useFormikContext} from 'formik'
 import {SaveCloseButtons} from './SaveCloseButtons'
 import React, {useEffect} from 'react'
-import {dateToString} from '../Table/utils/utils'
+import {dateToString, getTime, setTimeToDate} from '../Table/utils/utils'
 import {intervalToDuration} from 'date-fns'
 import {Icon} from '../simpleElements/Icon'
 import {reversObjectProp} from '../../commonUtils/commonUtils'
-import {maxAdditionalPersons, priceAdditionalPerson} from '../../settings/settings'
+import {currentCurrency, maxAdditionalPersons, priceAdditionalPerson} from '../../settings/settings'
 import styled from 'styled-components'
 
-function AddsSum(props){
-    const {fieldName} = props
+
+const LikeFormField = styled.span`
+  border-radius: 3px;
+  border: 1px solid lightgrey;
+  border-left: cornflowerblue 5px solid;
+  background-color: white;
+  font-size: 1.1em;
+  margin: 1em;
+  text-align: center;
+  padding: 0.2em 0.5em;
+`
+
+function InfoFormField(props){
+    const {fieldName, isAdditionalPersons} = props
     let {values:{[fieldName]: field}, } = useFormikContext()
     const personsAddsSum = field * priceAdditionalPerson || false
     return (
         <>
-            {personsAddsSum && <span>+{personsAddsSum}</span>}
+            {isAdditionalPersons && personsAddsSum && <>=<LikeFormField>{personsAddsSum} {currentCurrency}</LikeFormField></>}
+            {!isAdditionalPersons && <>=<LikeFormField>{field} {currentCurrency}</LikeFormField></>}
         </>
     )
 }
 
-function getPrice(days, tariff=0, percentageDiscount, moneyDiscount, additionalPersons) {
-    let price
-    percentageDiscount = Number(percentageDiscount) || 0
-    moneyDiscount = Number(moneyDiscount) || 0
+function getPrice(days, tariff=0, additionalPersons) {
     additionalPersons=Number(additionalPersons) || 0
     tariff=Number(tariff) || 0
-    const personsAddsSum = additionalPersons * priceAdditionalPerson
+    const price = days * tariff + additionalPersons * priceAdditionalPerson
 
-    const basePrice = days * tariff + personsAddsSum
-    price = basePrice
-    if (percentageDiscount) {
-        price = basePrice * (1 - percentageDiscount/100)
-    } else if (moneyDiscount && !percentageDiscount) {
-        price = basePrice - moneyDiscount
-    }
     return Number(price.toFixed(2))
 }
 
 function PriceField(propsAll) {
     const {calcFunction, ...props} = propsAll
-    let {values:{tariff, percentageDiscount, moneyDiscount, additionalPersons, price}, setFieldValue, touched, ...cont} = useFormikContext()
+    const {
+        values:{
+            tariff,
+            percentageDiscount,
+            moneyDiscount,
+            additionalPersons,
+        },
+        setFieldValue,
+    } = useFormikContext()
     const [field, meta] = useField(props.name)
-    // tariff = Number(tariff) || 0
-    // percentageDiscount = Number(percentageDiscount) || 0
-    // console.log(field, meta)
-    // console.log(cont)
-    useEffect(() => {
-        if ( tariff ) {
-            console.log(percentageDiscount,typeof percentageDiscount, moneyDiscount, typeof moneyDiscount)
-            setFieldValue(props.name, `${calcFunction(tariff, percentageDiscount, moneyDiscount, additionalPersons)}`);
-        }
-        if (percentageDiscount) {
-            setFieldValue('moneyDiscount', `${(price*percentageDiscount/100).toFixed(2)}`)
-        }
 
-    }, [tariff, percentageDiscount, moneyDiscount, additionalPersons, props.name, price]);
+    useEffect(() => {
+        const price = calcFunction(tariff, additionalPersons)
+        const moneyDiscountCalc = Number((price * percentageDiscount/100).toFixed(2)) || Number(moneyDiscount)
+
+        setFieldValue(props.name, `${price-moneyDiscountCalc} ${currentCurrency}`)
+        setFieldValue('moneyDiscount', `${moneyDiscountCalc}`)
+
+    }, [tariff, percentageDiscount, additionalPersons, moneyDiscount]);
 
     return (
         <>
@@ -74,18 +80,20 @@ export function OrderCreationForm(props) {
         tariff = '',
         percentageDiscount = 0,
         moneyDiscount = 0,
-        // price = 0,
+        price = 0,
     } = rentInfo
 
-    let sum = getPrice(intervalToDuration(rentInterval).days, tariffs[tariff] || tariffs[apartmentsType], percentageDiscount, moneyDiscount, additionalPersons)
-    let calcFunc = (tariff, percentageDiscount, moneyDiscount, additionalPersons) => getPrice(intervalToDuration(rentInterval).days, tariff, percentageDiscount, moneyDiscount, additionalPersons)
+    let calculatedPrice = getPrice(intervalToDuration(rentInterval).days, tariffs[tariff] || tariffs[apartmentsType], additionalPersons) - moneyDiscount
+    let calcFunc = (tariff, additionalPersons) => getPrice(intervalToDuration(rentInterval).days, tariff, additionalPersons)
 
     return (
         <Formik
             initialValues={{
                 firstName, lastName, email, phone, additionalPersons, percentageDiscount, moneyDiscount, persons,
+                checkInTime: getTime(rentInterval.start),
+                checkOutTime: getTime(rentInterval.end),
                 tariff: tariffs[tariff] || tariffs[apartmentsType],
-                price: sum,
+                price: price || calculatedPrice,
                 checkIn: dateToString(rentInterval.start),
                 nights: intervalToDuration(rentInterval).days,
                 checkOut: dateToString(rentInterval.end)
@@ -93,7 +101,7 @@ export function OrderCreationForm(props) {
 
             onSubmit={(values) => {
                 const newRentInfo ={
-                    rentInterval,
+                    rentInterval: {start: setTimeToDate(rentInterval.start, values.checkInTime), end: setTimeToDate(rentInterval.end, values.checkOutTime)},
                     personInfo:{
                         firstName: values.firstName,
                         lastName: values.lastName,
@@ -135,13 +143,21 @@ export function OrderCreationForm(props) {
                 <Field name="checkIn" type="text" readOnly/>
                 <ErrorMessage name="checkIn" />
 
+                <label htmlFor="checkInTime" />
+                <Field name="checkInTime" type="time" />
+                <ErrorMessage name="checkInTime" />
+
                 <label htmlFor="nights">Ночей</label>
-                <Field name="nights" type="text" readOnly/>
+                <Field name="nights" type="text" size="4" readOnly/>
                 <ErrorMessage name="nights" />
 
                 <label htmlFor="checkOut">Выезд</label>
                 <Field name="checkOut" type="text" readOnly/>
                 <ErrorMessage name="checkOut" />
+
+                <label htmlFor="checkOutTime"/>
+                <Field name="checkOutTime" type="time" />
+                <ErrorMessage name="checkOutTime" />
 
                 <hr />
 
@@ -158,7 +174,7 @@ export function OrderCreationForm(props) {
                     {[...Array(maxAdditionalPersons).keys()].map(num => <option value={num} key={num}>{num}</option> )}
                 </Field>
                 <ErrorMessage name="additionalPersons" />
-                <AddsSum fieldName={'additionalPersons'}/>
+                <InfoFormField fieldName={'additionalPersons'} isAdditionalPersons/>
 
                 <hr />
 
@@ -167,6 +183,7 @@ export function OrderCreationForm(props) {
                     {Object.keys(tariffs).map(tariff => <option value={tariffs[tariff]} key={tariff}>{tariff}</option>)}
                 </Field>
                 <ErrorMessage name="tariff" />
+                <InfoFormField fieldName={'tariff'} />
 
                 <label htmlFor="percentageDiscount">Скидка %</label>
                 <Field name="percentageDiscount" type="number" min={0} max={100}/>
@@ -174,13 +191,13 @@ export function OrderCreationForm(props) {
 
                 <label htmlFor="moneyDiscount">Скидка</label>
                 <Field name="moneyDiscount" type="text"/>
+                <span>{currentCurrency}</span>
                 <ErrorMessage name="moneyDiscount" />
 
                 <hr />
 
                 <label htmlFor="price">Сумма</label>
-                {/*<Field name="price" type="text" readOnly/>*/}
-                <PriceField name="price" type="text" readOnly calcFunction={calcFunc}/>
+                <PriceField name="price" type="text" readOnly calcFunction={calcFunc} />
                 <ErrorMessage name="price" />
 
                 <SaveCloseButtons closeHandler={closeModal}/>

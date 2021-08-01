@@ -15,6 +15,10 @@ const RentWrapper = styled.div`
   min-width: ${({cellDimensions}) => cellDimensions.width / 2 - 1}px;
   height: ${({cellDimensions}) => cellDimensions.height - 2}px;
   z-index: ${rentElementsZIndex};
+  
+  :hover {
+    cursor: pointer;
+  }
 `
 
 const Arrow = styled(Icon)`
@@ -50,8 +54,8 @@ export function Rent(props) {
             {isRightArrow && <Arrow position={'right'}>arrow_right</Arrow>}
             <FullName>{firstName} {lastName}</FullName>
             <Tag top={0} right={0}>{price}</Tag>
-            <Tag bottom={0} right={0} background={'#2c79dc'}>{getTime(rentInterval.start)}</Tag>
-            <Tag bottom={0} left={0} background={'#2c79dc'}>{getTime(rentInterval.end)}</Tag>
+            <Tag bottom={0} left={0} background={'#2c79dc'}>{getTime(rentInterval.start)}</Tag>
+            <Tag bottom={0} right={0} background={'#2c79dc'}>{getTime(rentInterval.end)}</Tag>
         </RentWrapper>
     )
 }

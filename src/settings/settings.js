@@ -35,6 +35,8 @@ export const gridTemplateFirstColumnWidth = '250px'
 
 // **************************************************************** //
 export const time = {hours:12, minutes:0, seconds:0, milliseconds:0}
+
+// it should be a flat structure
 export const tariffs = {
     standard: 1000,
     comfortable: 2000,
@@ -42,3 +44,4 @@ export const tariffs = {
 }
 export const maxAdditionalPersons = 6
 export const priceAdditionalPerson = 500
+export const currentCurrency = 'руб'

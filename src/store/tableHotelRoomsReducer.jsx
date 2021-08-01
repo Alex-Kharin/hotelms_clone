@@ -16,6 +16,7 @@ const LEFT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL = 'LEFT_SIDE_SHIFT_RIGHT_VIEW_REN
 const RIGHT_SIDE_SHIFT_LEFT_VIEW_RENT_INTERVAL = 'RIGHT_SIDE_SHIFT_LEFT_VIEW_RENT_INTERVAL'
 const RIGHT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL = 'RIGHT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL'
 const RENT_INFO = 'RENT_INFO'
+const OPEN_MODAL = 'OPEN_MODAL'
 
 const initialState = {
     apartments: {
@@ -37,7 +38,7 @@ const initialState = {
                         tariff: 'lux',
                         percentageDiscount: 0,
                         moneyDiscount: 500,
-                        // price: 11100,
+                        price: 11100,
                     },
 
                 ],
@@ -122,6 +123,7 @@ const initialState = {
     },
     tariffs,
     isSelect: false,
+    isOpenModal: false,
     selectInterval: {start: null, end: null},
     apartmentId: null,
     cellDimensions:{
@@ -218,12 +220,19 @@ function tableHotelRoomsReducer(state = initialState, action) {
             state.apartments[action.apartmentsType][action.apartmentId].rentInfo[action.index] = action.rentInfo
             return state
         }
+        case OPEN_MODAL: {
+            return {
+                ...state,
+                isOpenModal: action.isOpenModal
+            }
+        }
         default:
             return state
     }
 }
 
 const setSelecting = (isSelect) => ({type: IS_SELECT, isSelect})
+const setIsOpenModal = (isOpenModal) => ({type: OPEN_MODAL, isOpenModal})
 const setStartSelection = (startSelection) => ({type: START_SELECTION_INTERVAL, startSelection})
 const setEndSelection = (endSelection) => ({type: END_SELECTION_INTERVAL, endSelection})
 const setApartmentId = (apartmentId) => ({type: APARTMENT_ID, apartmentId})
@@ -272,6 +281,7 @@ export {
     rightSideShiftLeftViewRentInterval,
     rightSideShiftRightViewRentInterval,
     setRentInfo,
+    setIsOpenModal,
 
 }
 

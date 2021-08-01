@@ -22,6 +22,7 @@ select, input{
 }
 select,
 input[type="number"],
+input[type="time"],
 input[type="email"],
 input[type="text"]{
   height: 1.5rem;

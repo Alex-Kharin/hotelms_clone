@@ -4,10 +4,10 @@ import {
     format,
     intervalToDuration,
     isAfter,
-    isBefore,
     isSameDay,
     isWithinInterval,
-    startOfMonth
+    startOfMonth,
+    set, startOfDay,
 } from 'date-fns'
 import {ru} from 'date-fns/locale'
 import {Button} from '../../simpleElements/Button'
@@ -22,6 +22,11 @@ const monthName = (month) => format(month, 'LLLL', {locale: ru})
 const yearOfDate = (date) => format(date, 'y', {locale: ru})
 const dateToString = (date) => format(date, 'dd-MM-y', {locale: ru})
 const getTime = (date) => format(date, 'HH:mm', {locale: ru})
+const isDayBefore = (day1, day2) => startOfDay(day1) < startOfDay(day2)
+const setTimeToDate = (date, time) => {
+    const [hours, minutes] = time.split(':')
+    return  set(date, {hours, minutes})
+}
 
 function toMonths(interval, months, shiftLeft, shiftRight) {
     return function (month) {
@@ -51,7 +56,7 @@ function toMonths(interval, months, shiftLeft, shiftRight) {
 }
 
 function adjustsInterval(interval) {
-    return isBefore(interval.end, interval.start)
+    return isDayBefore(interval.end, interval.start)
         ? {start: interval.end, end: interval.start}
         : interval
 }
@@ -87,8 +92,8 @@ function isDayStartRentalInterval(array, day) {
 
 function isArrow(viewRentIntervals, apartmentsByType, id, index, rangeInterval) {
     return rangeInterval === 'start'
-    ? viewRentIntervals[id] && isBefore(apartmentsByType[id]?.rentInfo[index]?.rentInterval.start, viewRentIntervals[id][index]?.start)
-    : viewRentIntervals[id] && isBefore(viewRentIntervals[id][index]?.end, apartmentsByType[id]?.rentInfo[index]?.rentInterval.end)
+    ? viewRentIntervals[id] && isDayBefore(apartmentsByType[id]?.rentInfo[index]?.rentInterval.start, viewRentIntervals[id][index]?.start)
+    : viewRentIntervals[id] && isDayBefore(viewRentIntervals[id][index]?.end, apartmentsByType[id]?.rentInfo[index]?.rentInterval.end)
 }
 
 // = width*duration + 2*duration*borderWidth
@@ -99,5 +104,6 @@ function widthRentElement(cellDimensions, viewRentInterval) {
 
 export {
     dayOfMonth, dayOfWeek, monthName, yearOfDate, dateToString, toMonths, adjustsInterval, isSelectInterval,
-    shifterViewedRentIntervals, isDayStartRentalInterval, isArrow, widthRentElement, getTime
+    shifterViewedRentIntervals, isDayStartRentalInterval, isArrow, widthRentElement, getTime, setTimeToDate,
+    isDayBefore,
 }

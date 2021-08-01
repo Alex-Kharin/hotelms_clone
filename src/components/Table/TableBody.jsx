@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
-import {areIntervalsOverlapping, isBefore, isSameDay, isWeekend, } from 'date-fns'
+import {areIntervalsOverlapping, isSameDay, isWeekend, } from 'date-fns'
 import {TableCell} from './Table-cell/TableCell'
-import {dayOfMonth, isArrow, isDayStartRentalInterval, isSelectInterval} from './utils/utils'
+import {dayOfMonth, isArrow, isDayBefore, isDayStartRentalInterval, isSelectInterval} from './utils/utils'
 import {TableRow} from './TableRow'
 import styled from 'styled-components'
 import {border, displayFlexAlignCenter, weekendColor} from '../../settings/settings'
@@ -20,7 +20,7 @@ export function TableBody(props) {
     const {
         days, apartments, selectInterval, apartmentId, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
-        rightSideShiftRightViewRentInterval, setRentInfo, tariffs,
+        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal
     } = props
 
     const freeApartmentsCells = (apartmentsByType) => days.map(day => {
@@ -59,6 +59,8 @@ export function TableBody(props) {
                         rightSideShiftRightViewRentInterval={rightSideShiftRightViewRentInterval}
                         setRentInfo={setRentInfo}
                         tariffs={tariffs}
+                        isOpenModal={isOpenModal}
+                        setIsOpenModal={setIsOpenModal}
                     />
                 </React.Fragment>)}
         </>
@@ -69,7 +71,7 @@ function ApartmentsRowsByNumbers(props) {
     const {
         days, apartmentsByType, apartmentsType, apartmentIdForSelect, selectInterval, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
-        rightSideShiftRightViewRentInterval, setRentInfo, tariffs,
+        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal,
     } = props
 
     useEffect(() => {
@@ -82,16 +84,16 @@ function ApartmentsRowsByNumbers(props) {
                     const firstTableDay = days[0]
                     const lastTableDay = days[days.length - 1]
 
-                    if (!isSameDay(start, end) && isBefore(start, firstTableDay)) {
+                    if (!isSameDay(start, end) && isDayBefore(start, firstTableDay)) {
                         leftSideShiftLeftViewRentInterval(id, i)
                     }
-                    if (isBefore(lastTableDay, end)) {
+                    if (isDayBefore(lastTableDay, end)) {
                         rightSideShiftLeftViewRentInterval(id, i)
                     }
-                    if (!isSameDay(start, apartmentRentInterval?.start) && isBefore(firstTableDay, start)) {
+                    if (!isSameDay(start, apartmentRentInterval?.start) && isDayBefore(firstTableDay, start)) {
                         leftSideShiftRightViewRentInterval(id, i)
                     }
-                    if (!isSameDay(end, apartmentRentInterval?.end) && isBefore(end, lastTableDay)) {
+                    if (!isSameDay(end, apartmentRentInterval?.end) && isDayBefore(end, lastTableDay)) {
                         rightSideShiftRightViewRentInterval(id, i)
                     }
                 }
@@ -119,6 +121,8 @@ function ApartmentsRowsByNumbers(props) {
                 setRentInfo={setRentInfo}
                 tariffs={tariffs}
                 numberOfPersons={apartmentsByType[id].numberOfPersons}
+                isOpenModal={isOpenModal}
+                setIsOpenModal={setIsOpenModal}
             />
         })
     }

@@ -5,11 +5,12 @@ import {
     leftSideShiftRightViewRentInterval,
     rightSideShiftLeftViewRentInterval,
     rightSideShiftRightViewRentInterval,
+    setIsOpenModal,
     setRentInfo
 } from '../../store/tableHotelRoomsReducer'
 import {
     getApartments,
-    getCellDimensions,
+    getCellDimensions, getIsOpenModal,
     getTariffs,
     getViewRentIntervals
 } from '../../store/tableBodyContainerSelectors'
@@ -24,6 +25,7 @@ function mapStateToProps(state, ownProps) {
         cellDimensions: getCellDimensions(state),
         viewRentIntervals: getViewRentIntervals(state),
         tariffs: getTariffs(state),
+        isOpenModal: getIsOpenModal(state),
     }
 }
 
@@ -33,6 +35,7 @@ const mapDispatchToProps = {
     rightSideShiftLeftViewRentInterval,
     rightSideShiftRightViewRentInterval,
     setRentInfo,
+    setIsOpenModal,
 
 }
 

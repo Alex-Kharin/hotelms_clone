@@ -18,7 +18,8 @@ export function Table(props) {
 
     const {days, interval, setApartmentId, setSelecting, setStartSelection,
         selectInterval, setRentInterval, clearSelectedDays, isSelect, apartmentId, setEndSelection,
-        daysInTable} = props
+        daysInTable, setIsOpenModal,
+    } = props
 
     function handleSelect(event) {
         const target = event.target.closest('div')
@@ -35,8 +36,10 @@ export function Table(props) {
                 if (selectInterval.start
                     && selectInterval.end
                     && !isSameDay(selectInterval.start, selectInterval.end)
-                    && target.dataset.apartment_id === apartmentId) {
+                    && target.dataset.apartment_id === apartmentId)
+                {
                     setRentInterval(target.dataset.apartments_type, adjustsInterval(selectInterval))
+                    setIsOpenModal(true)
                 }
                 clearSelectedDays()
                 setSelecting(false)
