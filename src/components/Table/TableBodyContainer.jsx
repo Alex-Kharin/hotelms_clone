@@ -1,6 +1,7 @@
 import {connect} from "react-redux";
 import {TableBody} from './TableBody'
 import {
+    cancelRent,
     leftSideShiftLeftViewRentInterval,
     leftSideShiftRightViewRentInterval,
     rightSideShiftLeftViewRentInterval,
@@ -10,7 +11,8 @@ import {
 } from '../../store/tableHotelRoomsReducer'
 import {
     getApartments,
-    getCellDimensions, getIsOpenModal,
+    getCellDimensions,
+    getIsOpenModal,
     getTariffs,
     getViewRentIntervals
 } from '../../store/tableBodyContainerSelectors'
@@ -36,6 +38,7 @@ const mapDispatchToProps = {
     rightSideShiftRightViewRentInterval,
     setRentInfo,
     setIsOpenModal,
+    cancelRent,
 
 }
 

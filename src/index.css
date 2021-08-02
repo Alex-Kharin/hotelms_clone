@@ -10,6 +10,15 @@ body {
 div {
   box-sizing: border-box;
 }
+textarea {
+  border-radius: 3px;
+  border: 1px solid lightgrey;
+  border-left: cornflowerblue 5px solid;
+  font-size: 1.1em;
+  margin: 1em;
+  padding: 0.3em;
+  vertical-align: top;
+}
 
 select, input{
   border-radius: 3px;
@@ -28,6 +37,10 @@ input[type="text"]{
   height: 1.5rem;
   font-size: 1.1em;
   margin: 1em;
+}
+
+input[type="number"] {
+  width: 5em;
 }
 
 code {

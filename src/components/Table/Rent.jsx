@@ -52,7 +52,7 @@ export function Rent(props) {
         <RentWrapper onClick={openModal} cellDimensions={cellDimensions} viewRentInterval={viewRentInterval}>
             {isLeftArrow && <Arrow position={'left'}>arrow_left</Arrow>}
             {isRightArrow && <Arrow position={'right'}>arrow_right</Arrow>}
-            <FullName>{firstName} {lastName}</FullName>
+            <FullName>{lastName} {firstName}</FullName>
             <Tag top={0} right={0}>{price}</Tag>
             <Tag bottom={0} left={0} background={'#2c79dc'}>{getTime(rentInterval.start)}</Tag>
             <Tag bottom={0} right={0} background={'#2c79dc'}>{getTime(rentInterval.end)}</Tag>

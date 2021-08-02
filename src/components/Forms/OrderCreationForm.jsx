@@ -5,19 +5,44 @@ import {dateToString, getTime, setTimeToDate} from '../Table/utils/utils'
 import {intervalToDuration} from 'date-fns'
 import {Icon} from '../simpleElements/Icon'
 import {reversObjectProp} from '../../commonUtils/commonUtils'
-import {currentCurrency, maxAdditionalPersons, priceAdditionalPerson} from '../../settings/settings'
+import {currentCurrency, gridAutoRowsHeight, maxAdditionalPersons, priceAdditionalPerson} from '../../settings/settings'
 import styled from 'styled-components'
+import {Button} from '../simpleElements/Button'
+import * as Yup from 'yup'
 
 
 const LikeFormField = styled.span`
   border-radius: 3px;
   border: 1px solid lightgrey;
-  border-left: cornflowerblue 5px solid;
+  border-left: #43b25a 5px solid;
   background-color: white;
   font-size: 1.1em;
   margin: 1em;
   text-align: center;
   padding: 0.2em 0.5em;
+`
+
+const ErrorMessageElement = styled.div`
+color: red;
+`
+
+const TitleWrapper = styled.div`
+  height: ${gridAutoRowsHeight}px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2em;
+`
+
+const Delete = styled.div`
+  float: right;
+
+  &:hover{
+    ::before{
+      content: "${props => props.message}";
+      color: red;
+      font-weight: bold;
+    }
+  }
 `
 
 function InfoFormField(props){
@@ -55,10 +80,10 @@ function PriceField(propsAll) {
 
     useEffect(() => {
         const price = calcFunction(tariff, additionalPersons)
-        const moneyDiscountCalc = Number((price * percentageDiscount/100).toFixed(2)) || Number(moneyDiscount)
+        const moneyDiscountCalc = Number((price * percentageDiscount/100).toFixed(2)) || moneyDiscount
 
         setFieldValue(props.name, `${price-moneyDiscountCalc} ${currentCurrency}`)
-        setFieldValue('moneyDiscount', `${moneyDiscountCalc}`)
+        setFieldValue('moneyDiscount', moneyDiscountCalc)
 
     }, [tariff, percentageDiscount, additionalPersons, moneyDiscount]);
 
@@ -71,7 +96,9 @@ function PriceField(propsAll) {
 }
 
 export function OrderCreationForm(props) {
-    const {closeModal, rentInfo, setRentInfo, index, apartmentsType, apartmentId, tariffs, numberOfPersons} = props
+    const {
+        closeModal, rentInfo, setRentInfo, index, apartmentsType, apartmentId, tariffs, numberOfPersons, cancelRent,
+    } = props
     const {
         rentInterval,
         personInfo:{firstName='Аноним', lastName='', email='', phone=''}={},
@@ -81,15 +108,18 @@ export function OrderCreationForm(props) {
         percentageDiscount = 0,
         moneyDiscount = 0,
         price = 0,
+        comment='',
     } = rentInfo
 
-    let calculatedPrice = getPrice(intervalToDuration(rentInterval).days, tariffs[tariff] || tariffs[apartmentsType], additionalPersons) - moneyDiscount
-    let calcFunc = (tariff, additionalPersons) => getPrice(intervalToDuration(rentInterval).days, tariff, additionalPersons)
+    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+    const calculatedPrice = getPrice(intervalToDuration(rentInterval).days, tariffs[tariff] || tariffs[apartmentsType], additionalPersons) - moneyDiscount
+    const calcFunc = (tariff, additionalPersons) => getPrice(intervalToDuration(rentInterval).days, tariff, additionalPersons)
 
     return (
         <Formik
             initialValues={{
                 firstName, lastName, email, phone, additionalPersons, percentageDiscount, moneyDiscount, persons,
+                comment,
                 checkInTime: getTime(rentInterval.start),
                 checkOutTime: getTime(rentInterval.end),
                 tariff: tariffs[tariff] || tariffs[apartmentsType],
@@ -98,6 +128,18 @@ export function OrderCreationForm(props) {
                 nights: intervalToDuration(rentInterval).days,
                 checkOut: dateToString(rentInterval.end)
             }}
+
+            validationSchema={Yup.object({
+                firstName: Yup.string()
+                    .max(15, 'Имя доложно содержать не более 15 символов')
+                    .required('Имя доложно быть обязательно'),
+                lastName: Yup.string()
+                    .max(20, 'Фамилия должна содержать не более 20 символов')
+                    .required('Фамилия должна быть обязательно'),
+                email: Yup.string().email('E-mail не валиден').required('E-mail обязателен'),
+                phone: Yup.string().matches(phoneRegExp, 'Номер не валиден'),
+
+            })}
 
             onSubmit={(values) => {
                 const newRentInfo ={
@@ -111,53 +153,55 @@ export function OrderCreationForm(props) {
                     additionalPersons: values.additionalPersons,
                     persons: values.persons,
                     tariff: reversObjectProp(tariffs)[values.tariff],
-                    percentageDiscount: Number(values.percentageDiscount),
+                    percentageDiscount: values.percentageDiscount,
                     moneyDiscount: values.moneyDiscount,
                     price: values.price,
+                    comment: values.comment,
                 }
                 console.log(values)
                 setRentInfo(apartmentsType, index, apartmentId, newRentInfo)
             }}
-
         >
             <Form>
+                <TitleWrapper>
+                    Создание Заказа
+                    <Delete message='Удалить сразу и навсегда! Бесповоротно! БЕЗ ДОПОЛНИТЕЛЬНЫХ ПРЕДУПРЕЖДЕНИЙ!!!'>
+                        <Button iconName={"delete"} background={"red"} type={"button"} onClick={()=>cancelRent(apartmentsType, index, apartmentId)} />
+                    </Delete>
+                </TitleWrapper>
+
                 <label htmlFor="firstName">Имя</label>
                 <Field name="firstName" type="text" autoFocus={true}/>
-                <ErrorMessage name="firstName" />
 
-                <label htmlFor="lastName">Отчество</label>
+                <label htmlFor="lastName">Фамилия</label>
                 <Field name="lastName" type="text" />
-                <ErrorMessage name="lastName" />
+                <ErrorMessage component={ErrorMessageElement} name="firstName" />
+                <ErrorMessage component={ErrorMessageElement} name="lastName" />
                 <br/>
                 <label htmlFor="email">E-mail</label>
                 <Field name="email" type="email" />
-                <ErrorMessage name="email" />
 
                 <label htmlFor="phone">Телефон</label>
                 <Field name="phone" type="text" />
-                <ErrorMessage name="phone" />
+                <ErrorMessage component={ErrorMessageElement} name="email" />
+                <ErrorMessage component={ErrorMessageElement} name="phone" />
 
                 <hr />
 
                 <label htmlFor="checkIn">Заезд</label>
                 <Field name="checkIn" type="text" readOnly/>
-                <ErrorMessage name="checkIn" />
 
                 <label htmlFor="checkInTime" />
                 <Field name="checkInTime" type="time" />
-                <ErrorMessage name="checkInTime" />
 
                 <label htmlFor="nights">Ночей</label>
                 <Field name="nights" type="text" size="4" readOnly/>
-                <ErrorMessage name="nights" />
 
                 <label htmlFor="checkOut">Выезд</label>
                 <Field name="checkOut" type="text" readOnly/>
-                <ErrorMessage name="checkOut" />
 
                 <label htmlFor="checkOutTime"/>
                 <Field name="checkOutTime" type="time" />
-                <ErrorMessage name="checkOutTime" />
 
                 <hr />
 
@@ -165,7 +209,6 @@ export function OrderCreationForm(props) {
                     <Icon>group</Icon>
                 </label>
                 <Field name="persons" type="number" min={1} max={numberOfPersons} title={`от 1 до ${numberOfPersons}`}/>
-                <ErrorMessage name="persons" />
 
                 <label htmlFor="additionalPersons">
                     <Icon>group_add</Icon>
@@ -173,7 +216,6 @@ export function OrderCreationForm(props) {
                 <Field name="additionalPersons" as="select">
                     {[...Array(maxAdditionalPersons).keys()].map(num => <option value={num} key={num}>{num}</option> )}
                 </Field>
-                <ErrorMessage name="additionalPersons" />
                 <InfoFormField fieldName={'additionalPersons'} isAdditionalPersons/>
 
                 <hr />
@@ -182,23 +224,24 @@ export function OrderCreationForm(props) {
                 <Field name="tariff" as="select">
                     {Object.keys(tariffs).map(tariff => <option value={tariffs[tariff]} key={tariff}>{tariff}</option>)}
                 </Field>
-                <ErrorMessage name="tariff" />
                 <InfoFormField fieldName={'tariff'} />
 
                 <label htmlFor="percentageDiscount">Скидка %</label>
                 <Field name="percentageDiscount" type="number" min={0} max={100}/>
-                <ErrorMessage name="percentageDiscount" />
 
                 <label htmlFor="moneyDiscount">Скидка</label>
-                <Field name="moneyDiscount" type="text"/>
+                <Field name="moneyDiscount" type="number" min={0}/>
                 <span>{currentCurrency}</span>
-                <ErrorMessage name="moneyDiscount" />
 
                 <hr />
 
                 <label htmlFor="price">Сумма</label>
                 <PriceField name="price" type="text" readOnly calcFunction={calcFunc} />
-                <ErrorMessage name="price" />
+
+                <hr />
+
+                <label htmlFor="comment">Комментрий :</label>
+                <Field name="comment" as="textarea" rows={5} cols={70}/>
 
                 <SaveCloseButtons closeHandler={closeModal}/>
             </Form>

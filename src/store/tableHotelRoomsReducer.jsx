@@ -17,6 +17,7 @@ const RIGHT_SIDE_SHIFT_LEFT_VIEW_RENT_INTERVAL = 'RIGHT_SIDE_SHIFT_LEFT_VIEW_REN
 const RIGHT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL = 'RIGHT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL'
 const RENT_INFO = 'RENT_INFO'
 const OPEN_MODAL = 'OPEN_MODAL'
+const CANCEL_RENT = 'CANCEL_RENT'
 
 const initialState = {
     apartments: {
@@ -226,6 +227,18 @@ function tableHotelRoomsReducer(state = initialState, action) {
                 isOpenModal: action.isOpenModal
             }
         }
+        case CANCEL_RENT: {
+            state = {...state }
+            state.apartments = {...state.apartments}
+            state.apartments[action.apartmentsType] = {...state.apartments[action.apartmentsType]}
+            state.apartments[action.apartmentsType][action.apartmentId]={...state.apartments[action.apartmentsType][action.apartmentId]}
+            state.apartments[action.apartmentsType][action.apartmentId].rentInfo=
+                state.apartments[action.apartmentsType][action.apartmentId].rentInfo.filter((_, index) => index !== action.index)
+
+            state.viewRentIntervals = {...state.viewRentIntervals}
+            state.viewRentIntervals[action.apartmentId] = state.viewRentIntervals[action.apartmentId].filter((_,index)=> index !== action.index)
+            return state
+        }
         default:
             return state
     }
@@ -266,6 +279,12 @@ const setRentInfo = (apartmentsType, index, apartmentId, rentInfo) => ({
     apartmentId,
     rentInfo
 })
+const cancelRent = (apartmentsType, index, apartmentId) => ({
+    type: CANCEL_RENT,
+    apartmentsType,
+    index,
+    apartmentId
+})
 
 export {
     tableHotelRoomsReducer,
@@ -282,6 +301,7 @@ export {
     rightSideShiftRightViewRentInterval,
     setRentInfo,
     setIsOpenModal,
+    cancelRent,
 
 }
 

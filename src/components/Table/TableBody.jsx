@@ -20,7 +20,7 @@ export function TableBody(props) {
     const {
         days, apartments, selectInterval, apartmentId, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
-        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal
+        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal, cancelRent,
     } = props
 
     const freeApartmentsCells = (apartmentsByType) => days.map(day => {
@@ -61,6 +61,7 @@ export function TableBody(props) {
                         tariffs={tariffs}
                         isOpenModal={isOpenModal}
                         setIsOpenModal={setIsOpenModal}
+                        cancelRent={cancelRent}
                     />
                 </React.Fragment>)}
         </>
@@ -71,7 +72,7 @@ function ApartmentsRowsByNumbers(props) {
     const {
         days, apartmentsByType, apartmentsType, apartmentIdForSelect, selectInterval, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
-        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal,
+        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal, cancelRent,
     } = props
 
     useEffect(() => {
@@ -123,6 +124,7 @@ function ApartmentsRowsByNumbers(props) {
                 numberOfPersons={apartmentsByType[id].numberOfPersons}
                 isOpenModal={isOpenModal}
                 setIsOpenModal={setIsOpenModal}
+                cancelRent={cancelRent}
             />
         })
     }

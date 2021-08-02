@@ -6,7 +6,7 @@ import {CommonIcon} from './Icon'
 
 const Btn = styled.button`
   font-size: ${({size}) => size || '1.2em'};
-  background-color: ${btnColor};
+  background-color: ${({background}) => background || btnColor};
   border-radius: 3px;
   min-height: 30px;
   min-width: ${gridAutoRowsHeight};
@@ -18,10 +18,10 @@ const Btn = styled.button`
 `
 
 export function Button(props) {
-    const { onClick, size, isFlex, iconName, children, type} = props
+    const { onClick, size, isFlex, iconName, children, type, background} = props
 
     return (
-        <Btn onClick={onClick} size={size} isFlex={isFlex} type={type}>
+        <Btn onClick={onClick} size={size} isFlex={isFlex} type={type} background={background}>
             {iconName && <CommonIcon>{iconName}</CommonIcon>}
             <span>{children}</span>
         </Btn>
