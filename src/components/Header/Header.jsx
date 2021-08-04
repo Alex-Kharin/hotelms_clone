@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import {border, displayFlexAlignCenter, secondaryColor} from '../../settings/settings'
 import {Icon} from '../simpleElements/Icon'
 import {CommonSettingsForm} from '../Forms/CommonSettingsForm'
+import {Report} from './Reports'
 
 
 const HeaderWrapper = styled.header`
@@ -38,7 +39,9 @@ export function Header(props) {
                     <CommonSettingsForm />
                 </TableSettingsMenuItem>
 
-                <MenuItem iconName={'format_list_bulleted'} menuItemTitle={'Отчеты'} />
+                <TableSettingsMenuItem iconName={'format_list_bulleted'} menuItemTitle={'Отчеты'}>
+                    <Report />
+                </TableSettingsMenuItem>
             </LeftSideMenu>
 
             <div>
