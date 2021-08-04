@@ -45,56 +45,6 @@ const Delete = styled.div`
   }
 `
 
-function InfoFormField(props){
-    const {fieldName, isAdditionalPersons} = props
-    let {values:{[fieldName]: field}, } = useFormikContext()
-    const personsAddsSum = field * priceAdditionalPerson || false
-    return (
-        <>
-            {isAdditionalPersons && personsAddsSum && <>=<LikeFormField>{personsAddsSum} {currentCurrency}</LikeFormField></>}
-            {!isAdditionalPersons && <>=<LikeFormField>{field} {currentCurrency}</LikeFormField></>}
-        </>
-    )
-}
-
-function getPrice(days, tariff=0, additionalPersons) {
-    additionalPersons=Number(additionalPersons) || 0
-    tariff=Number(tariff) || 0
-    const price = days * tariff + additionalPersons * priceAdditionalPerson
-
-    return Number(price.toFixed(2))
-}
-
-function PriceField(propsAll) {
-    const {calcFunction, ...props} = propsAll
-    const {
-        values:{
-            tariff,
-            percentageDiscount,
-            moneyDiscount,
-            additionalPersons,
-        },
-        setFieldValue,
-    } = useFormikContext()
-    const [field, meta] = useField(props.name)
-
-    useEffect(() => {
-        const price = calcFunction(tariff, additionalPersons)
-        const moneyDiscountCalc = Number((price * percentageDiscount/100).toFixed(2)) || moneyDiscount
-
-        setFieldValue(props.name, `${price-moneyDiscountCalc} ${currentCurrency}`)
-        setFieldValue('moneyDiscount', moneyDiscountCalc)
-
-    }, [tariff, percentageDiscount, additionalPersons, moneyDiscount]);
-
-    return (
-        <>
-            <input {...props} {...field} />
-            {!!meta.touched && !!meta.error && <div>{meta.error}</div>}
-        </>
-    )
-}
-
 export function OrderCreationForm(props) {
     const {
         closeModal, rentInfo, setRentInfo, index, apartmentsType, apartmentId, tariffs, numberOfPersons, cancelRent,
@@ -111,8 +61,9 @@ export function OrderCreationForm(props) {
         comment='',
     } = rentInfo
 
+    const tariffPrice = tariffs[tariff] || tariffs[`${apartmentsType}_${numberOfPersons}`]
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-    const calculatedPrice = getPrice(intervalToDuration(rentInterval).days, tariffs[tariff] || tariffs[apartmentsType], additionalPersons) - moneyDiscount
+    const calculatedPrice = getPrice(intervalToDuration(rentInterval).days, tariffPrice, additionalPersons) - moneyDiscount
     const calcFunc = (tariff, additionalPersons) => getPrice(intervalToDuration(rentInterval).days, tariff, additionalPersons)
 
     return (
@@ -122,7 +73,7 @@ export function OrderCreationForm(props) {
                 comment,
                 checkInTime: getTime(rentInterval.start),
                 checkOutTime: getTime(rentInterval.end),
-                tariff: tariffs[tariff] || tariffs[apartmentsType],
+                tariff: tariffPrice,
                 price: price || calculatedPrice,
                 checkIn: dateToString(rentInterval.start),
                 nights: intervalToDuration(rentInterval).days,
@@ -245,8 +196,56 @@ export function OrderCreationForm(props) {
 
                 <SaveCloseButtons closeHandler={closeModal}/>
             </Form>
-
-
         </Formik>
+    )
+}
+
+function InfoFormField(props){
+    const {fieldName, isAdditionalPersons} = props
+    let {values:{[fieldName]: field}, } = useFormikContext()
+    const personsAddsSum = field * priceAdditionalPerson || false
+    return (
+        <>
+            {isAdditionalPersons && personsAddsSum && <>=<LikeFormField>{personsAddsSum} {currentCurrency}</LikeFormField></>}
+            {!isAdditionalPersons && <>=<LikeFormField>{field} {currentCurrency}</LikeFormField></>}
+        </>
+    )
+}
+
+function getPrice(days, tariff=0, additionalPersons) {
+    additionalPersons=Number(additionalPersons) || 0
+    tariff=Number(tariff) || 0
+    const price = days * tariff + additionalPersons * priceAdditionalPerson
+
+    return Number(price.toFixed(2))
+}
+
+function PriceField(propsAll) {
+    const {calcFunction, ...props} = propsAll
+    const {
+        values:{
+            tariff,
+            percentageDiscount,
+            moneyDiscount,
+            additionalPersons,
+        },
+        setFieldValue,
+    } = useFormikContext()
+    const [field, meta] = useField(props.name)
+
+    useEffect(() => {
+        const price = calcFunction(tariff, additionalPersons)
+        const moneyDiscountCalc = Number((price * percentageDiscount/100).toFixed(2)) || moneyDiscount
+
+        setFieldValue(props.name, `${price-moneyDiscountCalc} ${currentCurrency}`)
+        setFieldValue('moneyDiscount', moneyDiscountCalc)
+
+    }, [tariff, percentageDiscount, additionalPersons, moneyDiscount]);
+
+    return (
+        <>
+            <input {...props} {...field} />
+            {!!meta.touched && !!meta.error && <div>{meta.error}</div>}
+        </>
     )
 }

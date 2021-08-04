@@ -1,4 +1,4 @@
-import {convertObjectWithArraysToObjectWithObjects} from '../commonUtils/commonUtils'
+import {convertObjectWithArraysToObjectWithObjects, CreateViewRentIntervals} from '../commonUtils/commonUtils'
 import {addDays, areIntervalsOverlapping, subDays} from 'date-fns'
 import {shifterViewedRentIntervals} from '../components/Table/utils/utils'
 import {borderWidth, gridAutoRowsHeight, gridColumnsWidth, tariffs} from '../settings/settings'
@@ -36,18 +36,31 @@ const initialState = {
                         personInfo:{firstName: 'Иван', lastName: 'Грозный', email: 'grozni@pizdec.doc', phone: '111-222-333-4'},
                         additionalPersons: 1,
                         persons: 2,
-                        tariff: 'lux',
+                        tariff: 'lux_5',
                         percentageDiscount: 0,
                         moneyDiscount: 500,
                         price: 11100,
                     },
-
+                    {
+                        id: 2,
+                        rentInterval:{
+                            start: new Date(2021,7,11,12,0,0,0),
+                            end: new Date(2021,7,22,12,0,0,0)
+                        },
+                        personInfo:{firstName: 'Борис', lastName: 'Годунов', email: 'grozniBoris@pizdec.doc', phone: '666-222-666'},
+                        additionalPersons: 5,
+                        persons: 2,
+                        tariff: 'standard_3',
+                        percentageDiscount: 50,
+                        moneyDiscount: 0,
+                        price: 1000000,
+                    },
                 ],
             },
             {
                 id: 2,
                 apartmentsNumber: 122,
-                numberOfPersons: 2,
+                numberOfPersons: 3,
                 rentInfo: [],
             },
             {
@@ -131,12 +144,10 @@ const initialState = {
         width: gridColumnsWidth - 2 * borderWidth,
         height: gridAutoRowsHeight - 2 * borderWidth
     },
-    viewRentIntervals: {1:[{
-            start: new Date(2021,7,1,12,0,0,0),
-            end: new Date(2021,7,10,12,0,0,0)
-        }]}
+    viewRentIntervals: null,
 }
 
+initialState.viewRentIntervals = CreateViewRentIntervals(initialState.apartments)
 initialState.apartments = convertObjectWithArraysToObjectWithObjects('id', initialState.apartments)
 
 function tableHotelRoomsReducer(state = initialState, action) {
@@ -181,7 +192,6 @@ function tableHotelRoomsReducer(state = initialState, action) {
             const rentInfo = state.apartments[action.apartmentsType][state.apartmentId].rentInfo
             if (rentInfo.some(item => areIntervalsOverlapping(item.rentInterval, action.rentInterval))) return state
 
-            // state.apartments[action.apartmentsType][state.apartmentId].rentInterval.push(action.rentInterval) // this is what the code below does
             return {
                 ...state,
                 apartments: {
@@ -189,7 +199,6 @@ function tableHotelRoomsReducer(state = initialState, action) {
                         ...state.apartments[action.apartmentsType],
                         [state.apartmentId]: {
                             ...state.apartments[action.apartmentsType][state.apartmentId],
-                            // rentInterval: [...state.apartments[action.apartmentsType][state.apartmentId].rentInterval, action.rentInterval]
                             rentInfo: [...state.apartments[action.apartmentsType][state.apartmentId].rentInfo, {rentInterval: action.rentInterval}]
                         }
                     }
@@ -236,7 +245,7 @@ function tableHotelRoomsReducer(state = initialState, action) {
                 state.apartments[action.apartmentsType][action.apartmentId].rentInfo.filter((_, index) => index !== action.index)
 
             state.viewRentIntervals = {...state.viewRentIntervals}
-            state.viewRentIntervals[action.apartmentId] = state.viewRentIntervals[action.apartmentId].filter((_,index)=> index !== action.index)
+            state.viewRentIntervals[action.apartmentId] = state.viewRentIntervals[action.apartmentId].filter((_, index)=> index !== action.index)
             return state
         }
         default:

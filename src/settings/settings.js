@@ -38,9 +38,11 @@ export const time = {hours:12, minutes:0, seconds:0, milliseconds:0}
 
 // it should be a flat structure
 export const tariffs = {
-    standard: 1000,
-    comfortable: 2000,
-    lux: 5000
+    standard_2: 1000,
+    standard_3: 1500,
+    comfortable_2: 2000,
+    comfortable_3: 2500,
+    lux_5: 5000
 }
 export const maxAdditionalPersons = 6
 export const priceAdditionalPerson = 500
