@@ -11,10 +11,10 @@ const ButtonsWrapper = styled.div`
 `
 
 export function SaveCloseButtons(props) {
-    const {closeHandler, } = props
+    const {closeHandler, notSave} = props
 
     return <ButtonsWrapper>
-        <Button type="submit" size={'0.8em'}>Сохранить</Button>
+        {!notSave && <Button type="submit" size={'0.8em'}>Сохранить</Button>}
         <Button type="button" onClick={closeHandler} size={'0.8em'}> Закрыть </Button>
     </ButtonsWrapper>
 }

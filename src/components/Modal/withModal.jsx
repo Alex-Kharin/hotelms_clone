@@ -21,6 +21,9 @@ export function withModal(WrappedComponent) {
                        contentLabel={'settings'}
                        className={style.Modal}
                        overlayClassName={style.Overlay}
+                       onRequestClose={closeModal}
+                       shouldCloseOnOverlayClick={false}
+                       shouldCloseOnEsc={true}
                 >
                     {React.Children.map(props.children, (child) => {
                         if (React.isValidElement(child) && typeof(child.type) !== 'string' ) {

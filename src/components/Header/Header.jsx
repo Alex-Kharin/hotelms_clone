@@ -5,6 +5,7 @@ import {withModal} from '../Modal/withModal'
 import styled from 'styled-components'
 import {border, displayFlexAlignCenter, secondaryColor} from '../../settings/settings'
 import {Icon} from '../simpleElements/Icon'
+import {CommonSettingsForm} from '../Forms/CommonSettingsForm'
 
 
 const HeaderWrapper = styled.header`
@@ -32,7 +33,11 @@ export function Header(props) {
                 <TableSettingsMenuItem iconName={'grid_on'} menuItemTitle={'Сетка'}>
                     <TableSettingsForm daysInTable={daysInTable} changeDaysInTable={changeDaysInTable}/>
                 </TableSettingsMenuItem>
-                <MenuItem iconName={'settings'} menuItemTitle={'Настройки'} />
+
+                <TableSettingsMenuItem iconName={'settings'} menuItemTitle={'Настройки'}>
+                    <CommonSettingsForm />
+                </TableSettingsMenuItem>
+
                 <MenuItem iconName={'format_list_bulleted'} menuItemTitle={'Отчеты'} />
             </LeftSideMenu>
 

@@ -7,7 +7,7 @@ import ReactTooltip from 'react-tooltip'
 import {intervalToDuration} from 'date-fns'
 
 
-const RentWrapper = styled.div.attrs(props => ({'data-tip': '', 'data-for': props.for}))`
+const RentWrapper = styled.div.attrs(props => ({'data-tip': '', 'data-for': props.forTooltip}))`
   position: absolute;
   top: 1px;
   left: 50%;
@@ -70,7 +70,7 @@ export function Rent(props) {
     } = rentInfo
     return (
         <>
-            <RentWrapper onClick={openModal} cellDimensions={cellDimensions} viewRentInterval={viewRentInterval} for={`${id}`}>
+            <RentWrapper onClick={openModal} cellDimensions={cellDimensions} viewRentInterval={viewRentInterval} forTooltip={`${id}`}>
                 {isLeftArrow && <Arrow position={'left'}>arrow_left</Arrow>}
                 {isRightArrow && <Arrow position={'right'}>arrow_right</Arrow>}
                 <FullName>{lastName} {firstName}</FullName>
