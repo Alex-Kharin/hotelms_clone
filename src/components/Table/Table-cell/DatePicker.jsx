@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react'
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { DateUtils } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -49,40 +49,52 @@ const LABELS = {
 }
 
 function parseDate(str, format, locale) {
-    const parsed = dateFnsParse(str, format, new Date(), { locale });
+    const parsed = dateFnsParse(str, format, new Date(), { locale })
     if (DateUtils.isDate(parsed)) {
-        return parsed;
+        return parsed
     }
-    return undefined;
+    return undefined
 }
 
 function formatDate(date, format, locale) {
-    return dateFnsFormat(date, format, { locale });
+    return dateFnsFormat(date, format, { locale })
 }
 
-export default function DatePicker(props) {
+export function DatePicker(props) {
+    const [state, setState] = useState({selectedDay: props.fromDay, isEmpty: !props.fromDay})
+
+    function handleDayChange(selectedDay, modifiers, dayPickerInput) {
+        const input = dayPickerInput.getInput();
+        setState({selectedDay, isEmpty: !input.value.trim()})
+    }
+
+    function handleDayPickerHide({selectedDay, isEmpty}, {shiftFrom}) {
+        if (selectedDay && !isEmpty) shiftFrom(selectedDay)
+    }
+
     const FORMAT = 'dd-MM-yyyy';
     const locale = 'ru'
     return (
-        <DayPickerInput
-            dayPickerProps={{
-                todayButton: 'Сегодня',
-                locale: ru,
-                months: MONTHS[locale],
-                weekdaysLong: WEEKDAYS_LONG[locale],
-                weekdaysShort: WEEKDAYS_SHORT[locale],
-                firstDayOfWeek: FIRST_DAY_OF_WEEK[locale],
-                labels: LABELS[locale],
-            }}
-            formatDate={formatDate}
-            format={FORMAT}
-            parseDate={parseDate}
-            placeholder={`${dateFnsFormat(props.fromDay, FORMAT)}`}
-            selectedDay={props.fromDay}
-            value={props.fromDay}
-            keepFocus={false}
-            inputProps={{name: props.name, type: props.type}}
-            onDayChange={day => props.shiftFrom(day)}
-        />
-    );
+            <DayPickerInput
+                dayPickerProps={{
+                    todayButton: 'Сегодня',
+                    locale: ru,
+                    months: MONTHS[locale],
+                    weekdaysLong: WEEKDAYS_LONG[locale],
+                    weekdaysShort: WEEKDAYS_SHORT[locale],
+                    firstDayOfWeek: FIRST_DAY_OF_WEEK[locale],
+                    labels: LABELS[locale],
+                }}
+                formatDate={formatDate}
+                format={FORMAT}
+                parseDate={parseDate}
+                placeholder={`${dateFnsFormat(props.fromDay, FORMAT)}`}
+                selectedDay={props.fromDay}
+                value={props.fromDay}
+                keepFocus={false}
+                inputProps={{name: props.name, type: props.type}}
+                onDayChange={handleDayChange}
+                onDayPickerHide={()=>handleDayPickerHide(state, props)}
+            />
+    )
 }

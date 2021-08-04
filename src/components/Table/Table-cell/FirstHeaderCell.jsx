@@ -1,7 +1,7 @@
 import {Button} from '../../simpleElements/Button'
 import React from 'react'
 import styled from 'styled-components'
-import DatePicker from './DatePicker'
+import {DatePicker} from './DatePicker'
 import {border} from '../../../settings/settings'
 
 
