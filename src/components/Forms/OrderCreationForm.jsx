@@ -50,6 +50,7 @@ export function OrderCreationForm(props) {
         closeModal, rentInfo, setRentInfo, index, apartmentsType, apartmentId, tariffs, numberOfPersons, cancelRent,
     } = props
     const {
+        id=null,
         rentInterval,
         personInfo:{firstName='Аноним', lastName='', email='', phone=''}={},
         additionalPersons = 0,
@@ -108,6 +109,7 @@ export function OrderCreationForm(props) {
                     moneyDiscount: values.moneyDiscount,
                     price: values.price,
                     comment: values.comment,
+                    id: id || Math.round(Math.random()*100000000), // just for test. It's must deleted when finished transport layer. It's property created on server side. TODO: delete this!!!
                 }
                 console.log(values)
                 setRentInfo(apartmentsType, index, apartmentId, newRentInfo)
@@ -181,7 +183,7 @@ export function OrderCreationForm(props) {
                 <Field name="percentageDiscount" type="number" min={0} max={100}/>
 
                 <label htmlFor="moneyDiscount">Скидка</label>
-                <Field name="moneyDiscount" type="number" min={0}/>
+                <Field name="moneyDiscount" type="number" min={0} step={100}/>
                 <span>{currentCurrency}</span>
 
                 <hr />
