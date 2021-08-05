@@ -87,7 +87,7 @@ export function OrderCreationForm(props) {
                     .required('Фамилия должна быть обязательно'),
                 email: Yup.string().email('E-mail не валиден').required('E-mail обязателен'),
                 phone: Yup.string().matches(phoneRegExp, 'Номер не валиден'),
-
+                price: Yup.string().test('', 'Сумма доложа быть положительной', value => parseFloat(value) >= 0),
             })}
 
             onSubmit={(values) => {
@@ -243,7 +243,7 @@ function PriceField(propsAll) {
     return (
         <>
             <input {...props} {...field} />
-            {!!meta.touched && !!meta.error && <div>{meta.error}</div>}
+            {!!meta.touched && !!meta.error && <ErrorMessageElement>{meta.error}</ErrorMessageElement>}
         </>
     )
 }

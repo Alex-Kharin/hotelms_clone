@@ -14,7 +14,7 @@ import {
     setRentInterval,
     setSelecting,
     setStartSelection,
-} from '../../store/tableHotelRoomsReducer'
+} from '../../store/tableApartmentsReducer'
 import {
     getApartmentId,
     getDaysInTable,

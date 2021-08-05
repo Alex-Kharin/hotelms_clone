@@ -8,7 +8,7 @@ import {
     rightSideShiftRightViewRentInterval,
     setIsOpenModal,
     setRentInfo
-} from '../../store/tableHotelRoomsReducer'
+} from '../../store/tableApartmentsReducer'
 import {
     getApartments,
     getCellDimensions,

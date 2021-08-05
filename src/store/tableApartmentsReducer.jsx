@@ -33,7 +33,7 @@ const initialState = {
                             start: new Date(),
                             end: addDays(new Date(), 7)
                         },
-                        personInfo:{firstName: 'Иван', lastName: 'Грозный', email: 'grozni@pizdec.ru', phone: '111-222-333'},
+                        personInfo:{firstName: 'Иван', lastName: 'Грозный', email: 'grozni@depesha.horse', phone: '111-222-333'},
                         additionalPersons: 1,
                         persons: 2,
                         tariff: 'lux_5',
@@ -47,7 +47,7 @@ const initialState = {
                             start: addDays(new Date(), 8),
                             end: addDays(new Date(), 14)
                         },
-                        personInfo:{firstName: 'Борис', lastName: 'Ельцин', email: 'boris@pizdec.org', phone: '666-222-666'},
+                        personInfo:{firstName: 'Борис', lastName: 'Ельцин', email: 'boris@mail.ru', phone: '666-222-666'},
                         additionalPersons: 5,
                         persons: 2,
                         tariff: 'standard_3',
@@ -150,7 +150,7 @@ const initialState = {
 initialState.viewRentIntervals = CreateViewRentIntervals(initialState.apartments)
 initialState.apartments = convertObjectWithArraysToObjectWithObjects('id', initialState.apartments)
 
-function tableHotelRoomsReducer(state = initialState, action) {
+function tableApartmentsReducer(state = initialState, action) {
     switch (action.type) {
         case IS_SELECT: {
             return {
@@ -296,7 +296,7 @@ const cancelRent = (apartmentsType, index, apartmentId) => ({
 })
 
 export {
-    tableHotelRoomsReducer,
+    tableApartmentsReducer,
     setSelecting,
     setStartSelection,
     setEndSelection,
