@@ -30,30 +30,30 @@ const initialState = {
                     {
                         id: 1,
                         rentInterval:{
-                            start: new Date(2021,7,1,12,0,0,0),
-                            end: new Date(2021,7,10,12,0,0,0)
+                            start: new Date(),
+                            end: addDays(new Date(), 7)
                         },
-                        personInfo:{firstName: 'Иван', lastName: 'Грозный', email: 'grozni@pizdec.doc', phone: '111-222-333-4'},
+                        personInfo:{firstName: 'Иван', lastName: 'Грозный', email: 'grozni@pizdec.ru', phone: '111-222-333'},
                         additionalPersons: 1,
                         persons: 2,
                         tariff: 'lux_5',
                         percentageDiscount: 0,
                         moneyDiscount: 500,
-                        price: 11100,
+                        price: 35000,
                     },
                     {
                         id: 2,
                         rentInterval:{
-                            start: new Date(2021,7,11,12,0,0,0),
-                            end: new Date(2021,7,22,12,0,0,0)
+                            start: addDays(new Date(), 8),
+                            end: addDays(new Date(), 14)
                         },
-                        personInfo:{firstName: 'Борис', lastName: 'Годунов', email: 'grozniBoris@pizdec.doc', phone: '666-222-666'},
+                        personInfo:{firstName: 'Борис', lastName: 'Ельцин', email: 'boris@pizdec.org', phone: '666-222-666'},
                         additionalPersons: 5,
                         persons: 2,
                         tariff: 'standard_3',
                         percentageDiscount: 50,
                         moneyDiscount: 0,
-                        price: 1000000,
+                        price: 5750,
                     },
                 ],
             },

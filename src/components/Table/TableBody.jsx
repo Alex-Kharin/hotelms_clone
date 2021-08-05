@@ -100,7 +100,7 @@ function ApartmentsRowsByNumbers(props) {
                 }
             }
         })
-    }, [days])
+    }, [days, viewRentIntervals, apartmentsByType])
 
     function bodyDaysCells(id, apartmentsType, days) {
         return days.map(day => {
@@ -134,7 +134,6 @@ function ApartmentsRowsByNumbers(props) {
             {Object.keys(apartmentsByType)
                 .sort((a,b)=>apartmentsByType[a].numberOfPersons - apartmentsByType[b].numberOfPersons)
                 .map(apartmentId => {
-            {/*{Object.keys(apartmentsByType).map(apartmentId => {*/}
                 return (
                     <React.Fragment key={apartmentId}>
                         <Cell position={'flex-start'} weight={500}

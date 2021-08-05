@@ -1,7 +1,7 @@
 import Modal from 'react-modal'
 import React, {useState} from 'react'
 import style from './SettingsMenuItem.module.css'
-import {setIsOpenModal} from '../../store/tableHotelRoomsReducer'
+
 
 Modal.setAppElement('#root')
 

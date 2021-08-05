@@ -1,4 +1,3 @@
-import React from 'react'
 import {connect} from 'react-redux'
 import {changeDaysInTable} from '../../store/tableReducer'
 import {Header} from './Header'

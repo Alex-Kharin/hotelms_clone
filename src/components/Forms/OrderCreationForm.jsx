@@ -64,18 +64,15 @@ export function OrderCreationForm(props) {
 
     const tariffPrice = tariffs[tariff] || tariffs[`${apartmentsType}_${numberOfPersons}`]
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-    const calculatedPrice = getPrice(intervalToDuration(rentInterval).days, tariffPrice, additionalPersons) - moneyDiscount
-    const calcFunc = (tariff, additionalPersons) => getPrice(intervalToDuration(rentInterval).days, tariff, additionalPersons)
 
     return (
         <Formik
             initialValues={{
                 firstName, lastName, email, phone, additionalPersons, percentageDiscount, moneyDiscount, persons,
-                comment,
+                comment, price,
                 checkInTime: getTime(rentInterval.start),
                 checkOutTime: getTime(rentInterval.end),
                 tariff: tariffPrice,
-                price: price || calculatedPrice,
                 checkIn: dateToString(rentInterval.start),
                 nights: intervalToDuration(rentInterval).days,
                 checkOut: dateToString(rentInterval.end)
@@ -111,7 +108,6 @@ export function OrderCreationForm(props) {
                     comment: values.comment,
                     id: id || Math.round(Math.random()*100000000), // just for test. It's must deleted when finished transport layer. It's property created on server side. TODO: delete this!!!
                 }
-                console.log(values)
                 setRentInfo(apartmentsType, index, apartmentId, newRentInfo)
             }}
         >
@@ -124,7 +120,7 @@ export function OrderCreationForm(props) {
                 </TitleWrapper>
 
                 <label htmlFor="firstName">Имя</label>
-                <Field name="firstName" type="text" autoFocus={true}/>
+                <Field name="firstName" type="text" autoFocus={true} />
 
                 <label htmlFor="lastName">Фамилия</label>
                 <Field name="lastName" type="text" />
@@ -183,13 +179,13 @@ export function OrderCreationForm(props) {
                 <Field name="percentageDiscount" type="number" min={0} max={100}/>
 
                 <label htmlFor="moneyDiscount">Скидка</label>
-                <Field name="moneyDiscount" type="number" min={0} step={100}/>
+                <Field name="moneyDiscount" type="number" min={0} />
                 <span>{currentCurrency}</span>
 
                 <hr />
 
                 <label htmlFor="price">Сумма</label>
-                <PriceField name="price" type="text" readOnly calcFunction={calcFunc} />
+                <PriceField name="price" type="text" rentInterval={rentInterval} readOnly />
 
                 <hr />
 
@@ -223,7 +219,7 @@ function getPrice(days, tariff=0, additionalPersons) {
 }
 
 function PriceField(propsAll) {
-    const {calcFunction, ...props} = propsAll
+    const {rentInterval, name, ...props} = propsAll
     const {
         values:{
             tariff,
@@ -233,16 +229,16 @@ function PriceField(propsAll) {
         },
         setFieldValue,
     } = useFormikContext()
-    const [field, meta] = useField(props.name)
+    const [field, meta] = useField(name)
 
     useEffect(() => {
-        const price = calcFunction(tariff, additionalPersons)
+        const price = getPrice(intervalToDuration(rentInterval).days, tariff, additionalPersons)
         const moneyDiscountCalc = Number((price * percentageDiscount/100).toFixed(2)) || moneyDiscount
 
-        setFieldValue(props.name, `${price-moneyDiscountCalc} ${currentCurrency}`)
+        setFieldValue(name, `${price-moneyDiscountCalc} ${currentCurrency}`)
         setFieldValue('moneyDiscount', moneyDiscountCalc)
 
-    }, [tariff, percentageDiscount, additionalPersons, moneyDiscount]);
+    }, [tariff, percentageDiscount, additionalPersons, moneyDiscount, rentInterval, name]);
 
     return (
         <>
