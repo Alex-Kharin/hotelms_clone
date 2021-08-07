@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/hotelms_clone/static/css/main.797a0a27.chunk.css",
-    "main.js": "/hotelms_clone/static/js/main.eb25878f.chunk.js",
-    "main.js.map": "/hotelms_clone/static/js/main.eb25878f.chunk.js.map",
+    "main.css": "/hotelms_clone/static/css/main.129e918c.chunk.css",
+    "main.js": "/hotelms_clone/static/js/main.31c5a1e7.chunk.js",
+    "main.js.map": "/hotelms_clone/static/js/main.31c5a1e7.chunk.js.map",
     "runtime-main.js": "/hotelms_clone/static/js/runtime-main.83d3be51.js",
     "runtime-main.js.map": "/hotelms_clone/static/js/runtime-main.83d3be51.js.map",
     "static/css/2.f1f8279d.chunk.css": "/hotelms_clone/static/css/2.f1f8279d.chunk.css",
@@ -12,14 +12,14 @@
     "static/js/3.97ceb6e0.chunk.js.map": "/hotelms_clone/static/js/3.97ceb6e0.chunk.js.map",
     "index.html": "/hotelms_clone/index.html",
     "static/css/2.f1f8279d.chunk.css.map": "/hotelms_clone/static/css/2.f1f8279d.chunk.css.map",
-    "static/css/main.797a0a27.chunk.css.map": "/hotelms_clone/static/css/main.797a0a27.chunk.css.map",
+    "static/css/main.129e918c.chunk.css.map": "/hotelms_clone/static/css/main.129e918c.chunk.css.map",
     "static/js/2.36dcf187.chunk.js.LICENSE.txt": "/hotelms_clone/static/js/2.36dcf187.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.83d3be51.js",
     "static/css/2.f1f8279d.chunk.css",
     "static/js/2.36dcf187.chunk.js",
-    "static/css/main.797a0a27.chunk.css",
-    "static/js/main.eb25878f.chunk.js"
+    "static/css/main.129e918c.chunk.css",
+    "static/js/main.31c5a1e7.chunk.js"
   ]
 }
