@@ -21,7 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/Screenshot_20210519_143639.png
+/.idea
+/.idea/
 /.idea/codeStyles/codeStyleConfig.xml
 /.idea/codeStyles/Project.xml
 /.idea/inspectionProfiles/Project_Default.xml

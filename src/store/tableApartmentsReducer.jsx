@@ -40,6 +40,7 @@ const initialState = {
                         percentageDiscount: 0,
                         moneyDiscount: 500,
                         price: 35000,
+                        comment: '',
                     },
                     {
                         id: 2,
@@ -54,6 +55,7 @@ const initialState = {
                         percentageDiscount: 50,
                         moneyDiscount: 0,
                         price: 5750,
+                        comment: '',
                     },
                 ],
             },

@@ -10,6 +10,7 @@ body {
 div {
   box-sizing: border-box;
 }
+
 textarea {
   border-radius: 3px;
   border: 1px solid lightgrey;

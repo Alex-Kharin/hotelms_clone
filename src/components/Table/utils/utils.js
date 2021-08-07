@@ -6,8 +6,9 @@ import {
     isAfter,
     isSameDay,
     isWithinInterval,
+    set,
+    startOfDay,
     startOfMonth,
-    set, startOfDay,
 } from 'date-fns'
 import {ru} from 'date-fns/locale'
 import {Button} from '../../simpleElements/Button'
@@ -25,7 +26,7 @@ const getTime = (date) => format(date, 'HH:mm', {locale: ru})
 const isDayBefore = (day1, day2) => startOfDay(day1) < startOfDay(day2)
 const setTimeToDate = (date, time) => {
     const [hours, minutes] = time.split(':')
-    return  set(date, {hours, minutes})
+    return set(date, {hours, minutes})
 }
 
 function toMonths(interval, months, shiftLeft, shiftRight) {
@@ -82,7 +83,7 @@ function shifterViewedRentIntervals(state, action, rangeBorder, shiftFunction) {
 }
 
 function isDayStartRentalInterval(array, day) {
-    for (let i=0; i<array?.length; i++) {
+    for (let i = 0; i < array?.length; i++) {
         if (isSameDay(day, array[i].start) && !isSameDay(array[i].start, array[i].end)) {
             return [array[i], i]
         }
@@ -92,8 +93,8 @@ function isDayStartRentalInterval(array, day) {
 
 function isArrow(viewRentIntervals, apartmentsByType, id, index, rangeInterval) {
     return rangeInterval === 'start'
-    ? viewRentIntervals[id] && isDayBefore(apartmentsByType[id]?.rentInfo[index]?.rentInterval.start, viewRentIntervals[id][index]?.start)
-    : viewRentIntervals[id] && isDayBefore(viewRentIntervals[id][index]?.end, apartmentsByType[id]?.rentInfo[index]?.rentInterval.end)
+        ? viewRentIntervals[id] && isDayBefore(apartmentsByType[id]?.rentInfo[index]?.rentInterval.start, viewRentIntervals[id][index]?.start)
+        : viewRentIntervals[id] && isDayBefore(viewRentIntervals[id][index]?.end, apartmentsByType[id]?.rentInfo[index]?.rentInterval.end)
 }
 
 // = width*duration + 2*duration*borderWidth
