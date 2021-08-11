@@ -23,6 +23,7 @@ const yearOfDate = (date) => format(date, 'y', {locale: ru})
 const dateToString = (date) => format(date, 'dd-MM-y', {locale: ru})
 const getTime = (date) => format(date, 'HH:mm', {locale: ru})
 const isDayBefore = (day1, day2) => startOfDay(day1) < startOfDay(day2)
+const intervalLength = (interval) => differenceInCalendarDays(interval.end, interval.start)
 const setTimeToDate = (date, time) => {
     const [hours, minutes] = time.split(':')
     return set(date, {hours, minutes})
@@ -99,46 +100,49 @@ function isArrow(viewRentIntervals, apartmentsByType, id, index, rangeInterval) 
         : viewRentIntervals[id] && isDayBefore(viewRentIntervals[id][index]?.end, apartmentsByType[id]?.rentInfo[index]?.rentInterval.end)
 }
 
-function intervalLength(interval) {
-    return differenceInCalendarDays(interval.end, interval.start)
-}
-
 // = width*duration + 2*duration*borderWidth
 function widthRentElement(cellDimensions, viewRentInterval) {
     return cellDimensions.width * intervalLength(viewRentInterval) +
         intervalLength(viewRentInterval) * 2 * borderWidth + 'px'
 }
 
+function checkAndReturnNewViewRentInterval(rentInfoInterval, interval) {
+    let visibleInterval = null
+    if (isSameDay(rentInfoInterval.start, interval.end)) {
+        return {start: rentInfoInterval.start, end: rentInfoInterval.start}
+    }
+    if (isSameDay(rentInfoInterval.end, interval.start)) {
+        return {start: rentInfoInterval.end, end: rentInfoInterval.end}
+    }
+    if (
+        isWithinInterval(rentInfoInterval.end, interval)
+        && (isSameDay(rentInfoInterval.start, interval.start)
+            || isDayBefore(rentInfoInterval.start, interval.start))
+    ) {
+        visibleInterval = {...rentInfoInterval, start: interval.start}
+    }
+    if (
+        isWithinInterval(rentInfoInterval.start, interval)
+        && (isSameDay(rentInfoInterval.end, interval.end)
+            || isDayBefore(interval.end, rentInfoInterval.end))
+    ) {
+        visibleInterval = {...rentInfoInterval, end: interval.end}
+    }
+    if (isIntervalIncludedInAnother(rentInfoInterval, interval)) {
+        visibleInterval = {...interval}
+    }
+    return visibleInterval || rentInfoInterval
+}
+
 function CreateViewRentIntervals(rentInfos, interval) {
     return rentInfos.reduce((acc, rentInfo) => {
-
-        // define the boundaries of the visible intervals
-        let visibleInterval = null
-        if (
-            isWithinInterval(rentInfo.rentInterval.end, interval)
-            && (isSameDay(rentInfo.rentInterval.start, interval.start)
-            || isDayBefore(rentInfo.rentInterval.start, interval.start))
-        ) {
-            visibleInterval = {...rentInfo.rentInterval, start: interval.start}
-        }
-        if (
-            isWithinInterval(rentInfo.rentInterval.start, interval)
-            && (isSameDay(rentInfo.rentInterval.end, interval.end)
-            || isDayBefore(interval.end, rentInfo.rentInterval.end)
-            )
-        ) {
-            visibleInterval = {...rentInfo.rentInterval, end: interval.end}
-        }
-        if (isIntervalIncludedInAnother(rentInfo.rentInterval, interval)) {
-            visibleInterval = {...interval}
-        }
-
-        acc[rentInfo.apartmentId] = [...acc[rentInfo.apartmentId] || [], visibleInterval || rentInfo.rentInterval]
+        const newViewRentInterval = checkAndReturnNewViewRentInterval(rentInfo.rentInterval, interval)
+        acc[rentInfo.apartmentId] = [...acc[rentInfo.apartmentId] || [], newViewRentInterval ]
         return acc
     }, {})
 }
 
-function collectObjects (apartmentsArray, rentInfos) {
+function collectObjects(apartmentsArray, rentInfos) {
     return apartmentsArray.map(apartment => {
         apartment.rentInfo = rentInfos.filter(rentInfo => rentInfo.apartmentId === apartment.id)
         return apartment
@@ -161,4 +165,5 @@ export {
     dayOfMonth, dayOfWeek, monthName, yearOfDate, dateToString, toMonths, adjustsInterval, isSelectInterval,
     shifterViewedRentIntervals, isDayStartRentalInterval, isArrow, widthRentElement, getTime, setTimeToDate,
     isDayBefore, intervalLength, CreateViewRentIntervals, collectObjects, createApartments,
+    checkAndReturnNewViewRentInterval,
 }

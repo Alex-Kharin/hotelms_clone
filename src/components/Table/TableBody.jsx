@@ -1,7 +1,13 @@
 import React, {useEffect} from 'react'
 import {areIntervalsOverlapping, isSameDay, isWeekend, } from 'date-fns'
 import {TableCell} from './Table-cell/TableCell'
-import {dayOfMonth, isArrow, isDayBefore, isDayStartRentalInterval, isSelectInterval} from './utils/utils'
+import {
+    dayOfMonth,
+    isArrow,
+    isDayBefore,
+    isDayStartRentalInterval,
+    isSelectInterval
+} from './utils/utils'
 import {TableRow} from './TableRow'
 import styled from 'styled-components'
 import {border, displayFlexAlignCenter, weekendColor} from '../../settings/settings'

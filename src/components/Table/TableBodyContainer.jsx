@@ -22,8 +22,8 @@ import {useEffect} from 'react'
 import {Preloader} from '../simpleElements/Preloader'
 
 
-export function TableBodyContainer(propsAll) {
-    const {isFetching, requestApartments, ...props} = propsAll
+export function TableBodyContainer(props) {
+    const {isFetching, requestApartments} = props
 
     useEffect(()=>{
         if (isFetching) {

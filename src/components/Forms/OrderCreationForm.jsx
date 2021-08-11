@@ -62,7 +62,7 @@ export function OrderCreationForm(props) {
     } = rentInfo
 
     const tariffPrice = tariffs[tariff] || tariffs[`${apartmentsType}_${numberOfPersons}`]
-    const phoneRegExp = /^\+?[789]((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+    const phoneRegExp = /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/
 
     return (
         <Formik
@@ -217,8 +217,8 @@ function getPrice(days, tariff=0, additionalPersons) {
     return Number(price.toFixed(2))
 }
 
-function PriceField(propsAll) {
-    const {rentInterval, name, ...props} = propsAll
+function PriceField(props) {
+    const {rentInterval, name} = props
     const {
         values:{
             tariff,
