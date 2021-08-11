@@ -27,3 +27,5 @@ yarn-error.log*
 /.idea/codeStyles/Project.xml
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/vcs.xml
+/json-generator/
+/db/

@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import {borderMix, currentCurrency, rentElementColor, rentElementsZIndex} from '../../settings/settings'
-import {dateToString, getTime, widthRentElement} from './utils/utils'
+import {dateToString, getTime, intervalLength, widthRentElement} from './utils/utils'
 import {Icon} from '../simpleElements/Icon'
 import ReactTooltip from 'react-tooltip'
-import {intervalToDuration} from 'date-fns'
 
 
 const RentWrapper = styled.div.attrs(props => ({'data-tip': '', 'data-for': props.forTooltip}))`
@@ -83,7 +82,7 @@ export function Rent(props) {
                     <li>Заказ №<TooltipSpan>{id}</TooltipSpan></li>
                     <li>Заезд: <TooltipSpan>{dateToString(rentInterval.start)}</TooltipSpan> в <TooltipSpan>{getTime(rentInterval.start)}</TooltipSpan></li>
                     <li>Выезд: <TooltipSpan>{dateToString(rentInterval.end)}</TooltipSpan> в <TooltipSpan>{getTime(rentInterval.end)}</TooltipSpan></li>
-                    <li>Ночей: <TooltipSpan>{intervalToDuration(rentInterval).days}</TooltipSpan></li>
+                    <li>Ночей: <TooltipSpan>{intervalLength(rentInterval)}</TooltipSpan></li>
                     {lastName && firstName && <li>Гость: <TooltipSpan>{lastName} {firstName}</TooltipSpan></li>}
                     {email && <li>Email: <TooltipSpan>{email}</TooltipSpan></li>}
                     {phone && <li>Тел.: <TooltipSpan>{phone}</TooltipSpan></li>}
@@ -91,7 +90,7 @@ export function Rent(props) {
                     {tariff && <li>Тарифф: <TooltipSpan>{tariff}</TooltipSpan></li>}
                     {!!(percentageDiscount || moneyDiscount) && <li>Скидка: <TooltipSpan>{percentageDiscount}% ({moneyDiscount} {currentCurrency}.)</TooltipSpan></li>}
                     {!!price && <li>Сумма: <TooltipSpan>{price} {currentCurrency}.</TooltipSpan></li>}
-                    {comment && <li>Комментарий: <TooltipSpan>{comment}</TooltipSpan></li>}
+                    <li>Комментарий: <TooltipSpan>{comment ? 'Да': 'Нет'}</TooltipSpan></li>
                 </Ul>
             </ReactTooltip>
         </>

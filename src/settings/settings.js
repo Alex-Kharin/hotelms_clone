@@ -40,9 +40,16 @@ export const time = {hours:12, minutes:0, seconds:0, milliseconds:0}
 export const tariffs = {
     standard_2: 1000,
     standard_3: 1500,
+    standard_4: 2000,
+    standard_5: 2500,
     comfortable_2: 2000,
     comfortable_3: 2500,
-    lux_5: 5000
+    comfortable_4: 3000,
+    comfortable_5: 3500,
+    lux_2: 5000,
+    lux_3: 6000,
+    lux_4: 7000,
+    lux_5: 8000,
 }
 export const maxAdditionalPersons = 6
 export const priceAdditionalPerson = 500

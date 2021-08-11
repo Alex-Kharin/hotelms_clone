@@ -8,6 +8,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "apexcharts": "^3.27.3",
+    "axios": "^0.21.1",
     "date-fns": "^2.21.3",
     "formik": "^2.2.9",
     "react": "^17.0.2",
@@ -20,12 +21,15 @@
     "react-scripts": "4.0.3",
     "react-tooltip": "^4.2.21",
     "redux": "^4.1.0",
+    "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "styled-components": "^5.3.0",
     "web-vitals": "^1.1.2",
     "yup": "^0.32.9"
   },
   "scripts": {
+    "json-server": "json-server --watch db/db.json --port 3001",
+    "json-server-full": "json-server --watch db/db_back.json --port 3001",
     "start": "BROWSER='chromium' react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -88,7 +88,7 @@ function ApartmentsRowsByNumbers(props) {
                     if (!isSameDay(start, end) && isDayBefore(start, firstTableDay)) {
                         leftSideShiftLeftViewRentInterval(id, i)
                     }
-                    if (isDayBefore(lastTableDay, end)) {
+                    if (!isSameDay(lastTableDay, end) && isDayBefore(lastTableDay, end)) {
                         rightSideShiftLeftViewRentInterval(id, i)
                     }
                     if (!isSameDay(start, apartmentRentInterval?.start) && isDayBefore(firstTableDay, start)) {

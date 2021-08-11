@@ -3,7 +3,7 @@ import {TableHeader} from './TableHeader'
 import styled from 'styled-components'
 import {adjustsInterval} from './utils/utils'
 import {isSameDay} from 'date-fns'
-import {TableBodyContainer} from './TableBodyContainer'
+import TableBodyContainer from './TableBodyContainer'
 import {gridAutoRowsHeight, gridColumnsWidth, gridTemplateFirstColumnWidth} from '../../settings/settings'
 
 

@@ -1,8 +1,7 @@
 import {ErrorMessage, Field, Form, Formik, useField, useFormikContext} from 'formik'
 import {SaveCloseButtons} from './SaveCloseButtons'
 import React, {useEffect} from 'react'
-import {dateToString, getTime, setTimeToDate} from '../Table/utils/utils'
-import {intervalToDuration} from 'date-fns'
+import {dateToString, getTime, intervalLength, setTimeToDate} from '../Table/utils/utils'
 import {Icon} from '../simpleElements/Icon'
 import {reversObjectProp} from '../../commonUtils/commonUtils'
 import {currentCurrency, gridAutoRowsHeight, maxAdditionalPersons, priceAdditionalPerson} from '../../settings/settings'
@@ -63,7 +62,7 @@ export function OrderCreationForm(props) {
     } = rentInfo
 
     const tariffPrice = tariffs[tariff] || tariffs[`${apartmentsType}_${numberOfPersons}`]
-    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+    const phoneRegExp = /^\+?[789]((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
     return (
         <Formik
@@ -74,7 +73,7 @@ export function OrderCreationForm(props) {
                 checkOutTime: getTime(rentInterval.end),
                 tariff: tariffPrice,
                 checkIn: dateToString(rentInterval.start),
-                nights: intervalToDuration(rentInterval).days,
+                nights: intervalLength(rentInterval),
                 checkOut: dateToString(rentInterval.end)
             }}
 
@@ -232,7 +231,7 @@ function PriceField(propsAll) {
     const [field, meta] = useField(name)
 
     useEffect(() => {
-        const price = getPrice(intervalToDuration(rentInterval).days, tariff, additionalPersons)
+        const price = getPrice(intervalLength(rentInterval), tariff, additionalPersons)
         const moneyDiscountCalc = Number((price * percentageDiscount/100).toFixed(2)) || moneyDiscount
 
         setFieldValue(name, `${price-moneyDiscountCalc} ${currentCurrency}`)

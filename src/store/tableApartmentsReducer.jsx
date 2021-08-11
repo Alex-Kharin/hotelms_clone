@@ -1,9 +1,18 @@
-import {convertObjectWithArraysToObjectWithObjects, CreateViewRentIntervals} from '../commonUtils/commonUtils'
 import {addDays, areIntervalsOverlapping, subDays} from 'date-fns'
-import {shifterViewedRentIntervals} from '../components/Table/utils/utils'
+import {
+    adjustsInterval,
+    collectObjects,
+    createApartments,
+    CreateViewRentIntervals,
+    shifterViewedRentIntervals
+} from '../components/Table/utils/utils'
 import {borderWidth, gridAutoRowsHeight, gridColumnsWidth, tariffs} from '../settings/settings'
+import {apartmentsApi} from '../api/api'
 
 
+const APARTMENTS = 'APARTMENTS'
+const VIEW_RENT_INTERVALS = 'VIEW_RENT_INTERVALS'
+const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 const IS_SELECT = 'IS_SELECT'
 const START_SELECTION_INTERVAL = 'START_SELECTION_INTERVAL'
 const END_SELECTION_INTERVAL = 'END_SELECTION_INTERVAL'
@@ -19,125 +28,11 @@ const RENT_INFO = 'RENT_INFO'
 const OPEN_MODAL = 'OPEN_MODAL'
 const CANCEL_RENT = 'CANCEL_RENT'
 
+
 const initialState = {
-    apartments: {
-        standard: [
-            {
-                id: 1,
-                apartmentsNumber: 100,
-                numberOfPersons: 2,
-                rentInfo: [
-                    {
-                        id: 1,
-                        rentInterval:{
-                            start: new Date(),
-                            end: addDays(new Date(), 7)
-                        },
-                        personInfo:{firstName: 'Иван', lastName: 'Грозный', email: 'grozni@depesha.horse', phone: '111-222-333'},
-                        additionalPersons: 1,
-                        persons: 2,
-                        tariff: 'lux_5',
-                        percentageDiscount: 0,
-                        moneyDiscount: 500,
-                        price: 35000,
-                        comment: '',
-                    },
-                    {
-                        id: 2,
-                        rentInterval:{
-                            start: addDays(new Date(), 8),
-                            end: addDays(new Date(), 14)
-                        },
-                        personInfo:{firstName: 'Борис', lastName: 'Ельцин', email: 'boris@mail.ru', phone: '666-222-666'},
-                        additionalPersons: 5,
-                        persons: 2,
-                        tariff: 'standard_3',
-                        percentageDiscount: 50,
-                        moneyDiscount: 0,
-                        price: 5750,
-                        comment: '',
-                    },
-                ],
-            },
-            {
-                id: 2,
-                apartmentsNumber: 122,
-                numberOfPersons: 3,
-                rentInfo: [],
-            },
-            {
-                id: 3,
-                apartmentsNumber: 145,
-                numberOfPersons: 2,
-                rentInfo: [],
-            },
-            {
-                id: 4,
-                apartmentsNumber: 201,
-                numberOfPersons: 3,
-                rentInfo: [],
-            },
-            {
-                id: 5,
-                apartmentsNumber: 210,
-                numberOfPersons: 3,
-                rentInfo: [],
-            }
-        ],
-        comfortable: [
-            {
-                id: 6,
-                apartmentsNumber: 300,
-                numberOfPersons: 2,
-                rentInfo: [],
-            },
-            {
-                id: 7,
-                apartmentsNumber: 322,
-                numberOfPersons: 2,
-                rentInfo: [],
-            },
-            {
-                id: 8,
-                apartmentsNumber: 345,
-                numberOfPersons: 2,
-                rentInfo: [],
-            },
-            {
-                id: 9,
-                apartmentsNumber: 401,
-                numberOfPersons: 3,
-                rentInfo: [],
-            },
-            {
-                id: 10,
-                apartmentsNumber: 410,
-                numberOfPersons: 3,
-                rentInfo: [],
-            }
-        ],
-        lux: [
-            {
-                id: 11,
-                apartmentsNumber: 500,
-                numberOfPersons: 5,
-                rentInfo: [],
-            },
-            {
-                id: 12,
-                apartmentsNumber: 601,
-                numberOfPersons: 5,
-                rentInfo: [],
-            },
-            {
-                id: 13,
-                apartmentsNumber: 610,
-                numberOfPersons: 5,
-                rentInfo: [],
-            }
-        ],
-    },
+    apartments: {},
     tariffs,
+    isFetching: true,
     isSelect: false,
     isOpenModal: false,
     selectInterval: {start: null, end: null},
@@ -146,14 +41,27 @@ const initialState = {
         width: gridColumnsWidth - 2 * borderWidth,
         height: gridAutoRowsHeight - 2 * borderWidth
     },
-    viewRentIntervals: null,
+    viewRentIntervals: {},
 }
 
-initialState.viewRentIntervals = CreateViewRentIntervals(initialState.apartments)
-initialState.apartments = convertObjectWithArraysToObjectWithObjects('id', initialState.apartments)
 
 function tableApartmentsReducer(state = initialState, action) {
     switch (action.type) {
+        case APARTMENTS: {
+            return {
+                ...state,
+                apartments: action.apartments
+            }
+        }
+        case VIEW_RENT_INTERVALS: {
+            return {
+                ...state,
+                viewRentIntervals: action.viewRentIntervals
+            }
+        }
+        case TOGGLE_IS_FETCHING: {
+            return {...state, isFetching: action.isFetching}
+        }
         case IS_SELECT: {
             return {
                 ...state,
@@ -255,6 +163,9 @@ function tableApartmentsReducer(state = initialState, action) {
     }
 }
 
+const setApartments = (apartments) => ({type: APARTMENTS, apartments})
+const setViewRentIntervals = (viewRentIntervals) => ({type: VIEW_RENT_INTERVALS, viewRentIntervals})
+const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
 const setSelecting = (isSelect) => ({type: IS_SELECT, isSelect})
 const setIsOpenModal = (isOpenModal) => ({type: OPEN_MODAL, isOpenModal})
 const setStartSelection = (startSelection) => ({type: START_SELECTION_INTERVAL, startSelection})
@@ -297,6 +208,31 @@ const cancelRent = (apartmentsType, index, apartmentId) => ({
     apartmentId
 })
 
+function requestApartments() {
+    return async (dispatch, getState) => {
+        dispatch(toggleIsFetching(true))
+
+        const apartmentsArray = await apartmentsApi.getApartments()
+        const rentInfos = await apartmentsApi.getRentInfo()
+
+        rentInfos.forEach(rentInfo => {
+            rentInfo.rentInterval.start = new Date(rentInfo.rentInterval.start)
+            rentInfo.rentInterval.end = new Date(rentInfo.rentInterval.end)
+            rentInfo.rentInterval = adjustsInterval(rentInfo.rentInterval)
+        })
+
+        const collection = collectObjects(apartmentsArray, rentInfos)
+        const apartments = createApartments(collection)
+        const viewRentIntervals = CreateViewRentIntervals(rentInfos, getState().table.interval)
+
+        dispatch(setApartments(apartments))
+        dispatch(setViewRentIntervals(viewRentIntervals))
+        dispatch(toggleIsFetching(false))
+    }
+
+}
+
+
 export {
     tableApartmentsReducer,
     setSelecting,
@@ -313,6 +249,7 @@ export {
     setRentInfo,
     setIsOpenModal,
     cancelRent,
+    requestApartments,
 
 }
 

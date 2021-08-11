@@ -2,7 +2,6 @@ import {
     differenceInCalendarDays,
     endOfMonth,
     format,
-    intervalToDuration,
     isAfter,
     isSameDay,
     isWithinInterval,
@@ -27,6 +26,9 @@ const isDayBefore = (day1, day2) => startOfDay(day1) < startOfDay(day2)
 const setTimeToDate = (date, time) => {
     const [hours, minutes] = time.split(':')
     return set(date, {hours, minutes})
+}
+const isIntervalIncludedInAnother = (outerInterval, innerInterval) => {
+    return outerInterval.start < innerInterval.start && outerInterval.end > innerInterval.end
 }
 
 function toMonths(interval, months, shiftLeft, shiftRight) {
@@ -97,14 +99,66 @@ function isArrow(viewRentIntervals, apartmentsByType, id, index, rangeInterval) 
         : viewRentIntervals[id] && isDayBefore(viewRentIntervals[id][index]?.end, apartmentsByType[id]?.rentInfo[index]?.rentInterval.end)
 }
 
+function intervalLength(interval) {
+    return differenceInCalendarDays(interval.end, interval.start)
+}
+
 // = width*duration + 2*duration*borderWidth
 function widthRentElement(cellDimensions, viewRentInterval) {
-    return cellDimensions.width * intervalToDuration(viewRentInterval).days +
-        intervalToDuration(viewRentInterval).days * 2 * borderWidth + 'px'
+    return cellDimensions.width * intervalLength(viewRentInterval) +
+        intervalLength(viewRentInterval) * 2 * borderWidth + 'px'
+}
+
+function CreateViewRentIntervals(rentInfos, interval) {
+    return rentInfos.reduce((acc, rentInfo) => {
+
+        // define the boundaries of the visible intervals
+        let visibleInterval = null
+        if (
+            isWithinInterval(rentInfo.rentInterval.end, interval)
+            && (isSameDay(rentInfo.rentInterval.start, interval.start)
+            || isDayBefore(rentInfo.rentInterval.start, interval.start))
+        ) {
+            visibleInterval = {...rentInfo.rentInterval, start: interval.start}
+        }
+        if (
+            isWithinInterval(rentInfo.rentInterval.start, interval)
+            && (isSameDay(rentInfo.rentInterval.end, interval.end)
+            || isDayBefore(interval.end, rentInfo.rentInterval.end)
+            )
+        ) {
+            visibleInterval = {...rentInfo.rentInterval, end: interval.end}
+        }
+        if (isIntervalIncludedInAnother(rentInfo.rentInterval, interval)) {
+            visibleInterval = {...interval}
+        }
+
+        acc[rentInfo.apartmentId] = [...acc[rentInfo.apartmentId] || [], visibleInterval || rentInfo.rentInterval]
+        return acc
+    }, {})
+}
+
+function collectObjects (apartmentsArray, rentInfos) {
+    return apartmentsArray.map(apartment => {
+        apartment.rentInfo = rentInfos.filter(rentInfo => rentInfo.apartmentId === apartment.id)
+        return apartment
+    })
+}
+
+function createApartments(collectionObjects) {
+    return collectionObjects.reduce((acc, apartment) => {
+        if (acc[apartment.apartmentsType]) {
+            acc[apartment.apartmentsType][apartment.id] = {...acc[apartment.apartmentsType][apartment.id], ...apartment}
+        } else {
+            acc[apartment.apartmentsType] = {}
+            acc[apartment.apartmentsType][apartment.id] = apartment
+        }
+        return acc
+    }, {})
 }
 
 export {
     dayOfMonth, dayOfWeek, monthName, yearOfDate, dateToString, toMonths, adjustsInterval, isSelectInterval,
     shifterViewedRentIntervals, isDayStartRentalInterval, isArrow, widthRentElement, getTime, setTimeToDate,
-    isDayBefore,
+    isDayBefore, intervalLength, CreateViewRentIntervals, collectObjects, createApartments,
 }
