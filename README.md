@@ -2,7 +2,7 @@
 
 GitHub Pages: https://alex-kharin.github.io/hotelms_clone/
 
-<img alt="help img" src="https://github.com/Alex-Kharin/hotelms_clone/main/src/assets/img.jpg" title="help img" width="1024"/>
+<img alt="help img" src="https://github.com/Alex-Kharin/hotelms_clone/blob/main/src/assets/img.jpg" title="help img" width="1024"/>
 
 ## Available Scripts
 
