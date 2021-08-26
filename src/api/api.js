@@ -2,7 +2,7 @@ import * as axios from "axios";
 
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3001',
+    baseURL: 'https://my-json-server.typicode.com/Alex-Kharin/hotelms-clone-db',
     headers: {
         "Content-Type": "application/json"
     }

@@ -18,7 +18,6 @@ const START_SELECTION_INTERVAL = 'START_SELECTION_INTERVAL'
 const END_SELECTION_INTERVAL = 'END_SELECTION_INTERVAL'
 const CLEAR_SELECTED_DAYS = 'CLEAR_SELECTED_DAYS'
 const APARTMENT_ID = 'APARTMENT_ID'
-const CELL_DIMENSIONS = 'CELL_DIMENSIONS'
 const RENT_INTERVAL = 'RENT_INTERVAL'
 const LEFT_SIDE_SHIFT_LEFT_VIEW_RENT_INTERVAL = 'LEFT_SIDE_SHIFT_LEFT_VIEW_RENT_INTERVAL'
 const LEFT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL = 'LEFT_SIDE_SHIFT_RIGHT_VIEW_RENT_INTERVAL'
@@ -90,12 +89,6 @@ function tableApartmentsReducer(state = initialState, action) {
             return {
                 ...state,
                 selectInterval: {},
-            }
-        }
-        case CELL_DIMENSIONS: {
-            return {
-                ...state,
-                cellDimensions: action.cellDimensions,
             }
         }
         case RENT_INTERVAL: {
@@ -172,7 +165,6 @@ const setStartSelection = (startSelection) => ({type: START_SELECTION_INTERVAL, 
 const setEndSelection = (endSelection) => ({type: END_SELECTION_INTERVAL, endSelection})
 const setApartmentId = (apartmentId) => ({type: APARTMENT_ID, apartmentId})
 const clearSelectedDays = () => ({type: CLEAR_SELECTED_DAYS})
-const setCellDimensions = (cellDimensions) => ({type: CELL_DIMENSIONS, cellDimensions})
 const leftSideShiftLeftViewRentInterval = (apartmentId, index) => ({
     type: LEFT_SIDE_SHIFT_LEFT_VIEW_RENT_INTERVAL,
     apartmentId, index
@@ -240,7 +232,6 @@ export {
     setEndSelection,
     setApartmentId,
     clearSelectedDays,
-    setCellDimensions,
     setRentInterval,
     leftSideShiftLeftViewRentInterval,
     leftSideShiftRightViewRentInterval,

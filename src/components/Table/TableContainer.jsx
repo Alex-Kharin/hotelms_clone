@@ -9,7 +9,6 @@ import {
 import {
     clearSelectedDays,
     setApartmentId,
-    setCellDimensions,
     setEndSelection, setIsOpenModal,
     setRentInterval,
     setSelecting,
@@ -48,7 +47,6 @@ const mapDispatchToProps = {
     setEndSelection,
     setApartmentId,
     clearSelectedDays,
-    setCellDimensions,
     setRentInterval,
     setIsOpenModal,
 
