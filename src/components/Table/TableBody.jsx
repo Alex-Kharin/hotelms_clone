@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {areIntervalsOverlapping, isSameDay, isWeekend, } from 'date-fns'
+import {isSameDay, isWeekend, isWithinInterval,} from 'date-fns'
 import {TableCell} from './Table-cell/TableCell'
 import {
     dayOfMonth,
@@ -26,31 +26,19 @@ export function TableBody(props) {
     const {
         days, apartments, selectInterval, apartmentId, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
-        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal, cancelRent,
+        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal, cancelRent, interval,
+        freeApartments,
     } = props
 
-    const freeApartmentsCells = (apartmentsByType) => days.map(day => {
-        let freeApartments = Object.keys(apartmentsByType).length
-
-        Object.values(apartmentsByType).forEach(apartment => {
-            if (apartment.rentInfo.some(item => areIntervalsOverlapping({
-                    start: day,
-                    end: day
-                }, item.rentInterval, {inclusive: false}) ||
-                (isSameDay(day, item.rentInterval.end) && apartment.rentInfo.some(element => isSameDay(day, element.rentInterval.start)))
-            )) {
-                freeApartments--
-            }
-
-        })
-        return <Cell isWeekend={isWeekend(day)} weight={800} key={day}> {freeApartments} </Cell>
-    })
+    const freeApartmentsCells = (apartmentsByType) => {
+        return freeApartments[apartmentsByType].map(obj => <Cell isWeekend={isWeekend(obj.day)} weight={800} key={obj.day}> {obj.freeApartments} </Cell>)
+    }
 
     return (
         <>
             {Object.keys(apartments).map(apartmentsType =>
                 <React.Fragment key={apartmentsType}>
-                    <TableRow rowCells={freeApartmentsCells(apartments[apartmentsType])} rowTitle={<Cell>{apartmentsType}</Cell>}/>
+                    <TableRow rowCells={freeApartmentsCells(apartmentsType)} rowTitle={<Cell>{apartmentsType}</Cell>}/>
                     <ApartmentsRowsByNumbers
                         days={days}
                         apartmentsByType={apartments[apartmentsType]}
@@ -68,6 +56,7 @@ export function TableBody(props) {
                         isOpenModal={isOpenModal}
                         setIsOpenModal={setIsOpenModal}
                         cancelRent={cancelRent}
+                        interval={interval}
                     />
                 </React.Fragment>)}
         </>
@@ -78,31 +67,33 @@ function ApartmentsRowsByNumbers(props) {
     const {
         days, apartmentsByType, apartmentsType, apartmentIdForSelect, selectInterval, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
-        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal, cancelRent,
+        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal, cancelRent, interval,
     } = props
 
     useEffect(() => {
         Object.keys(viewRentIntervals).forEach(id => {
             if (id in apartmentsByType) {
                 for (let i = 0; i < viewRentIntervals[id]?.length; i++) {
+                        const {start, end} = viewRentIntervals[id][i]
+                    if (isWithinInterval(start, interval) || isWithinInterval(end, interval)) {
+                        const apartmentRentInterval = apartmentsByType[id].rentInfo[i].rentInterval
+                        const firstTableDay = days[0]
+                        const lastTableDay = days[days.length - 1]
 
-                    const {start, end} = viewRentIntervals[id][i]
-                    const apartmentRentInterval = apartmentsByType[id].rentInfo[i].rentInterval
-                    const firstTableDay = days[0]
-                    const lastTableDay = days[days.length - 1]
+                        if (!isSameDay(start, end) && isDayBefore(start, firstTableDay)) {
+                            leftSideShiftLeftViewRentInterval(id, i)
+                        }
+                        if (!isSameDay(lastTableDay, end) && isDayBefore(lastTableDay, end)) {
+                            rightSideShiftLeftViewRentInterval(id, i)
+                        }
+                        if (!isSameDay(start, apartmentRentInterval?.start) && isDayBefore(firstTableDay, start)) {
+                            leftSideShiftRightViewRentInterval(id, i)
+                        }
+                        if (!isSameDay(end, apartmentRentInterval?.end) && isDayBefore(end, lastTableDay)) {
+                            rightSideShiftRightViewRentInterval(id, i)
+                        }
+                    }
 
-                    if (!isSameDay(start, end) && isDayBefore(start, firstTableDay)) {
-                        leftSideShiftLeftViewRentInterval(id, i)
-                    }
-                    if (!isSameDay(lastTableDay, end) && isDayBefore(lastTableDay, end)) {
-                        rightSideShiftLeftViewRentInterval(id, i)
-                    }
-                    if (!isSameDay(start, apartmentRentInterval?.start) && isDayBefore(firstTableDay, start)) {
-                        leftSideShiftRightViewRentInterval(id, i)
-                    }
-                    if (!isSameDay(end, apartmentRentInterval?.end) && isDayBefore(end, lastTableDay)) {
-                        rightSideShiftRightViewRentInterval(id, i)
-                    }
                 }
             }
         })

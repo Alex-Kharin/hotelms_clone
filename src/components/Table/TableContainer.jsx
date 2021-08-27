@@ -21,16 +21,15 @@ import {
     getIsSelect,
     getSelectInterval
 } from '../../store/tableContainerSelectors'
-import {eachDayOfInterval, set} from 'date-fns'
-import {time} from '../../settings/settings'
+import {getDays} from '../../store/tableBodyContainerSelectors'
 
 
 function mapStateToProps(state) {
     return {
         interval: getInterval(state),
         daysInTable: getDaysInTable(state),
-        // days: getDays(state), // WTF Bro?
-        days: eachDayOfInterval(state.table.interval).map(day=>set(day, time)),
+        days: getDays(state),
+        // days: eachDayOfInterval(state.table.interval).map(day=>set(day, time)),
         isSelect: getIsSelect(state),
         selectInterval: getSelectInterval(state),
         apartmentId: getApartmentId(state),

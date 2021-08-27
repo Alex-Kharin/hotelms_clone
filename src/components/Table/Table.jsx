@@ -28,7 +28,6 @@ export function Table(props) {
             const day = new Date(dayStr)
 
             if (event.type === 'mousedown') {
-                // setCellDimensions({width: target.clientWidth, height: target.clientHeight})
                 setApartmentId(target.dataset.apartment_id)
                 setSelecting(true)
                 setStartSelection(day)
@@ -70,9 +69,9 @@ export function Table(props) {
                           onMouseUp={handleSelect}
                           onMouseOver={updateSelection}
             >
-                <TableBodyContainer days={days}
-                                    selectInterval={selectInterval}
+                <TableBodyContainer selectInterval={selectInterval}
                                     apartmentId={apartmentId}
+                                    interval={interval}
                 />
             </TableWrapper>
         </>

@@ -12,7 +12,8 @@ import {
 } from '../../store/tableApartmentsReducer'
 import {
     getApartments,
-    getCellDimensions,
+    getCellDimensions, getDays,
+    getFreeApartments,
     getIsFetching,
     getIsOpenModal,
     getTariffs,
@@ -34,22 +35,24 @@ export function TableBodyContainer(props) {
     return(
         <>
             {isFetching && <Preloader/>}
-            <TableBody {...props} />
+            {!isFetching && <TableBody {...props} />}
         </>
     )
 }
 
 function mapStateToProps(state, ownProps) {
     return {
-        days: ownProps.days,
+        interval: ownProps.interval,
         selectInterval: ownProps.selectInterval,
         apartmentId: ownProps.apartmentId,
+        days: getDays(state),
         apartments: getApartments(state),
         cellDimensions: getCellDimensions(state),
         viewRentIntervals: getViewRentIntervals(state),
         tariffs: getTariffs(state),
         isOpenModal: getIsOpenModal(state),
-        isFetching: getIsFetching(state)
+        isFetching: getIsFetching(state),
+        freeApartments: getFreeApartments(state)
     }
 }
 
@@ -65,5 +68,4 @@ const mapDispatchToProps = {
 
 }
 
-// export const TableBodyContainer = connect(mapStateToProps, mapDispatchToProps)(TableBody)
 export default connect(mapStateToProps, mapDispatchToProps)(TableBodyContainer)

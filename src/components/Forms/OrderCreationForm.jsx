@@ -218,7 +218,7 @@ function getPrice(days, tariff=0, additionalPersons) {
 }
 
 function PriceField(props) {
-    const {rentInterval, name} = props
+    const {rentInterval, name, ...restProps} = props
     const {
         values:{
             tariff,
@@ -241,7 +241,7 @@ function PriceField(props) {
 
     return (
         <>
-            <input {...props} {...field} />
+            <input {...restProps} {...field} />
             {!!meta.touched && !!meta.error && <ErrorMessageElement>{meta.error}</ErrorMessageElement>}
         </>
     )
