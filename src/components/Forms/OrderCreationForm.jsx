@@ -46,7 +46,8 @@ const Delete = styled.div`
 
 export function OrderCreationForm(props) {
     const {
-        closeModal, rentInfo, setRentInfo, index, apartmentsType, apartmentId, tariffs, numberOfPersons, cancelRent,
+        closeModal, rentInfo, index, apartmentsType, apartmentId, tariffs, numberOfPersons, createUpdateRentInfo,
+        deleteRentInfo,
     } = props
     const {
         id=null,
@@ -91,7 +92,7 @@ export function OrderCreationForm(props) {
 
             onSubmit={(values) => {
                 const newRentInfo ={
-                    rentInterval: {start: setTimeToDate(rentInterval.start, values.checkInTime), end: setTimeToDate(rentInterval.end, values.checkOutTime)},
+                    rentInterval: {start: setTimeToDate(rentInterval.start, values.checkInTime).getTime(), end: setTimeToDate(rentInterval.end, values.checkOutTime).getTime()},
                     personInfo:{
                         firstName: values.firstName,
                         lastName: values.lastName,
@@ -105,16 +106,18 @@ export function OrderCreationForm(props) {
                     moneyDiscount: values.moneyDiscount,
                     price: values.price,
                     comment: values.comment,
-                    id: id || Math.round(Math.random()*100000000), // just for test. It's must deleted when finished transport layer. It's property created on server side. TODO: delete this!!!
+                    apartmentId: Number(apartmentId),
+                    id
                 }
-                setRentInfo(apartmentsType, index, apartmentId, newRentInfo)
+                const operation = newRentInfo.id ? 'update' : 'create'
+                createUpdateRentInfo(operation, apartmentsType, index, apartmentId, newRentInfo)
             }}
         >
             <Form>
                 <TitleWrapper>
                     Создание Заказа
                     <Delete message='Удалить сразу и навсегда! Бесповоротно! БЕЗ ДОПОЛНИТЕЛЬНЫХ ПРЕДУПРЕЖДЕНИЙ!!!'>
-                        <Button iconName={"delete"} background={"red"} type={"button"} onClick={()=>cancelRent(apartmentsType, index, apartmentId)} />
+                        <Button iconName={"delete"} background={"red"} type={"button"} onClick={()=>deleteRentInfo(apartmentsType, index, apartmentId, id)} />
                     </Delete>
                 </TitleWrapper>
 

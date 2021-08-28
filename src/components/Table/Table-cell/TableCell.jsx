@@ -32,7 +32,7 @@ const ModalRent = withModal(Rent)
 export function TableCell(props) {
     const {
         isWeekend, date, apartmentId, isSelect, apartmentsType, isToday, isRent, isLeftArrow, isRightArrow,
-        rentInfo, setRentInfo, index, tariffs, numberOfPersons, isOpenModal, setIsOpenModal, cancelRent,
+        rentInfo, index, tariffs, numberOfPersons, isOpenModal, setIsOpenModal, createUpdateRentInfo, deleteRentInfo,
     } = props
 
     const topString = props.topString ? <TopString>{props.topString}</TopString> : null
@@ -59,13 +59,13 @@ export function TableCell(props) {
             >
                 <OrderCreationForm
                     rentInfo={rentInfo}
-                    setRentInfo={setRentInfo}
                     index={index}
                     apartmentsType={apartmentsType}
                     tariffs={tariffs}
                     apartmentId={apartmentId}
                     numberOfPersons={numberOfPersons}
-                    cancelRent={cancelRent}
+                    createUpdateRentInfo={createUpdateRentInfo}
+                    deleteRentInfo={deleteRentInfo}
                 />
             </ModalRent>}
             {topString}

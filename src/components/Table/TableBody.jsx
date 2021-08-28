@@ -26,8 +26,8 @@ export function TableBody(props) {
     const {
         days, apartments, selectInterval, apartmentId, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
-        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal, cancelRent, interval,
-        freeApartments,
+        rightSideShiftRightViewRentInterval, tariffs, isOpenModal, setIsOpenModal, interval, freeApartments,
+        createUpdateRentInfo, deleteRentInfo,
     } = props
 
     const freeApartmentsCells = (apartmentsByType) => {
@@ -51,12 +51,12 @@ export function TableBody(props) {
                         leftSideShiftRightViewRentInterval={leftSideShiftRightViewRentInterval}
                         rightSideShiftLeftViewRentInterval={rightSideShiftLeftViewRentInterval}
                         rightSideShiftRightViewRentInterval={rightSideShiftRightViewRentInterval}
-                        setRentInfo={setRentInfo}
                         tariffs={tariffs}
                         isOpenModal={isOpenModal}
                         setIsOpenModal={setIsOpenModal}
-                        cancelRent={cancelRent}
                         interval={interval}
+                        createUpdateRentInfo={createUpdateRentInfo}
+                        deleteRentInfo={deleteRentInfo}
                     />
                 </React.Fragment>)}
         </>
@@ -67,7 +67,8 @@ function ApartmentsRowsByNumbers(props) {
     const {
         days, apartmentsByType, apartmentsType, apartmentIdForSelect, selectInterval, cellDimensions, viewRentIntervals,
         leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
-        rightSideShiftRightViewRentInterval, setRentInfo, tariffs, isOpenModal, setIsOpenModal, cancelRent, interval,
+        rightSideShiftRightViewRentInterval, tariffs, isOpenModal, setIsOpenModal, interval, createUpdateRentInfo,
+        deleteRentInfo,
     } = props
 
     useEffect(() => {
@@ -116,12 +117,12 @@ function ApartmentsRowsByNumbers(props) {
                 isSelect={isSelectInterval(selectInterval, day, apartmentIdForSelect, id)}
                 isLeftArrow={isArrow(viewRentIntervals, apartmentsByType, id, index, 'start')}
                 isRightArrow={isArrow(viewRentIntervals, apartmentsByType, id, index, 'end')}
-                setRentInfo={setRentInfo}
                 tariffs={tariffs}
                 numberOfPersons={apartmentsByType[id].numberOfPersons}
                 isOpenModal={isOpenModal}
                 setIsOpenModal={setIsOpenModal}
-                cancelRent={cancelRent}
+                createUpdateRentInfo={createUpdateRentInfo}
+                deleteRentInfo={deleteRentInfo}
             />
         })
     }
@@ -133,7 +134,8 @@ function ApartmentsRowsByNumbers(props) {
                 .map(apartmentId => {
                 return (
                     <React.Fragment key={apartmentId}>
-                        <Cell position={'flex-start'} weight={500}
+                        <Cell position={'flex-start'}
+                              weight={500}
                               key={apartmentsByType[apartmentId].apartmentsNumber}
                         >
                             {apartmentsByType[apartmentId].apartmentsNumber} ({apartmentsByType[apartmentId].numberOfPersons})

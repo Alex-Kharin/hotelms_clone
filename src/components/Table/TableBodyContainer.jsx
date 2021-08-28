@@ -1,14 +1,14 @@
 import {connect} from 'react-redux'
 import {TableBody} from './TableBody'
 import {
-    cancelRent,
     leftSideShiftLeftViewRentInterval,
     leftSideShiftRightViewRentInterval,
     requestApartments,
     rightSideShiftLeftViewRentInterval,
     rightSideShiftRightViewRentInterval,
     setIsOpenModal,
-    setRentInfo
+    createUpdateRentInfo,
+    deleteRentInfo
 } from '../../store/tableApartmentsReducer'
 import {
     getApartments,
@@ -61,10 +61,10 @@ const mapDispatchToProps = {
     leftSideShiftRightViewRentInterval,
     rightSideShiftLeftViewRentInterval,
     rightSideShiftRightViewRentInterval,
-    setRentInfo,
     setIsOpenModal,
-    cancelRent,
     requestApartments,
+    createUpdateRentInfo,
+    deleteRentInfo,
 
 }
 

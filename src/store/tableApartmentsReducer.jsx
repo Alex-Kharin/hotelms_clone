@@ -224,6 +224,36 @@ function requestApartments() {
 
 }
 
+function createUpdateRentInfo(operation, apartmentsType, index, apartmentId, newRentInfo) {
+    return async function(dispatch) {
+        try {
+            const response = operation === 'create'
+                ? await apartmentsApi.createRentInfo(newRentInfo)
+                : operation === 'update'
+                    ? await apartmentsApi.updateRentInfo(newRentInfo)
+                    : null
+            if (response.statusText === 'OK' || 'Created') {
+                dispatch(setRentInfo(apartmentsType, index, apartmentId, response.data))
+            }
+        } catch (error){
+            console.error(error)
+        }
+    }
+}
+
+function deleteRentInfo(apartmentsType, index, apartmentId, rentInfoId) {
+    return async function(dispatch) {
+        try {
+            const response = await apartmentsApi.deleteRentInfo(rentInfoId)
+            if (response.statusText === 'OK') {
+                dispatch(cancelRent(apartmentsType, index, apartmentId))
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
+}
+
 
 export {
     tableApartmentsReducer,
@@ -237,10 +267,10 @@ export {
     leftSideShiftRightViewRentInterval,
     rightSideShiftLeftViewRentInterval,
     rightSideShiftRightViewRentInterval,
-    setRentInfo,
     setIsOpenModal,
-    cancelRent,
     requestApartments,
+    createUpdateRentInfo,
+    deleteRentInfo,
 
 }
 
