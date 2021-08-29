@@ -6,7 +6,7 @@ import {
     rentElementColor,
     rentElementsZIndex
 } from '../../settings/settings'
-import {dateToString, getTime, intervalLength, widthRentElement} from './utils/utils'
+import {dateToString, getTime, intervalLength, widthRentElement} from '../../Utils/utils'
 import {Icon} from '../simpleElements/Icon'
 import ReactTooltip from 'react-tooltip'
 import {RentPreloader} from '../simpleElements/RentPreloader'

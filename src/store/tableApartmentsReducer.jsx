@@ -5,7 +5,7 @@ import {
     createApartments,
     CreateViewRentIntervals,
     shifterViewedRentIntervals
-} from '../components/Table/utils/utils'
+} from '../Utils/utils'
 import {borderWidth, gridAutoRowsHeight, gridColumnsWidth, tariffs} from '../settings/settings'
 import {apartmentsApi} from '../api/api'
 

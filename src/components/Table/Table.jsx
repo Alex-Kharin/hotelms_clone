@@ -1,7 +1,7 @@
 import React from 'react'
 import {TableHeader} from './TableHeader'
 import styled from 'styled-components'
-import {adjustsInterval} from './utils/utils'
+import {adjustsInterval} from '../../Utils/utils'
 import {isSameDay} from 'date-fns'
 import TableBodyContainer from './TableBodyContainer'
 import {gridAutoRowsHeight, gridColumnsWidth, gridTemplateFirstColumnWidth} from '../../settings/settings'

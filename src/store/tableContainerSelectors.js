@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect'
-import {adjustsInterval} from '../components/Table/utils/utils'
+import {adjustsInterval} from '../Utils/utils'
 
 
 export const getInterval = (state) => state.table.interval

@@ -7,7 +7,7 @@ import {
     isDayBefore,
     isDayStartRentalInterval,
     isSelectInterval
-} from './utils/utils'
+} from '../../Utils/utils'
 import {TableRow} from './TableRow'
 import styled from 'styled-components'
 import {border, displayFlexAlignCenter, weekendColor} from '../../settings/settings'
