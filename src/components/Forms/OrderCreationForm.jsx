@@ -75,7 +75,8 @@ export function OrderCreationForm(props) {
                 tariff: tariffPrice,
                 checkIn: dateToString(rentInterval.start),
                 nights: intervalLength(rentInterval),
-                checkOut: dateToString(rentInterval.end)
+                checkOut: dateToString(rentInterval.end),
+                closeOnSave: true,
             }}
 
             validationSchema={Yup.object({
@@ -111,13 +112,17 @@ export function OrderCreationForm(props) {
                 }
                 const operation = newRentInfo.id ? 'update' : 'create'
                 createUpdateRentInfo(operation, apartmentsType, index, apartmentId, newRentInfo)
+                values.closeOnSave && closeModal()
             }}
         >
             <Form>
                 <TitleWrapper>
                     Создание Заказа
                     <Delete message='Удалить сразу и навсегда! Бесповоротно! БЕЗ ДОПОЛНИТЕЛЬНЫХ ПРЕДУПРЕЖДЕНИЙ!!!'>
-                        <Button iconName={"delete"} background={"red"} type={"button"} onClick={()=>deleteRentInfo(apartmentsType, index, apartmentId, id)} />
+                        <Button iconName={"delete"} background={"red"} type={"button"} onClick={()=> {
+                            deleteRentInfo(apartmentsType, index, apartmentId, id)
+                            closeModal()
+                        }} />
                     </Delete>
                 </TitleWrapper>
 
@@ -193,6 +198,11 @@ export function OrderCreationForm(props) {
 
                 <label htmlFor="comment">Комментрий :</label>
                 <Field name="comment" as="textarea" rows={5} cols={70}/>
+
+                <hr/>
+
+                <label htmlFor="closeOnSave">Close on save: </label>
+                <Field name="closeOnSave" type="checkbox" style={{verticalAlign: 'middle', marginLeft: '10px'}}/>
 
                 <SaveCloseButtons closeHandler={closeModal}/>
             </Form>

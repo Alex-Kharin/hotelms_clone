@@ -33,6 +33,7 @@ export function TableCell(props) {
     const {
         isWeekend, date, apartmentId, isSelect, apartmentsType, isToday, isRent, isLeftArrow, isRightArrow,
         rentInfo, index, tariffs, numberOfPersons, isOpenModal, setIsOpenModal, createUpdateRentInfo, deleteRentInfo,
+        isUpdating,
     } = props
 
     const topString = props.topString ? <TopString>{props.topString}</TopString> : null
@@ -56,6 +57,7 @@ export function TableCell(props) {
                 rentInfo={rentInfo}
                 isOpenModal={isOpenModal}
                 setIsOpenModal={setIsOpenModal}
+                isUpdating={isUpdating}
             >
                 <OrderCreationForm
                     rentInfo={rentInfo}

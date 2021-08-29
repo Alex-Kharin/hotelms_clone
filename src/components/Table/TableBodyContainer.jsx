@@ -15,7 +15,7 @@ import {
     getCellDimensions, getDays,
     getFreeApartments,
     getIsFetching,
-    getIsOpenModal,
+    getIsOpenModal, getIsUpdating,
     getTariffs,
     getViewRentIntervals
 } from '../../store/tableBodyContainerSelectors'
@@ -52,6 +52,7 @@ function mapStateToProps(state, ownProps) {
         tariffs: getTariffs(state),
         isOpenModal: getIsOpenModal(state),
         isFetching: getIsFetching(state),
+        isUpdating: getIsUpdating(state),
         freeApartments: getFreeApartments(state)
     }
 }

@@ -8,6 +8,7 @@ export const getCellDimensions = (state) => state.tableApartments.cellDimensions
 export const getTariffs = (state) => state.tableApartments.tariffs
 export const getIsOpenModal = (state) => state.tableApartments.isOpenModal
 export const getIsFetching = (state) => state.tableApartments.isFetching
+export const getIsUpdating = (state) => state.tableApartments.isUpdating
 export const getDays = (state) => eachDayOfInterval(state.table.interval).map(day=>set(day, time))
 
 export const getFreeApartments = createSelector(

@@ -1,9 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import {borderMix, currentCurrency, rentElementColor, rentElementsZIndex} from '../../settings/settings'
+import {
+    borderMix,
+    currentCurrency,
+    rentElementColor,
+    rentElementsZIndex
+} from '../../settings/settings'
 import {dateToString, getTime, intervalLength, widthRentElement} from './utils/utils'
 import {Icon} from '../simpleElements/Icon'
 import ReactTooltip from 'react-tooltip'
+import {RentPreloader} from '../simpleElements/RentPreloader'
 
 
 const RentWrapper = styled.div.attrs(props => ({'data-tip': '', 'data-for': props.forTooltip}))`
@@ -55,7 +61,7 @@ const TooltipSpan = styled.span`
 `
 
 export function Rent(props) {
-    const {openModal, cellDimensions, viewRentInterval, isLeftArrow, isRightArrow, rentInfo} = props
+    const {openModal, cellDimensions, viewRentInterval, isLeftArrow, isRightArrow, rentInfo, isUpdating} = props
     const {
         id,
         rentInterval,
@@ -70,6 +76,7 @@ export function Rent(props) {
     return (
         <>
             <RentWrapper onClick={openModal} cellDimensions={cellDimensions} viewRentInterval={viewRentInterval} forTooltip={`${id}`}>
+                {isUpdating.id === id && isUpdating.preloader && <RentPreloader/>}
                 {isLeftArrow && <Arrow position={'left'}>arrow_left</Arrow>}
                 {isRightArrow && <Arrow position={'right'}>arrow_right</Arrow>}
                 <FullName>{lastName} {firstName}</FullName>

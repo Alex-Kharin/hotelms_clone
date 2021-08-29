@@ -13,6 +13,7 @@ import {apartmentsApi} from '../api/api'
 const APARTMENTS = 'APARTMENTS'
 const VIEW_RENT_INTERVALS = 'VIEW_RENT_INTERVALS'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
+const TOGGLE_IS_UPDATING = 'TOGGLE_IS_UPDATING'
 const IS_SELECT = 'IS_SELECT'
 const START_SELECTION_INTERVAL = 'START_SELECTION_INTERVAL'
 const END_SELECTION_INTERVAL = 'END_SELECTION_INTERVAL'
@@ -32,6 +33,7 @@ const initialState = {
     apartments: {},
     tariffs,
     isFetching: true,
+    isUpdating: {preloader: false, id: null},
     isSelect: false,
     isOpenModal: false,
     selectInterval: {start: null, end: null},
@@ -60,6 +62,11 @@ function tableApartmentsReducer(state = initialState, action) {
         }
         case TOGGLE_IS_FETCHING: {
             return {...state, isFetching: action.isFetching}
+        }
+        case TOGGLE_IS_UPDATING: {
+            return {...state,
+                isUpdating: {preloader: action.preloader, id: action.id}
+            }
         }
         case IS_SELECT: {
             return {
@@ -159,6 +166,7 @@ function tableApartmentsReducer(state = initialState, action) {
 const setApartments = (apartments) => ({type: APARTMENTS, apartments})
 const setViewRentIntervals = (viewRentIntervals) => ({type: VIEW_RENT_INTERVALS, viewRentIntervals})
 const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
+const toggleIsUpdating = (preloader, id) => ({type: TOGGLE_IS_UPDATING, preloader, id})
 const setSelecting = (isSelect) => ({type: IS_SELECT, isSelect})
 const setIsOpenModal = (isOpenModal) => ({type: OPEN_MODAL, isOpenModal})
 const setStartSelection = (startSelection) => ({type: START_SELECTION_INTERVAL, startSelection})
@@ -227,16 +235,19 @@ function requestApartments() {
 function createUpdateRentInfo(operation, apartmentsType, index, apartmentId, newRentInfo) {
     return async function(dispatch) {
         try {
+            dispatch(toggleIsUpdating(true, newRentInfo?.id))
             const response = operation === 'create'
                 ? await apartmentsApi.createRentInfo(newRentInfo)
                 : operation === 'update'
                     ? await apartmentsApi.updateRentInfo(newRentInfo)
                     : null
-            if (response.statusText === 'OK' || 'Created') {
+            if (response.statusText === 'OK' || response.statusText === 'Created') {
                 dispatch(setRentInfo(apartmentsType, index, apartmentId, response.data))
             }
         } catch (error){
             console.error(error)
+        } finally {
+            dispatch(toggleIsUpdating(false, newRentInfo?.id))
         }
     }
 }
@@ -244,12 +255,15 @@ function createUpdateRentInfo(operation, apartmentsType, index, apartmentId, new
 function deleteRentInfo(apartmentsType, index, apartmentId, rentInfoId) {
     return async function(dispatch) {
         try {
+            dispatch(toggleIsUpdating(true, rentInfoId))
             const response = await apartmentsApi.deleteRentInfo(rentInfoId)
             if (response.statusText === 'OK') {
                 dispatch(cancelRent(apartmentsType, index, apartmentId))
             }
         } catch (error) {
             console.error(error)
+        } finally {
+            dispatch(toggleIsUpdating(false, null))
         }
     }
 }
