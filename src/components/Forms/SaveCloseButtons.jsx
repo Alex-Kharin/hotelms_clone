@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import {Button} from '../simpleElements/Button'
+import {ModalContext} from '../context'
 
 
 const ButtonsWrapper = styled.div`
@@ -11,10 +12,13 @@ const ButtonsWrapper = styled.div`
 `
 
 export function SaveCloseButtons(props) {
-    const {closeHandler, notSave} = props
+    const {notSave} = props
+    const closeModal = useContext(ModalContext)
 
-    return <ButtonsWrapper>
-        {!notSave && <Button type="submit" size={'0.8em'}>Save</Button>}
-        <Button type="button" onClick={closeHandler} size={'0.8em'}>Close</Button>
-    </ButtonsWrapper>
+    return (
+            <ButtonsWrapper>
+                {!notSave && <Button type="submit" size={'0.8em'}>Save</Button>}
+                <Button type="button" onClick={closeModal} size={'0.8em'}>Close</Button>
+            </ButtonsWrapper>
+    )
 }

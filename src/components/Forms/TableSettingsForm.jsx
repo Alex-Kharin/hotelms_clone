@@ -5,7 +5,7 @@ import {SaveCloseButtons} from './SaveCloseButtons'
 import {Fieldset, Legend} from '../simpleElements/StyledElements'
 
 export const TableSettingsForm = (props) => {
-    const{daysInTable, changeDaysInTable, closeModal, } = props
+    const{daysInTable, changeDaysInTable, } = props
 
     const min = 29
     const max = 366
@@ -29,7 +29,7 @@ export const TableSettingsForm = (props) => {
                         Reset
                     </Button>
                 </Fieldset>
-                <SaveCloseButtons closeHandler={closeModal}/>
+                <SaveCloseButtons />
             </Form>}
         </ Formik>
     )

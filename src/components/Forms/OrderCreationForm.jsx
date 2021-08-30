@@ -1,6 +1,6 @@
 import {ErrorMessage, Field, Form, Formik, useField, useFormikContext} from 'formik'
 import {SaveCloseButtons} from './SaveCloseButtons'
-import React, {useEffect} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {dateToString, getTime, intervalLength, setTimeToDate} from '../../Utils/utils'
 import {Icon} from '../simpleElements/Icon'
 import {reversObjectProp} from '../../Utils/commonUtils'
@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import {Button} from '../simpleElements/Button'
 import * as Yup from 'yup'
 import {Fieldset, Legend} from '../simpleElements/StyledElements'
+import {ModalContext} from '../context'
 
 
 const LikeFormField = styled.span`
@@ -47,9 +48,11 @@ const Delete = styled.div`
 
 export function OrderCreationForm(props) {
     const {
-        closeModal, rentInfo, index, apartmentsType, apartmentId, tariffs, numberOfPersons, createUpdateRentInfo,
-        deleteRentInfo,
+        rentInfo, index, apartmentsType, apartmentId, tariffs, numberOfPersons, createUpdateRentInfo, deleteRentInfo,
     } = props
+
+    const closeModal = useContext(ModalContext)
+
     const {
         id = null,
         rentInterval,
@@ -216,7 +219,7 @@ export function OrderCreationForm(props) {
                 <label htmlFor="closeOnSave">Close on save: </label>
                 <Field name="closeOnSave" type="checkbox" style={{verticalAlign: 'middle', marginLeft: '10px'}}/>
 
-                <SaveCloseButtons closeHandler={closeModal}/>
+                <SaveCloseButtons />
             </Form>
         </Formik>
     )

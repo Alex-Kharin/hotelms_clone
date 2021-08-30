@@ -14,9 +14,7 @@ const SettingsExample = styled.div`
   vertical-align: middle;
 `
 
-export const CommonSettingsForm = (props) => {
-    const {closeModal,} = props
-
+export const CommonSettingsForm = () => {
     return (
         <Formik
             initialValues={settings}
@@ -37,7 +35,7 @@ export const CommonSettingsForm = (props) => {
                     )
                 })}
 
-                <SaveCloseButtons closeHandler={closeModal} notSave/>
+                <SaveCloseButtons notSave/>
             </Form>
         </ Formik>
     )

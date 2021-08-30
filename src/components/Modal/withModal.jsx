@@ -1,6 +1,7 @@
 import Modal from 'react-modal'
 import React, {useState} from 'react'
 import style from './SettingsMenuItem.module.css'
+import {ModalContext} from '../context'
 
 
 Modal.setAppElement('#root')
@@ -25,12 +26,9 @@ export function withModal(WrappedComponent) {
                        shouldCloseOnOverlayClick={false}
                        shouldCloseOnEsc={true}
                 >
-                    {React.Children.map(props.children, (child) => {
-                        if (React.isValidElement(child) && typeof(child.type) !== 'string' ) {
-                            return React.cloneElement(child, {closeModal})
-                        }
-                        return child
-                    })}
+                    <ModalContext.Provider value={closeModal}>
+                        {props.children}
+                    </ModalContext.Provider>
                 </Modal>
             </>
         )

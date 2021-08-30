@@ -9,19 +9,19 @@ import {
     startOfDay,
     startOfMonth,
 } from 'date-fns'
-import {ru} from 'date-fns/locale'
+import {ru, enGB} from 'date-fns/locale'
 import {Button} from '../components/simpleElements/Button'
 import React from 'react'
 import {MonthCell} from '../components/Table/Table-cell/MonthCell'
 import {borderWidth} from '../settings/settings'
 
-
-const dayOfMonth = (day) => format(day, 'dd', {locale: ru})
-const dayOfWeek = (day) => format(day, 'eeeeee', {locale: ru})
-const monthName = (month) => format(month, 'LLLL', {locale: ru})
-const yearOfDate = (date) => format(date, 'y', {locale: ru})
-const dateToString = (date) => format(date, 'dd-MM-y', {locale: ru})
-const getTime = (date) => format(date, 'HH:mm', {locale: ru})
+const locale = enGB
+const dayOfMonth = (day) => format(day, 'dd', {locale})
+const dayOfWeek = (day) => format(day, 'eeeeee', {locale})
+const monthName = (month) => format(month, 'LLLL', {locale})
+const yearOfDate = (date) => format(date, 'y', {locale})
+const dateToString = (date) => format(date, 'dd-MM-y', {locale})
+const getTime = (date) => format(date, 'HH:mm', {locale})
 const isDayBefore = (day1, day2) => startOfDay(day1) < startOfDay(day2)
 const intervalLength = (interval) => differenceInCalendarDays(interval.end, interval.start)
 const setTimeToDate = (date, time) => {

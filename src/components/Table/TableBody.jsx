@@ -24,11 +24,7 @@ const Cell = styled.div`
 
 export function TableBody(props) {
     const {
-        days, apartments, selectInterval, apartmentId, cellDimensions, viewRentIntervals,
-        leftSideShiftLeftViewRentInterval, leftSideShiftRightViewRentInterval, rightSideShiftLeftViewRentInterval,
-        rightSideShiftRightViewRentInterval, tariffs, isOpenModal, setIsOpenModal, interval, freeApartments,
-        createUpdateRentInfo, deleteRentInfo, isUpdating,
-    } = props
+        apartments, apartmentId, freeApartments, ...restProps} = props
 
     const freeApartmentsCells = (apartmentsByType) => {
         return freeApartments[apartmentsByType].map(obj => <Cell isWeekend={isWeekend(obj.day)} weight={800} key={obj.day}> {obj.freeApartments} </Cell>)
@@ -40,24 +36,10 @@ export function TableBody(props) {
                 <React.Fragment key={apartmentsType}>
                     <TableRow rowCells={freeApartmentsCells(apartmentsType)} rowTitle={<Cell>{apartmentsType}</Cell>}/>
                     <ApartmentsRowsByNumbers
-                        days={days}
                         apartmentsByType={apartments[apartmentsType]}
                         apartmentsType={apartmentsType}
                         apartmentIdForSelect={apartmentId}
-                        selectInterval={selectInterval}
-                        cellDimensions={cellDimensions}
-                        viewRentIntervals={viewRentIntervals}
-                        leftSideShiftLeftViewRentInterval={leftSideShiftLeftViewRentInterval}
-                        leftSideShiftRightViewRentInterval={leftSideShiftRightViewRentInterval}
-                        rightSideShiftLeftViewRentInterval={rightSideShiftLeftViewRentInterval}
-                        rightSideShiftRightViewRentInterval={rightSideShiftRightViewRentInterval}
-                        tariffs={tariffs}
-                        isOpenModal={isOpenModal}
-                        setIsOpenModal={setIsOpenModal}
-                        interval={interval}
-                        createUpdateRentInfo={createUpdateRentInfo}
-                        deleteRentInfo={deleteRentInfo}
-                        isUpdating={isUpdating}
+                        {...restProps}
                     />
                 </React.Fragment>)}
         </>
