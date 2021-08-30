@@ -31,15 +31,15 @@ export function Header(props) {
         <HeaderWrapper>
             <LeftSideMenu>
                 <Icon size={36}>hotel</Icon>
-                <TableSettingsMenuItem iconName={'grid_on'} menuItemTitle={'Сетка'}>
+                <TableSettingsMenuItem iconName={'grid_on'} menuItemTitle={'Grid'}>
                     <TableSettingsForm daysInTable={daysInTable} changeDaysInTable={changeDaysInTable}/>
                 </TableSettingsMenuItem>
 
-                <TableSettingsMenuItem iconName={'settings'} menuItemTitle={'Настройки'}>
+                <TableSettingsMenuItem iconName={'settings'} menuItemTitle={'Settings'}>
                     <CommonSettingsForm />
                 </TableSettingsMenuItem>
 
-                <TableSettingsMenuItem iconName={'format_list_bulleted'} menuItemTitle={'Отчеты'}>
+                <TableSettingsMenuItem iconName={'format_list_bulleted'} menuItemTitle={'Reports'}>
                     <Report />
                 </TableSettingsMenuItem>
             </LeftSideMenu>

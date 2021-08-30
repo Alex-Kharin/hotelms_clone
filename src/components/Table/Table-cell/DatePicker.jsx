@@ -77,13 +77,13 @@ export function DatePicker(props) {
     return (
             <DayPickerInput
                 dayPickerProps={{
-                    todayButton: 'Сегодня',
-                    locale: ru,
-                    months: MONTHS[locale],
-                    weekdaysLong: WEEKDAYS_LONG[locale],
-                    weekdaysShort: WEEKDAYS_SHORT[locale],
-                    firstDayOfWeek: FIRST_DAY_OF_WEEK[locale],
-                    labels: LABELS[locale],
+                    todayButton: 'Today',
+                    // locale: ru,
+                    // months: MONTHS[locale],
+                    // weekdaysLong: WEEKDAYS_LONG[locale],
+                    // weekdaysShort: WEEKDAYS_SHORT[locale],
+                    // firstDayOfWeek: FIRST_DAY_OF_WEEK[locale],
+                    // labels: LABELS[locale],
                 }}
                 formatDate={formatDate}
                 format={FORMAT}

@@ -86,18 +86,18 @@ export function Rent(props) {
             </RentWrapper>
             <ReactTooltip place="bottom" type="dark" effect="float" id={`${id}`}>
                 <Ul>
-                    <li>Заказ №<TooltipSpan>{id}</TooltipSpan></li>
-                    <li>Заезд: <TooltipSpan>{dateToString(rentInterval.start)}</TooltipSpan> в <TooltipSpan>{getTime(rentInterval.start)}</TooltipSpan></li>
-                    <li>Выезд: <TooltipSpan>{dateToString(rentInterval.end)}</TooltipSpan> в <TooltipSpan>{getTime(rentInterval.end)}</TooltipSpan></li>
-                    <li>Ночей: <TooltipSpan>{intervalLength(rentInterval)}</TooltipSpan></li>
-                    {lastName && firstName && <li>Гость: <TooltipSpan>{lastName} {firstName}</TooltipSpan></li>}
+                    <li>Order №<TooltipSpan>{id}</TooltipSpan></li>
+                    <li>Check-in: <TooltipSpan>{dateToString(rentInterval.start)}</TooltipSpan> at <TooltipSpan>{getTime(rentInterval.start)}</TooltipSpan></li>
+                    <li>Check-out: <TooltipSpan>{dateToString(rentInterval.end)}</TooltipSpan> at <TooltipSpan>{getTime(rentInterval.end)}</TooltipSpan></li>
+                    <li>Nights: <TooltipSpan>{intervalLength(rentInterval)}</TooltipSpan></li>
+                    {lastName && firstName && <li>Guest: <TooltipSpan>{lastName} {firstName}</TooltipSpan></li>}
                     {email && <li>Email: <TooltipSpan>{email}</TooltipSpan></li>}
-                    {phone && <li>Тел.: <TooltipSpan>{phone}</TooltipSpan></li>}
-                    {!!additionalPersons && <li>Дополнительно чел.: <TooltipSpan>{additionalPersons}</TooltipSpan></li>}
-                    {tariff && <li>Тарифф: <TooltipSpan>{tariff}</TooltipSpan></li>}
-                    {!!(percentageDiscount || moneyDiscount) && <li>Скидка: <TooltipSpan>{percentageDiscount}% ({moneyDiscount} {currentCurrency}.)</TooltipSpan></li>}
-                    {!!price && <li>Сумма: <TooltipSpan>{price} {currentCurrency}.</TooltipSpan></li>}
-                    <li>Комментарий: <TooltipSpan>{comment ? 'Да': 'Нет'}</TooltipSpan></li>
+                    {phone && <li>Phone.: <TooltipSpan>{phone}</TooltipSpan></li>}
+                    {!!additionalPersons && <li>Additional persons.: <TooltipSpan>{additionalPersons}</TooltipSpan></li>}
+                    {tariff && <li>Tariff: <TooltipSpan>{tariff}</TooltipSpan></li>}
+                    {!!(percentageDiscount || moneyDiscount) && <li>Discount: <TooltipSpan>{percentageDiscount}% ({moneyDiscount} {currentCurrency}.)</TooltipSpan></li>}
+                    {!!price && <li>Total amount: <TooltipSpan>{price}.</TooltipSpan></li>}
+                    <li>Comment: <TooltipSpan>{comment ? 'Да': 'Нет'}</TooltipSpan></li>
                 </Ul>
             </ReactTooltip>
         </>

@@ -8,6 +8,7 @@ import {currentCurrency, gridAutoRowsHeight, maxAdditionalPersons, priceAddition
 import styled from 'styled-components'
 import {Button} from '../simpleElements/Button'
 import * as Yup from 'yup'
+import {Fieldset, Legend} from '../simpleElements/StyledElements'
 
 
 const LikeFormField = styled.span`
@@ -22,7 +23,7 @@ const LikeFormField = styled.span`
 `
 
 const ErrorMessageElement = styled.div`
-color: red;
+  color: red;
 `
 
 const TitleWrapper = styled.div`
@@ -35,8 +36,8 @@ const TitleWrapper = styled.div`
 const Delete = styled.div`
   float: right;
 
-  &:hover{
-    ::before{
+  &:hover {
+    ::before {
       content: "${props => props.message}";
       color: red;
       font-weight: bold;
@@ -50,16 +51,16 @@ export function OrderCreationForm(props) {
         deleteRentInfo,
     } = props
     const {
-        id=null,
+        id = null,
         rentInterval,
-        personInfo:{firstName='Аноним', lastName='', email='', phone=''}={},
+        personInfo: {firstName = 'Anonymous', lastName = '', email = '', phone = ''} = {},
         additionalPersons = 0,
         persons = 1,
         tariff = '',
         percentageDiscount = 0,
         moneyDiscount = 0,
         price = 0,
-        comment='',
+        comment = '',
     } = rentInfo
 
     const tariffPrice = tariffs[tariff] || tariffs[`${apartmentsType}_${numberOfPersons}`]
@@ -81,20 +82,23 @@ export function OrderCreationForm(props) {
 
             validationSchema={Yup.object({
                 firstName: Yup.string()
-                    .max(15, 'Имя доложно содержать не более 15 символов')
-                    .required('Имя доложно быть обязательно'),
+                    .max(15, 'Must be 15 characters or less')
+                    .required('Name Required'),
                 lastName: Yup.string()
-                    .max(20, 'Фамилия должна содержать не более 20 символов')
-                    .required('Фамилия должна быть обязательно'),
-                email: Yup.string().email('E-mail не валиден').required('E-mail обязателен'),
-                phone: Yup.string().matches(phoneRegExp, 'Номер не валиден'),
-                price: Yup.string().test('', 'Сумма доложа быть положительной', value => parseFloat(value) >= 0),
+                    .max(20, 'Must be 20 characters or lessв')
+                    .required('Surname Required'),
+                email: Yup.string().email('Invalid email address').required('E-mail Required'),
+                phone: Yup.string().matches(phoneRegExp, 'Invalid phone number'),
+                price: Yup.string().test('', 'The amount must be positive', value => parseFloat(value) >= 0),
             })}
 
             onSubmit={(values) => {
-                const newRentInfo ={
-                    rentInterval: {start: setTimeToDate(rentInterval.start, values.checkInTime).getTime(), end: setTimeToDate(rentInterval.end, values.checkOutTime).getTime()},
-                    personInfo:{
+                const newRentInfo = {
+                    rentInterval: {
+                        start: setTimeToDate(rentInterval.start, values.checkInTime).getTime(),
+                        end: setTimeToDate(rentInterval.end, values.checkOutTime).getTime()
+                    },
+                    personInfo: {
                         firstName: values.firstName,
                         lastName: values.lastName,
                         email: values.email,
@@ -117,89 +121,97 @@ export function OrderCreationForm(props) {
         >
             <Form>
                 <TitleWrapper>
-                    Создание Заказа
-                    <Delete message='Удалить сразу и навсегда! Бесповоротно! БЕЗ ДОПОЛНИТЕЛЬНЫХ ПРЕДУПРЕЖДЕНИЙ!!!'>
-                        <Button iconName={"delete"} background={"red"} type={"button"} onClick={()=> {
+                    Order creation form
+                    <Delete message="Immediate removal!!!"> &nbsp;
+                        <Button iconName={'delete'} background={'red'} type={'button'} onClick={() => {
                             deleteRentInfo(apartmentsType, index, apartmentId, id)
                             closeModal()
-                        }} />
+                        }}/>
                     </Delete>
                 </TitleWrapper>
 
-                <label htmlFor="firstName">Имя</label>
-                <Field name="firstName" type="text" autoFocus={true} />
+                <Fieldset>
+                    <Legend><strong>Guest</strong></Legend>
+                    <label htmlFor="firstName">Name</label>
+                    <Field name="firstName" type="text" autoFocus={true}/>
 
-                <label htmlFor="lastName">Фамилия</label>
-                <Field name="lastName" type="text" />
-                <ErrorMessage component={ErrorMessageElement} name="firstName" />
-                <ErrorMessage component={ErrorMessageElement} name="lastName" />
-                <br/>
-                <label htmlFor="email">E-mail</label>
-                <Field name="email" type="email" />
+                    <label htmlFor="lastName">Surname</label>
+                    <Field name="lastName" type="text"/>
+                    <ErrorMessage component={ErrorMessageElement} name="firstName"/>
+                    <ErrorMessage component={ErrorMessageElement} name="lastName"/>
+                    <br/>
+                    <label htmlFor="email">E-mail</label>
+                    <Field name="email" type="email"/>
 
-                <label htmlFor="phone">Телефон</label>
-                <Field name="phone" type="text" />
-                <ErrorMessage component={ErrorMessageElement} name="email" />
-                <ErrorMessage component={ErrorMessageElement} name="phone" />
+                    <label htmlFor="phone">Phone number</label>
+                    <Field name="phone" type="text"/>
+                    <ErrorMessage component={ErrorMessageElement} name="email"/>
+                    <ErrorMessage component={ErrorMessageElement} name="phone"/>
+                </Fieldset>
 
-                <hr />
+                <Fieldset>
+                    <Legend><strong>Check-in(out)</strong></Legend>
+                    <label htmlFor="checkIn">Check-in</label>
+                    <Field name="checkIn" type="text" readOnly/>
 
-                <label htmlFor="checkIn">Заезд</label>
-                <Field name="checkIn" type="text" readOnly/>
+                    <label htmlFor="checkInTime"/>
+                    <Field name="checkInTime" type="time"/>
 
-                <label htmlFor="checkInTime" />
-                <Field name="checkInTime" type="time" />
+                    <label htmlFor="nights">Nights</label>
+                    <Field name="nights" type="text" size="4" readOnly/>
 
-                <label htmlFor="nights">Ночей</label>
-                <Field name="nights" type="text" size="4" readOnly/>
+                    <label htmlFor="checkOut">Check-out</label>
+                    <Field name="checkOut" type="text" readOnly/>
 
-                <label htmlFor="checkOut">Выезд</label>
-                <Field name="checkOut" type="text" readOnly/>
+                    <label htmlFor="checkOutTime"/>
+                    <Field name="checkOutTime" type="time"/>
+                </Fieldset>
 
-                <label htmlFor="checkOutTime"/>
-                <Field name="checkOutTime" type="time" />
-
-                <hr />
-
-                <label htmlFor="persons" title={`от 1 до ${numberOfPersons}`}>
+                <Fieldset>
+                    <Legend><strong>Additional persons</strong></Legend>
+                    <label htmlFor="persons" title={`от 1 до ${numberOfPersons}`}>
                     <Icon>group</Icon>
-                </label>
-                <Field name="persons" type="number" min={1} max={numberOfPersons} title={`от 1 до ${numberOfPersons}`}/>
+                    </label>
+                    <Field name="persons" type="number" min={1} max={numberOfPersons}
+                           title={`от 1 до ${numberOfPersons}`}/>
 
-                <label htmlFor="additionalPersons">
-                    <Icon>group_add</Icon>
-                </label>
-                <Field name="additionalPersons" as="select">
-                    {[...Array(maxAdditionalPersons).keys()].map(num => <option value={num} key={num}>{num}</option> )}
-                </Field>
-                <InfoFormField fieldName={'additionalPersons'} isAdditionalPersons/>
+                    <label htmlFor="additionalPersons">
+                        <Icon>group_add</Icon>
+                    </label>
+                    <Field name="additionalPersons" as="select">
+                        {[...Array(maxAdditionalPersons).keys()].map(num => <option value={num}
+                                                                                    key={num}>{num}</option>)}
+                    </Field>
+                    <InfoFormField fieldName={'additionalPersons'} isAdditionalPersons/>
+                </Fieldset>
 
-                <hr />
+                <Fieldset>
+                    <Legend><strong>Rates and discounts</strong></Legend>
+                    <label htmlFor="tariff">Tariff</label>
+                    <Field name="tariff" as="select">
+                        {Object.keys(tariffs).map(tariff => <option value={tariffs[tariff]}
+                                                                    key={tariff}>{tariff}</option>)}
+                    </Field>
+                    <InfoFormField fieldName={'tariff'}/>
 
-                <label htmlFor="tariff">Тариф</label>
-                <Field name="tariff" as="select">
-                    {Object.keys(tariffs).map(tariff => <option value={tariffs[tariff]} key={tariff}>{tariff}</option>)}
-                </Field>
-                <InfoFormField fieldName={'tariff'} />
+                    <label htmlFor="percentageDiscount">Discount %</label>
+                    <Field name="percentageDiscount" type="number" min={0} max={100}/>
 
-                <label htmlFor="percentageDiscount">Скидка %</label>
-                <Field name="percentageDiscount" type="number" min={0} max={100}/>
+                    <label htmlFor="moneyDiscount">Discount</label>
+                    <Field name="moneyDiscount" type="number" min={0}/>
+                    <span>{currentCurrency}</span>
+                </Fieldset>
 
-                <label htmlFor="moneyDiscount">Скидка</label>
-                <Field name="moneyDiscount" type="number" min={0} />
-                <span>{currentCurrency}</span>
+                <Fieldset>
+                    <Legend><strong>Total amount</strong></Legend>
+                    <label htmlFor="price">Total amount</label>
+                    <PriceField name="price" type="text" rentInterval={rentInterval} readOnly/>
+                </Fieldset>
 
-                <hr />
-
-                <label htmlFor="price">Сумма</label>
-                <PriceField name="price" type="text" rentInterval={rentInterval} readOnly />
-
-                <hr />
-
-                <label htmlFor="comment">Комментрий :</label>
-                <Field name="comment" as="textarea" rows={5} cols={70}/>
-
-                <hr/>
+                <Fieldset>
+                    <Legend><strong>Comment</strong></Legend>
+                    <Field name="comment" as="textarea" rows={5} cols={70}/>
+                </Fieldset>
 
                 <label htmlFor="closeOnSave">Close on save: </label>
                 <Field name="closeOnSave" type="checkbox" style={{verticalAlign: 'middle', marginLeft: '10px'}}/>
@@ -210,9 +222,9 @@ export function OrderCreationForm(props) {
     )
 }
 
-function InfoFormField(props){
+function InfoFormField(props) {
     const {fieldName, isAdditionalPersons} = props
-    let {values:{[fieldName]: field}, } = useFormikContext()
+    let {values: {[fieldName]: field},} = useFormikContext()
     const personsAddsSum = field * priceAdditionalPerson || false
     return (
         <>
@@ -222,9 +234,9 @@ function InfoFormField(props){
     )
 }
 
-function getPrice(days, tariff=0, additionalPersons) {
-    additionalPersons=Number(additionalPersons) || 0
-    tariff=Number(tariff) || 0
+function getPrice(days, tariff = 0, additionalPersons) {
+    additionalPersons = Number(additionalPersons) || 0
+    tariff = Number(tariff) || 0
     const price = days * tariff + additionalPersons * priceAdditionalPerson
 
     return Number(price.toFixed(2))
@@ -233,7 +245,7 @@ function getPrice(days, tariff=0, additionalPersons) {
 function PriceField(props) {
     const {rentInterval, name, ...restProps} = props
     const {
-        values:{
+        values: {
             tariff,
             percentageDiscount,
             moneyDiscount,
@@ -245,12 +257,12 @@ function PriceField(props) {
 
     useEffect(() => {
         const price = getPrice(intervalLength(rentInterval), tariff, additionalPersons)
-        const moneyDiscountCalc = Number((price * percentageDiscount/100).toFixed(2)) || moneyDiscount
+        const moneyDiscountCalc = Number((price * percentageDiscount / 100).toFixed(2)) || moneyDiscount
 
-        setFieldValue(name, `${price-moneyDiscountCalc} ${currentCurrency}`)
+        setFieldValue(name, `${price - moneyDiscountCalc} ${currentCurrency}`)
         setFieldValue('moneyDiscount', moneyDiscountCalc)
 
-    }, [tariff, percentageDiscount, additionalPersons, moneyDiscount, rentInterval, name]);
+    }, [tariff, percentageDiscount, additionalPersons, moneyDiscount, rentInterval, name])
 
     return (
         <>

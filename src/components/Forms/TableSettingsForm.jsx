@@ -2,6 +2,7 @@ import {Field, Form, Formik} from 'formik'
 import React from 'react'
 import {Button} from '../simpleElements/Button'
 import {SaveCloseButtons} from './SaveCloseButtons'
+import {Fieldset, Legend} from '../simpleElements/StyledElements'
 
 export const TableSettingsForm = (props) => {
     const{daysInTable, changeDaysInTable, closeModal, } = props
@@ -18,10 +19,16 @@ export const TableSettingsForm = (props) => {
         >
             {({setFieldValue}) =>
             <Form>
-                <label htmlFor="daysInTable">Дней в сетке: </label>
-                <Field name="daysInTable" type="number" min={min} max={max} title={`мин: ${min}; макс: ${max}`} />
-                <Button type="button"  onClick={() => setFieldValue('daysInTable', min)} size={'0.8em'}>Сбросить</Button>
-                <hr />
+                <Fieldset>
+                    <Legend><strong>Days in grid</strong></Legend>
+                    <Field name="daysInTable" type="number" min={min} max={max} title={`мин: ${min}; макс: ${max}`}/>
+                    <Button type="button"
+                            size={'0.8em'}
+                            onClick={() => setFieldValue('daysInTable', min)}
+                    >
+                        Reset
+                    </Button>
+                </Fieldset>
                 <SaveCloseButtons closeHandler={closeModal}/>
             </Form>}
         </ Formik>
