@@ -23,7 +23,7 @@ export function Button(props) {
     return (
         <Btn onClick={onClick} size={size} isFlex={isFlex} type={type} background={background}>
             {iconName && <CommonIcon>{iconName}</CommonIcon>}
-            <span>{children}</span>
+            {children && <span>{children}</span>}
         </Btn>
     )
 }

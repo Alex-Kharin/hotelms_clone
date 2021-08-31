@@ -263,6 +263,9 @@ function deleteRentInfo(apartmentsType, index, apartmentId, rentInfoId) {
         } catch (error) {
             console.error(error)
         } finally {
+            if (apartmentsType && index && apartmentId && !rentInfoId) {
+                dispatch(cancelRent(apartmentsType, index, apartmentId))
+            }
             dispatch(toggleIsUpdating(false, null))
         }
     }

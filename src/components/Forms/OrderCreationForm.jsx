@@ -4,12 +4,13 @@ import React, {useContext, useEffect} from 'react'
 import {dateToString, getTime, intervalLength, setTimeToDate} from '../../Utils/utils'
 import {Icon} from '../simpleElements/Icon'
 import {reversObjectProp} from '../../Utils/commonUtils'
-import {currentCurrency, gridAutoRowsHeight, maxAdditionalPersons, priceAdditionalPerson} from '../../settings/settings'
+import {currentCurrency, maxAdditionalPersons, priceAdditionalPerson} from '../../settings/settings'
 import styled from 'styled-components'
 import {Button} from '../simpleElements/Button'
 import * as Yup from 'yup'
 import {Fieldset, Legend} from '../simpleElements/StyledElements'
 import {ModalContext} from '../context'
+import ReactTooltip from 'react-tooltip'
 
 
 const LikeFormField = styled.span`
@@ -27,23 +28,9 @@ const ErrorMessageElement = styled.div`
   color: red;
 `
 
-const TitleWrapper = styled.div`
-  height: ${gridAutoRowsHeight}px;
+const H2 = styled.h2`
   text-align: center;
-  font-weight: bold;
-  font-size: 1.2em;
-`
-
-const Delete = styled.div`
-  float: right;
-
-  &:hover {
-    ::before {
-      content: "${props => props.message}";
-      color: red;
-      font-weight: bold;
-    }
-  }
+  margin: 10px 0;
 `
 
 export function OrderCreationForm(props) {
@@ -123,15 +110,23 @@ export function OrderCreationForm(props) {
             }}
         >
             <Form>
-                <TitleWrapper>
+                <H2>
                     Order creation form
-                    <Delete message="Immediate removal!!!"> &nbsp;
-                        <Button iconName={'delete'} background={'red'} type={'button'} onClick={() => {
-                            deleteRentInfo(apartmentsType, index, apartmentId, id)
-                            closeModal()
-                        }}/>
-                    </Delete>
-                </TitleWrapper>
+                    <span data-tip data-for="deleteMessage" style={{float:'right'}}>
+                        <Button
+                            iconName={'delete'}
+                            background={'red'}
+                            type={'button'}
+                            onClick={() => {
+                                deleteRentInfo(apartmentsType, index, apartmentId, id)
+                                closeModal()
+                            }}
+                        />
+                    </span>
+                    <ReactTooltip place="bottom" type="error" effect="float" id={`deleteMessage`}>
+                        <em><strong>Immediate removal!!!</strong></em>
+                    </ReactTooltip>
+                </H2>
 
                 <Fieldset>
                     <Legend><strong>Guest</strong></Legend>
