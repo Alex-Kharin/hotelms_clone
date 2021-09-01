@@ -13,15 +13,15 @@ const Btn = styled.button`
   display: ${({isFlex}) => isFlex && 'flex'};
   align-items: ${({isFlex}) => isFlex && 'center'};
   z-index: ${({isFlex}) => isFlex && btnHeaderZIndex};
-  type: ${({type}) => type};
   color: white;
+  opacity: ${props => props.disabled ? 0.3 : 1};
 `
 
 export function Button(props) {
-    const { onClick, size, isFlex, iconName, children, type, background} = props
+    const { onClick, size, isFlex, iconName, children, type, background, isDisable} = props
 
     return (
-        <Btn onClick={onClick} size={size} isFlex={isFlex} type={type} background={background}>
+        <Btn onClick={onClick} size={size} isFlex={isFlex} type={type} background={background} disabled={isDisable}>
             {iconName && <CommonIcon>{iconName}</CommonIcon>}
             {children && <span>{children}</span>}
         </Btn>

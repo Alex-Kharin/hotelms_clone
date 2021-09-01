@@ -8,7 +8,7 @@ import {currentCurrency, maxAdditionalPersons, priceAdditionalPerson} from '../.
 import styled from 'styled-components'
 import {Button} from '../simpleElements/Button'
 import * as Yup from 'yup'
-import {Fieldset, Legend} from '../simpleElements/StyledElements'
+import {ErrorMessageElement, Fieldset, Legend} from '../simpleElements/StyledElements'
 import {ModalContext} from '../context'
 import ReactTooltip from 'react-tooltip'
 
@@ -22,10 +22,6 @@ const LikeFormField = styled.span`
   margin: 1em;
   text-align: center;
   padding: 0.2em 0.5em;
-`
-
-const ErrorMessageElement = styled.div`
-  color: red;
 `
 
 const H2 = styled.h2`

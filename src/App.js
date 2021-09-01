@@ -1,14 +1,17 @@
 import './App.css';
-import {Main} from "./components/Main/Main";
 import {Footer} from "./components/Footer/Footer";
 import {HeaderContainer} from './components/Header/HeaderContainer'
+import {BrowserRouter} from 'react-router-dom'
+import AppRouter from './components/AppRouter/AppRouter'
 
 function App() {
   return (
     <div className="App">
-      <HeaderContainer/>
-      <Main/>
-      <Footer/>
+        <BrowserRouter>
+            <HeaderContainer/>
+            <AppRouter/>
+            <Footer/>
+        </BrowserRouter>
     </div>
   )
 }

@@ -97,7 +97,7 @@ export function Rent(props) {
                     {tariff && <li>Tariff: <TooltipSpan>{tariff}</TooltipSpan></li>}
                     {!!(percentageDiscount || moneyDiscount) && <li>Discount: <TooltipSpan>{percentageDiscount}% ({moneyDiscount} {currentCurrency}.)</TooltipSpan></li>}
                     {!!price && <li>Total amount: <TooltipSpan>{price}.</TooltipSpan></li>}
-                    <li>Comment: <TooltipSpan>{comment ? 'Да': 'Нет'}</TooltipSpan></li>
+                    <li>Comment: <TooltipSpan>{comment ? 'Yes': 'No'}</TooltipSpan></li>
                 </Ul>
             </ReactTooltip>
         </>

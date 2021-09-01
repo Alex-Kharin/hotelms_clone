@@ -7,6 +7,8 @@ import {border, displayFlexAlignCenter, secondaryColor} from '../../settings/set
 import {Icon} from '../simpleElements/Icon'
 import {CommonSettingsForm} from '../Forms/CommonSettingsForm'
 import {Report} from './Reports'
+import {StyledLink} from '../simpleElements/StyledElements'
+import {logout} from '../../store/authReducer'
 
 
 const HeaderWrapper = styled.header`
@@ -17,7 +19,7 @@ const HeaderWrapper = styled.header`
   justify-content: space-between;
 `
 
-const LeftSideMenu = styled.div`
+const LeftSideMenu = styled.nav`
   ${displayFlexAlignCenter};
   justify-content: flex-start;
 `
@@ -25,12 +27,13 @@ const LeftSideMenu = styled.div`
 const TableSettingsMenuItem = withModal(MenuItem)
 
 export function Header(props) {
-    const {daysInTable, changeDaysInTable, } = props
+    const {daysInTable, changeDaysInTable, isAuth, logout, user} = props
 
     return (
         <HeaderWrapper>
             <LeftSideMenu>
-                <Icon size={36}>hotel</Icon>
+                <StyledLink to="/"><Icon size={36}>hotel</Icon></StyledLink>
+
                 <TableSettingsMenuItem iconName={'grid_on'} menuItemTitle={'Grid'}>
                     <TableSettingsForm daysInTable={daysInTable} changeDaysInTable={changeDaysInTable}/>
                 </TableSettingsMenuItem>
@@ -45,7 +48,10 @@ export function Header(props) {
             </LeftSideMenu>
 
             <div>
-                <MenuItem iconName={'account_box'} />
+                {!isAuth
+                    ? <StyledLink to="/login"><MenuItem iconName={'login'}/></StyledLink>
+                    : <div onClick={logout}><MenuItem iconName={'logout'} menuItemTitle={user}/></div>
+                }
             </div>
         </HeaderWrapper>
     )
