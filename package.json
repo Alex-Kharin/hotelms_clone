@@ -28,9 +28,8 @@
     "yup": "^0.32.9"
   },
   "scripts": {
-    "json-server": "json-server --watch db/db.json --port 3001 & BROWSER='chromium' react-scripts start",
-    "json-server-full": "json-server --watch db/db_back.json --port 3001",
-    "start": "BROWSER='chromium' react-scripts start",
+    "json-server": "json-server --watch db/db.json --port 3001",
+    "start": "json-server --watch db/db.json --port 3001 & BROWSER='chromium' react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
