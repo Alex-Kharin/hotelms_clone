@@ -2,7 +2,7 @@
 
 GitHub Pages: https://alex-kharin.github.io/hotelms_clone/
 
-Documentation: https://alex-kharin.github.io/hotelms_clone/doc
+Documentation: https://alex-kharin.github.io/hotelms_clone/#/doc
 
 ## Available Scripts
 
